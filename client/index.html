@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wallet Connect</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/ethers@6.7.0/dist/ethers.umd.min.js"></script>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const { useState } = React;
+
+    function WalletConnect() {
+      const [address, setAddress] = useState('');
+      const [email, setEmail] = useState('');
+      const [status, setStatus] = useState('');
+
+      const connectWallet = async () => {
+        if (!window.ethereum) {
+          setStatus('MetaMask not found');
+          return;
+        }
+        try {
+          const provider = new ethers.BrowserProvider(window.ethereum);
+          await provider.send('eth_requestAccounts', []);
+          const signer = await provider.getSigner();
+          const addr = await signer.getAddress();
+          const signature = await signer.signMessage('Connect PumpStation');
+          setAddress(addr);
+          const res = await fetch('/api/connect-wallet', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ address: addr, email, signature })
+          });
+          const data = await res.json();
+          if (data.success) {
+            setStatus('Wallet connected');
+          } else {
+            setStatus('Error connecting wallet');
+          }
+        } catch (err) {
+          setStatus('Connection failed');
+        }
+      };
+
+      return (
+        <div>
+          <h1>Wallet Connection</h1>
+          <input
+            type="email"
+            placeholder="Optional email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+          />
+          <button onClick={connectWallet}>Connect Wallet</button>
+          {address && <p>Address: {address}</p>}
+          {status && <p>{status}</p>}
+        </div>
+      );
+    }
+
+    ReactDOM.render(<WalletConnect />, document.getElementById('root'));
+  </script>
+</body>
+</html>
