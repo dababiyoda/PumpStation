@@ -7,12 +7,8 @@
   "required": ["quarantine_id", "input", "decision", "state", "review"],
   "properties": {
     "quarantine_id": { "type": "string", "pattern": "^quarantine_" },
-    "input": {
-      "$ref": "https://pumpstation.local/schemas/semantic-firewall-input.schema.json"
-    },
-    "decision": {
-      "$ref": "https://pumpstation.local/schemas/semantic-firewall-decision.schema.json"
-    },
+    "input": { "$ref": "#/$defs/input" },
+    "decision": { "$ref": "#/$defs/decision" },
     "state": {
       "enum": [
         "pending",
@@ -34,7 +30,6 @@
       "properties": {
         "reviewer_id": { "type": ["string", "null"] },
         "decision": {
-          "type": ["string", "null"],
           "enum": [
             "reject",
             "release_as_data",
@@ -44,13 +39,156 @@
         },
         "reason": { "type": ["string", "null"] },
         "corrected_text_hash": {
-          "type": ["string", "null"],
-          "pattern": "^sha256:[a-f0-9]{64}$"
+          "anyOf": [
+            { "type": "null" },
+            { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+          ]
         },
         "reviewed_at": {
-          "type": ["string", "null"],
-          "format": "date-time"
+          "anyOf": [
+            { "type": "null" },
+            { "type": "string", "format": "date-time" }
+          ]
         }
+      }
+    }
+  },
+  "$defs": {
+    "input": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "input_id",
+        "content",
+        "content_type",
+        "purpose",
+        "handling_mode",
+        "source",
+        "context"
+      ],
+      "properties": {
+        "input_id": { "type": "string", "pattern": "^input_" },
+        "content": { "type": "string", "minLength": 1 },
+        "content_type": {
+          "enum": ["text/plain", "text/markdown", "application/json"]
+        },
+        "purpose": {
+          "enum": ["data", "discussion", "instruction", "evidence_claim"]
+        },
+        "handling_mode": {
+          "enum": ["direct", "quoted_untrusted", "fixture"]
+        },
+        "source": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "source_id",
+            "source_type",
+            "authenticated",
+            "declared_trust",
+            "origin"
+          ],
+          "properties": {
+            "source_id": { "type": "string" },
+            "source_type": {
+              "enum": [
+                "system_internal",
+                "authenticated_participant",
+                "external_url",
+                "uploaded_file",
+                "model_output",
+                "unknown"
+              ]
+            },
+            "authenticated": { "type": "boolean" },
+            "declared_trust": {
+              "enum": ["trusted", "untrusted", "unknown"]
+            },
+            "origin": { "type": "string" }
+          }
+        },
+        "context": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["opportunity_id", "channel_type"],
+          "properties": {
+            "opportunity_id": { "type": ["string", "null"] },
+            "channel_type": { "type": ["string", "null"] }
+          }
+        }
+      }
+    },
+    "decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "screen_id",
+        "input_id",
+        "status",
+        "trust_class",
+        "raw_hash",
+        "normalized_hash",
+        "matches",
+        "decoded_variant_hashes",
+        "instruction_data_boundary",
+        "default_action",
+        "classifier_version",
+        "screened_at"
+      ],
+      "properties": {
+        "screen_id": { "type": "string", "pattern": "^screen_" },
+        "input_id": { "type": "string", "pattern": "^input_" },
+        "status": {
+          "enum": ["clear", "review", "quarantined", "error"]
+        },
+        "trust_class": {
+          "enum": [
+            "trusted_internal",
+            "authenticated_participant",
+            "external_untrusted",
+            "unknown"
+          ]
+        },
+        "raw_hash": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        },
+        "normalized_hash": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        },
+        "matches": { "type": "array" },
+        "decoded_variant_hashes": { "type": "array" },
+        "instruction_data_boundary": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "declared_purpose",
+            "content_is_instruction",
+            "tool_access_permitted",
+            "evidence_admissible",
+            "authority_effect"
+          ],
+          "properties": {
+            "declared_purpose": {
+              "enum": ["data", "discussion", "instruction", "evidence_claim"]
+            },
+            "content_is_instruction": { "const": false },
+            "tool_access_permitted": { "const": false },
+            "evidence_admissible": { "const": false },
+            "authority_effect": { "const": false }
+          }
+        },
+        "default_action": {
+          "enum": [
+            "continue_as_data",
+            "hold_for_human_review",
+            "quarantine",
+            "fail_closed_quarantine"
+          ]
+        },
+        "classifier_version": { "type": "string" },
+        "screened_at": { "type": "string", "format": "date-time" }
       }
     }
   }
