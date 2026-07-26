@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pumpstation.local/schemas/semantic-firewall-input.schema.json",
+  "title": "PumpStation Semantic Firewall Input",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "input_id",
+    "content",
+    "content_type",
+    "purpose",
+    "handling_mode",
+    "source",
+    "context"
+  ],
+  "properties": {
+    "input_id": {
+      "type": "string",
+      "pattern": "^input_[A-Za-z0-9_-]+$"
+    },
+    "content": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100000
+    },
+    "content_type": {
+      "enum": ["text/plain", "text/markdown", "application/json"]
+    },
+    "purpose": {
+      "enum": ["data", "discussion", "instruction", "evidence_claim"]
+    },
+    "handling_mode": {
+      "enum": ["direct", "quoted_untrusted", "fixture"]
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_id",
+        "source_type",
+        "authenticated",
+        "declared_trust",
+        "origin"
+      ],
+      "properties": {
+        "source_id": { "type": "string", "minLength": 1 },
+        "source_type": {
+          "enum": [
+            "system_internal",
+            "authenticated_participant",
+            "external_url",
+            "uploaded_file",
+            "model_output",
+            "unknown"
+          ]
+        },
+        "authenticated": { "type": "boolean" },
+        "declared_trust": {
+          "enum": ["trusted", "untrusted", "unknown"]
+        },
+        "origin": { "type": "string", "minLength": 1 }
+      }
+    },
+    "context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["opportunity_id", "channel_type"],
+      "properties": {
+        "opportunity_id": {
+          "type": ["string", "null"]
+        },
+        "channel_type": {
+          "type": ["string", "null"]
+        }
+      }
+    }
+  }
+}

@@ -19,6 +19,7 @@ import {
 } from "./config.js";
 import { DomainError } from "./domain/errors.js";
 import { AppendOnlyEventStore } from "./domain/eventStore.js";
+import { sha256 } from "./domain/hash.js";
 import { IdentityService } from "./domain/identity.js";
 import { PumpStationInstitution } from "./domain/institution.js";
 import {
@@ -28,6 +29,11 @@ import {
   StagePromotionRequestSchema,
   type Actor,
 } from "./domain/model.js";
+import {
+  FirewallReviewInputSchema,
+  SemanticFirewall,
+  SemanticFirewallInputSchema,
+} from "./domain/semanticFirewall.js";
 
 declare global {
   namespace Express {
@@ -86,6 +92,7 @@ export function createApp(options: CreateAppOptions = {}): {
   app: express.Express;
   institution: PumpStationInstitution;
   identity: IdentityService;
+  firewall: SemanticFirewall;
   store: AppendOnlyEventStore;
 } {
   const nowIso = options.nowIso ?? (() => new Date().toISOString());
@@ -106,6 +113,10 @@ export function createApp(options: CreateAppOptions = {}): {
     ...(options.nowDate ? { now: options.nowDate } : {}),
   });
   const institution = new PumpStationInstitution(store, {
+    now: nowIso,
+    ...(options.idFactory ? { idFactory: options.idFactory } : {}),
+  });
+  const firewall = new SemanticFirewall(store, {
     now: nowIso,
     ...(options.idFactory ? { idFactory: options.idFactory } : {}),
   });
@@ -162,6 +173,7 @@ export function createApp(options: CreateAppOptions = {}): {
       unauthorized_external_effects: UNAUTHORIZED_EXTERNAL_EFFECTS,
       kernel_connection: "not_implemented",
       legal_clearance: "not_claimed",
+      semantic_firewall: "sandbox_v1",
     });
   });
 
@@ -195,6 +207,46 @@ export function createApp(options: CreateAppOptions = {}): {
     next();
   };
 
+  app.post("/api/v1/firewall/screens", requireIdentity, (request, response) => {
+    const input = SemanticFirewallInputSchema.parse(request.body);
+    const decision = firewall.screen(input, request.pumpstationActor as Actor);
+    response.status(decision.status === "clear" ? 200 : 202).json({
+      decision,
+      content_executed: false,
+      external_effect_permitted: false,
+    });
+  });
+
+  app.get(
+    "/api/v1/firewall/quarantine",
+    requireIdentity,
+    (request, response) => {
+      response.json({
+        records: firewall.listQuarantine(request.pumpstationActor as Actor),
+        release_means_data_only: true,
+      });
+    },
+  );
+
+  app.post(
+    "/api/v1/firewall/quarantine/:id/review",
+    requireIdentity,
+    (request, response) => {
+      const input = FirewallReviewInputSchema.parse(request.body);
+      const record = firewall.review(
+        request.params.id as string,
+        input,
+        request.pumpstationActor as Actor,
+      );
+      response.status(201).json({
+        record,
+        content_executed: false,
+        evidence_admissible: false,
+        external_effect_permitted: false,
+      });
+    },
+  );
+
   app.post("/api/v1/opportunities", requireIdentity, (request, response) => {
     const packet = OpportunityPacketSchema.parse(request.body);
     const accepted = institution.submitOpportunity(
@@ -217,13 +269,51 @@ export function createApp(options: CreateAppOptions = {}): {
     requireIdentity,
     (request, response) => {
       const input = DeliberationInputSchema.parse(request.body);
+      const actor = request.pumpstationActor as Actor;
+      const firewallDecision = firewall.screen(
+        {
+          input_id: `input_${sha256({
+            opportunity_id: request.params.id,
+            actor_id: actor.actor_id,
+            channel_type: input.channel_type,
+            content: input.content,
+            source_references: input.source_references,
+          }).slice(7, 31)}`,
+          content: input.content,
+          content_type: "text/plain",
+          purpose:
+            input.channel_type === "evidence" ? "evidence_claim" : "discussion",
+          handling_mode: "direct",
+          source: {
+            source_id: actor.actor_id,
+            source_type: "authenticated_participant",
+            authenticated: true,
+            declared_trust: "unknown",
+            origin: "pumpstation://authenticated-deliberation",
+          },
+          context: {
+            opportunity_id: request.params.id as string,
+            channel_type: input.channel_type,
+          },
+        },
+        actor,
+      );
+      if (firewallDecision.status !== "clear") {
+        return response.status(202).json({
+          message_created: false,
+          moderation_state: "quarantined",
+          firewall_decision: firewallDecision,
+          external_effect_permitted: false,
+        });
+      }
       const message = institution.addDeliberation(
         request.params.id as string,
         input,
-        request.pumpstationActor as Actor,
+        actor,
       );
-      response.status(201).json({
+      return response.status(201).json({
         message,
+        firewall_decision: firewallDecision,
         chat_is_instruction_surface: false,
       });
     },
@@ -319,5 +409,5 @@ export function createApp(options: CreateAppOptions = {}): {
     },
   );
 
-  return { app, institution, identity, store };
+  return { app, institution, identity, firewall, store };
 }

@@ -1,0 +1,217 @@
+{
+  "decision_id": "PS-DEL-0003",
+  "title": "Retain semantic firewall as sandbox defense in depth",
+  "problem": "PumpStation needs to accept participant, external, uploaded, and model-generated content without allowing that content to become authority, evidence, tool instructions, or external effects.",
+  "founder_intent_refs": ["PS-003", "PS-004", "PS-005", "PS-011", "PS-014"],
+  "baseline": "Authenticated content can enter structured discussion after schema validation and lexical anti-manipulation checks, but no general source-trust, decoding, quarantine, or fail-closed semantic boundary exists.",
+  "alternatives": [
+    {
+      "name": "Schema validation only",
+      "description": "Validate structure but do not inspect semantic content.",
+      "tradeoffs": "Simple and predictable, but malicious instructions can remain valid strings inside a correct schema.",
+      "revival_evidence": "Use only for trusted machine-produced records whose producer identity and contract are independently verified."
+    },
+    {
+      "name": "Model classifier as security authority",
+      "description": "Use an LLM to determine whether content is safe and release it automatically.",
+      "tradeoffs": "Potentially broader semantic coverage but probabilistic, costly, attackable, and capable of false authority if placed on the consequence path.",
+      "revival_evidence": "A model may later contribute a screening signal, but never final authority, evidence admission, or quarantine release."
+    },
+    {
+      "name": "Layered deterministic firewall and human quarantine",
+      "description": "Normalize, inspect bounded decoded variants, classify source trust, detect known attack families, quarantine suspicious content, and require human review.",
+      "tradeoffs": "Auditable and fail-closed, but incomplete against novel phrasing and expensive if false positives grow.",
+      "revival_evidence": "Current preferred sandbox experiment, subject to independent holdout testing."
+    },
+    {
+      "name": "Reject all external content",
+      "description": "Permit only internally authored records.",
+      "tradeoffs": "Minimizes exposure but destroys community participation, research intake, and market sensing.",
+      "revival_evidence": "Use during incidents, classifier outages, or high-risk degraded mode."
+    }
+  ],
+  "do_nothing_option": {
+    "name": "Do nothing",
+    "description": "Keep the existing lexical checks and prevent broader public or participant intake.",
+    "tradeoffs": "Avoids new complexity but leaves the product unable to safely expand its input surface.",
+    "revival_evidence": "Select if the layered firewall causes unacceptable false positives, review burden, or bypass risk."
+  },
+  "roles": [
+    {
+      "name": "Founder-Intent Steward",
+      "analysis": "The founder wants a powerful collaborative institution, but participation must not convert social trust or model confidence into authority.",
+      "position": "Support a firewall that protects collaboration without treating participants as inherently hostile."
+    },
+    {
+      "name": "Systems Architect",
+      "analysis": "Input containment should sit before institutional state and remain separate from the Kernel, evidence admission, and consequence control.",
+      "position": "Support layered screening as one membrane, not as the sovereign security boundary."
+    },
+    {
+      "name": "Adversarial Reviewer",
+      "analysis": "Authored rules and authored tests can produce misleading perfect scores. Novel multi-turn and indirect attacks remain likely to escape.",
+      "position": "Retain only as defense in depth and require independent sealed evaluation."
+    },
+    {
+      "name": "Operator and Maintainer",
+      "analysis": "Deterministic rules, explicit incidents, and human review are observable. Quarantine volume and review latency can still become operational bottlenecks.",
+      "position": "Support with category metrics, fail-closed behavior, and a rollback path."
+    },
+    {
+      "name": "Evidence and Welfare Guardian",
+      "analysis": "The firewall must detect manipulation and affinity pressure without silencing legitimate dissent, legal questions, security criticism, or participant-welfare advocacy.",
+      "position": "Support only while false positives and false negatives are reported separately and release remains data-only."
+    }
+  ],
+  "evidence": [
+    {
+      "claim": "The runtime prevents screened content from becoming instruction, evidence, tool access, authority, or external effect.",
+      "tier": "unit_test",
+      "reference": "server/test/semantic-firewall.test.ts and server/test/firewall-api.test.ts"
+    },
+    {
+      "claim": "The corrected detector classified all 20 authored multilingual and encoded cases as expected.",
+      "tier": "fixture",
+      "reference": "experiments/results/semantic-firewall-v1.json"
+    },
+    {
+      "claim": "Quarantine incidents and human reviews are appended to a hash-chained event store.",
+      "tier": "unit_test",
+      "reference": "server/test/semantic-firewall.test.ts"
+    }
+  ],
+  "counterevidence": [
+    {
+      "claim": "The first authored run missed one explicit instruction-override phrase.",
+      "tier": "fixture",
+      "reference": "experiments/results/semantic-firewall-v1-initial-negative.json"
+    },
+    {
+      "claim": "The detector and corpus share authorship, so the corrected perfect score may reflect overfitting.",
+      "tier": "claim",
+      "reference": "docs/SEMANTIC_FIREWALL_RESULT.md"
+    },
+    {
+      "claim": "No independent red team, production traffic, or broad multilingual evaluation has been completed.",
+      "tier": "claim",
+      "reference": "docs/SEMANTIC_FIREWALL_RESULT.md"
+    }
+  ],
+  "pass_1": {
+    "intended_outcome": "Create an auditable membrane that preserves useful input while preventing untrusted content from crossing into institutional authority or consequence.",
+    "advantages": [
+      "Content is classified by source and remains data by default.",
+      "Known manipulation, authority, secrecy, evidence, and external-effect attacks are quarantined.",
+      "Human release cannot grant evidence or execution authority.",
+      "Classifier failure quarantines rather than allowing execution."
+    ],
+    "disadvantages": [
+      {
+        "id": "PS-FW-D1",
+        "description": "Authored rules may miss novel semantic attacks.",
+        "redesign": "Require independent sealed holdout cases, sampled review of clear content, and measured escape rates."
+      },
+      {
+        "id": "PS-FW-D2",
+        "description": "False positives can suppress legitimate participant speech and create founder review burden.",
+        "redesign": "Track category-level false positives, preserve appeals, and distinguish review from rejection."
+      },
+      {
+        "id": "PS-FW-D3",
+        "description": "Decoded-variant inspection can create denial-of-service or data-amplification risk.",
+        "redesign": "Bound input size, candidate count, decoded length, and processing cost."
+      },
+      {
+        "id": "PS-FW-D4",
+        "description": "A firewall can be mistaken for a complete security boundary.",
+        "redesign": "Keep tools disabled, evidence admission separate, human review mandatory, and external effects behind the UNIIMENTE Kernel."
+      }
+    ],
+    "comparisons": [
+      "Schema-only baseline",
+      "Do-nothing restricted intake",
+      "Simplest lexical checks",
+      "Strongest model-classifier competitor",
+      "Reversible layered deterministic experiment"
+    ],
+    "rejected_alternatives": [
+      {
+        "name": "Automatic model release",
+        "description": "Allow a model classifier to release content and invoke downstream tools.",
+        "tradeoffs": "Expands capability but turns a probabilistic model into an authority source.",
+        "revival_evidence": "Never revive as sole authority; model signals may only support human review."
+      },
+      {
+        "name": "Trust all authenticated users",
+        "description": "Treat authentication as proof that submitted content is safe.",
+        "tradeoffs": "Reduces friction but confuses identity with authorization and content integrity.",
+        "revival_evidence": "No revival; authenticated content remains subject to purpose and capability controls."
+      }
+    ]
+  },
+  "pass_2": {
+    "new_weaknesses": [
+      "The initial corpus exposed a false negative in combined instruction-override phrasing.",
+      "The corrected authored score may hide untested paraphrases.",
+      "Human-only quarantine review can centralize operational burden.",
+      "In-memory quarantine is not production-durable."
+    ],
+    "disadvantage_dispositions": [
+      {
+        "disadvantage_id": "PS-FW-D1",
+        "status": "experiment",
+        "action": "Preserve the miss, correct the rule, and require independent ambiguity-rich holdout testing."
+      },
+      {
+        "disadvantage_id": "PS-FW-D2",
+        "status": "experiment",
+        "action": "Retain review and appeal states, then measure review volume and reversals in a closed pilot."
+      },
+      {
+        "disadvantage_id": "PS-FW-D3",
+        "status": "resolved",
+        "action": "The current implementation limits request size and decoded candidate counts; add explicit performance benchmarks before public intake."
+      },
+      {
+        "disadvantage_id": "PS-FW-D4",
+        "status": "resolved",
+        "action": "The contract hard-codes no instruction, evidence, tool, authority, or external-effect consequence from firewall output."
+      }
+    ],
+    "strengthened_design": "Retain the semantic firewall as a sandbox defense-in-depth membrane. Preserve its first false negative, publish strict wire contracts, keep quarantine release human-only and data-only, and deny any claim of general or production security until independent holdout evaluation exists.",
+    "residual_risks": [
+      "Novel multi-turn or cross-document attacks may escape.",
+      "Language and cultural coverage remains narrow.",
+      "Human review may become a bottleneck.",
+      "No production persistence or independent red-team evidence exists."
+    ]
+  },
+  "dissent": [
+    {
+      "position": "Reject rule-based semantic claims and keep public intake closed until an independent classifier and red team exist.",
+      "rationale": "The perfect corrected authored score is vulnerable to overfitting and may create false confidence.",
+      "evidence_threshold": "Independent sealed corpus with measured category-level false positives, false negatives, and adaptive attacks.",
+      "owner": "Adversarial Reviewer",
+      "review_trigger": "Any proposal to enter closed pilot or public research stage."
+    },
+    {
+      "position": "Do not allow the founder to become the only quarantine reviewer at scale.",
+      "rationale": "Centralized review can create delay, capture, and unmanageable attention costs.",
+      "evidence_threshold": "A bounded reviewer role with separation of duties, appeals, calibration, and Kernel-issued grants.",
+      "owner": "Operator and Maintainer",
+      "review_trigger": "Quarantine volume exceeds the closed-pilot attention budget."
+    }
+  ],
+  "authority_impact": "None. The firewall creates no trading, custody, promotion, capital, evidence-admission, tool, public-launch, or external-effect authority.",
+  "migration_plan": "Keep the firewall on the stacked Phase 2 branch, integrate it before participant deliberation, publish schemas, and require permanent CI regeneration of the authored result.",
+  "rollback_plan": "Close PR #14 or revert Phase 2 commits. Phase 1 and the foundational PR remain separately reviewable.",
+  "kill_criteria": [
+    "Any firewall output directly invokes a tool or external effect.",
+    "A model or agent can release quarantine.",
+    "Clear content is automatically treated as evidence or authority.",
+    "Independent testing shows unacceptable escape or suppression rates with no bounded redesign."
+  ],
+  "decision": "EXPERIMENT",
+  "decision_owner": "Founder and Systems Architect",
+  "review_trigger": "Independent sealed evaluation, closed-pilot proposal, or any material firewall bypass."
+}
