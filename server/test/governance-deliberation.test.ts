@@ -50,9 +50,7 @@ test("semantic firewall decision satisfies recursive collaboration protocol", ()
   assert.ok(disadvantageIds.length > 0);
 
   const dispositions = new Set(
-    record.pass_2.disadvantage_dispositions.map(
-      (item) => item.disadvantage_id,
-    ),
+    record.pass_2.disadvantage_dispositions.map((item) => item.disadvantage_id),
   );
   for (const disadvantageId of disadvantageIds) {
     assert.ok(dispositions.has(disadvantageId), disadvantageId);
