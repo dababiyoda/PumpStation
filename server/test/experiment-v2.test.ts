@@ -79,7 +79,10 @@ test("v1 negative result remains linked as causal evidence", () => {
     result.prior_result_hash,
     "sha256:7cbdc212fb0256835f736bad50ba10d4047f2445fdeac7dfe86bedff8175b51d",
   );
-  assert.equal(result.contamination_controls.v1_negative_result_preserved, true);
+  assert.equal(
+    result.contamination_controls.v1_negative_result_preserved,
+    true,
+  );
 });
 
 test("fixture contains manipulation, affinity, legal, and productive cases", () => {
@@ -96,8 +99,12 @@ test("fixture contains manipulation, affinity, legal, and productive cases", () 
   ]) {
     assert.ok(risks.has(required), required);
   }
-  assert.ok(fixture.opportunities.some((opportunity) => opportunity.productive));
   assert.ok(
-    fixture.opportunities.some((opportunity) => opportunity.harmful_if_approved),
+    fixture.opportunities.some((opportunity) => opportunity.productive),
+  );
+  assert.ok(
+    fixture.opportunities.some(
+      (opportunity) => opportunity.harmful_if_approved,
+    ),
   );
 });
