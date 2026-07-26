@@ -1,68 +1,235 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PumpStation Labs</title>
-  <style>
-    :root { color-scheme: dark; font-family: Inter, ui-sans-serif, system-ui, sans-serif; }
-    body { margin: 0; background: #0b0d10; color: #edf1f5; }
-    main { max-width: 1100px; margin: 0 auto; padding: 32px 20px 80px; }
-    .banner { border: 1px solid #8f6a25; background: #241b0d; padding: 16px; border-radius: 10px; font-weight: 700; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-top: 20px; }
-    section { background: #14181e; border: 1px solid #2a313b; border-radius: 12px; padding: 18px; }
-    h1, h2 { margin-top: 0; }
-    label { display: block; margin: 12px 0 4px; color: #bdc6d1; }
-    input, textarea, select, button { width: 100%; box-sizing: border-box; border-radius: 8px; border: 1px solid #3a4450; padding: 10px; background: #0f1318; color: #edf1f5; }
-    button { margin-top: 14px; background: #e4b85a; color: #111; font-weight: 700; cursor: pointer; }
-    pre { white-space: pre-wrap; overflow-wrap: anywhere; background: #0d1014; padding: 12px; border-radius: 8px; max-height: 420px; overflow: auto; }
-    .muted { color: #9da8b4; }
-    .metric { font-size: 1.7rem; font-weight: 800; }
-  </style>
-</head>
-<body>
-<main>
-  <h1>PumpStation Labs</h1>
-  <div class="banner">SIMULATION ONLY · NO REAL MONEY · NO INVESTMENT OFFER · NO COORDINATED MARKET ACTION · NO PUBLIC ASSET PROMOTION</div>
-  <p class="muted">A founder-governed community capital laboratory for productive assets. Wallets prove identity only and grant no financial authority.</p>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="PumpStation Labs simulation-only community capital research institution"
+    />
+    <title>PumpStation Labs · Founder Control Surface</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <header class="status-rail" aria-label="Permanent operating restrictions">
+      <span>SIMULATION ONLY</span>
+      <span>NO REAL MONEY</span>
+      <span>NO INVESTMENT OFFER</span>
+      <span>NO COORDINATED MARKET ACTION</span>
+      <span>NO PUBLIC ASSET PROMOTION</span>
+    </header>
 
-  <div class="grid">
-    <section><h2>Institution state</h2><div id="stage" class="metric">Loading…</div><p>Unauthorized external effects: <strong id="effects">0</strong></p><p>Event chain: <strong id="chain">—</strong></p><button onclick="refresh()">Refresh</button></section>
-    <section><h2>Policy screen</h2><label>Text to assess</label><textarea id="policyText" rows="6" placeholder="Describe an opportunity or coordination request"></textarea><button onclick="assess()">Assess risk</button><pre id="policyResult"></pre></section>
-    <section><h2>Submit productive opportunity</h2><p class="muted">This compact form creates a proposal only. Full fields are populated as explicit sandbox declarations.</p><label>Title</label><input id="title" value="Acquire a revenue-producing local service business" /><label>Problem</label><textarea id="problem">Succession gap in a profitable local service company</textarea><label>Productive value</label><textarea id="value">Preserve jobs, improve operations, and broaden ownership</textarea><button onclick="submitOpportunity()">Create proposal</button><pre id="submitResult"></pre></section>
-  </div>
+    <main>
+      <nav class="topbar">
+        <div class="brand">
+          <div class="mark" aria-hidden="true">PS</div>
+          <div>
+            <p class="eyebrow">Bounded UNIIMENTE Venture Cell</p>
+            <h1>PumpStation Labs</h1>
+          </div>
+        </div>
+        <div class="identity">
+          <div>
+            <span class="label">Identity boundary</span>
+            <strong id="identity-state">Not authenticated</strong>
+          </div>
+          <button id="wallet-button" type="button">Authenticate wallet</button>
+        </div>
+      </nav>
 
-  <section style="margin-top:16px"><h2>Append-only institutional record</h2><pre id="state"></pre></section>
-</main>
-<script>
-async function jsonFetch(url, options={}) {
-  const response = await fetch(url, { headers: { 'Content-Type': 'application/json', 'x-actor-id': 'web-member', 'x-actor-role': 'member', ...(options.headers||{}) }, ...options });
-  const data = await response.json(); if (!response.ok) throw new Error(data.error || 'Request failed'); return data;
-}
-async function refresh() {
-  const data = await jsonFetch('/api/state'); const chain = await jsonFetch('/api/events/verify');
-  document.getElementById('stage').textContent = data.state.stage;
-  document.getElementById('effects').textContent = data.state.metrics.unauthorizedExternalEffects;
-  document.getElementById('chain').textContent = chain.valid ? `VALID · ${chain.count} events` : 'INVALID';
-  document.getElementById('state').textContent = JSON.stringify(data, null, 2);
-}
-async function assess() {
-  try { document.getElementById('policyResult').textContent = JSON.stringify(await jsonFetch('/api/policy/assess', { method:'POST', body:JSON.stringify({ text: document.getElementById('policyText').value }) }), null, 2); }
-  catch (e) { document.getElementById('policyResult').textContent = e.message; }
-}
-async function submitOpportunity() {
-  const body = {
-    title: title.value, assetType:'SMALL_BUSINESS', problemSolved:problem.value, productiveValue:value.value,
-    beneficiary:'Workers, customers, and community co-owners', buyerOrCustomer:'Existing customers', revenueSource:'Operating revenue',
-    capitalRequired:0, maximumLoss:0, holdingPeriod:'Long-term', proposerHoldings:'None', proposerCompensation:'None in sandbox',
-    conflicts:[], legalQuestions:['External legal review required before capital activity'], securityRisks:['Identity and payment fraud'],
-    communityBenefit:'Shared diligence and productive ownership', communityHarmRisks:['Capital loss and governance capture'],
-    killConditions:['Unverifiable cash flow','Hidden conflicts'], simulationPlan:'Research, historical replay, and downside stress test only'
-  };
-  try { submitResult.textContent = JSON.stringify(await jsonFetch('/api/opportunities', { method:'POST', body:JSON.stringify(body) }), null, 2); await refresh(); }
-  catch (e) { submitResult.textContent = e.message; }
-}
-refresh();
-</script>
-</body>
+      <section class="hero">
+        <div>
+          <p class="eyebrow">Community capital institution · Stage 0</p>
+          <h2>Institutional-grade research before capital.</h2>
+          <p class="lede">
+            Productive opportunities enter as evidence-bound packets. Independent
+            roles build the case and the counter-case. Policies screen the result.
+            Humans decide. Only the UNIIMENTE Kernel may later permit a real
+            consequence.
+          </p>
+        </div>
+        <div class="authority-card">
+          <span class="signal signal-safe">EXTERNAL EFFECTS DISABLED</span>
+          <p>
+            Models reason. Agents propose. Policies and authorized humans decide.
+            The Kernel determines what may become real. Reality determines what
+            was correct.
+          </p>
+          <dl>
+            <div>
+              <dt>Active stage</dt>
+              <dd id="active-stage">0 · Research sandbox</dd>
+            </div>
+            <div>
+              <dt>Unauthorized effects</dt>
+              <dd id="unauthorized-effects">0</dd>
+            </div>
+            <div>
+              <dt>Kernel connection</dt>
+              <dd>Not implemented</dd>
+            </div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="metric-grid" aria-label="Institution metrics">
+        <article>
+          <span class="label">Single Bottleneck Metric</span>
+          <strong class="metric" id="sbm">0%</strong>
+          <p>
+            Complete simulated decisions with evidence, preserved dissent,
+            reproducibility, and zero prohibited coordination.
+          </p>
+        </article>
+        <article>
+          <span class="label">Accepted opportunities</span>
+          <strong class="metric" id="accepted">0</strong>
+          <p>Packets that passed structural intake controls.</p>
+        </article>
+        <article>
+          <span class="label">Constitutional refusals</span>
+          <strong class="metric" id="refused">0</strong>
+          <p>Rejected manipulation, authority, evidence, or disclosure attempts.</p>
+        </article>
+        <article>
+          <span class="label">Audit integrity</span>
+          <strong class="metric small" id="chain-state">Checking</strong>
+          <p id="event-count">0 append-only institutional events.</p>
+        </article>
+      </section>
+
+      <section class="workspace-grid">
+        <article class="panel opportunities">
+          <header>
+            <div>
+              <p class="eyebrow">Decision workbench</p>
+              <h3>Opportunity pipeline</h3>
+            </div>
+            <span class="signal">FIXTURES LABELED</span>
+          </header>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Opportunity</th>
+                  <th>Type</th>
+                  <th>Evidence</th>
+                  <th>Decision state</th>
+                </tr>
+              </thead>
+              <tbody id="opportunity-rows">
+                <tr>
+                  <td colspan="4" class="empty">No accepted opportunities yet.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="footnote">
+            Conversation volume, enthusiasm, reactions, and popularity are never
+            evidence. Chat cannot become a tool call or capital instruction.
+          </p>
+        </article>
+
+        <article class="panel gate">
+          <header>
+            <div>
+              <p class="eyebrow">Canonical authority path</p>
+              <h3>Consequence gate</h3>
+            </div>
+          </header>
+          <ol class="gate-flow">
+            <li class="complete"><span>1</span>Opportunity packet</li>
+            <li class="complete"><span>2</span>Independent role review</li>
+            <li><span>3</span>Adversarial simulation</li>
+            <li><span>4</span>Authorized human decision</li>
+            <li class="locked"><span>5</span>UNIIMENTE Kernel permit</li>
+            <li class="locked"><span>6</span>External consequence</li>
+          </ol>
+          <div class="lock-note">
+            <strong>Standalone ceiling</strong>
+            <p>
+              PumpStation ends at proposal and founder decision packets. There is
+              no implementation for steps 5 or 6.
+            </p>
+          </div>
+        </article>
+      </section>
+
+      <section class="panel stage-panel">
+        <header>
+          <div>
+            <p class="eyebrow">Evidence-gated maturity</p>
+            <h3>Public launch ladder</h3>
+          </div>
+          <span class="signal signal-safe">STAGE 0 ACTIVE</span>
+        </header>
+        <div class="stages">
+          <article class="active">
+            <span>00</span>
+            <h4>Research sandbox</h4>
+            <p>Synthetic opportunities, replay, paper portfolios, deliberation.</p>
+          </article>
+          <article>
+            <span>01</span>
+            <h4>Closed pilot</h4>
+            <p>Invited users and paper portfolios. No pooled capital.</p>
+          </article>
+          <article>
+            <span>02</span>
+            <h4>Public research</h4>
+            <p>Education and methodology. No offering or coordinated buying.</p>
+          </article>
+          <article>
+            <span>03</span>
+            <h4>Proprietary pilot</h4>
+            <p>Founder-owned capital only after counsel and explicit authority.</p>
+          </article>
+          <article>
+            <span>04</span>
+            <h4>Productive assets</h4>
+            <p>Cash flow, customer value, operating businesses, infrastructure.</p>
+          </article>
+          <article>
+            <span>05</span>
+            <h4>Regulated vehicle</h4>
+            <p>External capital only under a selected, reviewed legal structure.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="panel role-panel">
+        <header>
+          <div>
+            <p class="eyebrow">Proposal capacity without sovereign authority</p>
+            <h3>Ten bounded institutional roles</h3>
+          </div>
+          <span class="signal">AGREEMENT ≠ AUTHORITY</span>
+        </header>
+        <div class="roles">
+          <span>Opportunity Scout</span>
+          <span>Evidence Researcher</span>
+          <span>Fundamental Underwriter</span>
+          <span>Adversarial Reviewer</span>
+          <span>Community Benefit Reviewer</span>
+          <span>Legal &amp; Compliance Screener</span>
+          <span>Security Reviewer</span>
+          <span>Portfolio &amp; Resource Allocator</span>
+          <span>Reconciliation Agent</span>
+          <span>Institutional Memory Agent</span>
+        </div>
+      </section>
+
+      <footer>
+        <strong>MODEL OUTPUT IS NOT FINANCIAL EVIDENCE</strong>
+        <p>
+          Passing tests and synthetic results prove code behavior only. They do
+          not prove legal clearance, market performance, investment quality, or
+          community benefit.
+        </p>
+      </footer>
+    </main>
+
+    <div id="toast" role="status" aria-live="polite"></div>
+  </body>
 </html>

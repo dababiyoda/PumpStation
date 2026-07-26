@@ -1,84 +1,87 @@
-# PumpStation
+# PumpStation Labs
 
-> An immigrant-led, founder-governed community capital institution that helps real people combine knowledge, skills, relationships, and eventually governed capital to identify, acquire, build, improve, and retain productive assets.
+> **SIMULATION ONLY · NO REAL MONEY · NO INVESTMENT OFFER · NO COORDINATED MARKET ACTION · NO PUBLIC ASSET PROMOTION**
+>
+> **MODEL OUTPUT IS NOT FINANCIAL EVIDENCE**
 
-## Reality status
+PumpStation is an immigrant-led, agent-operated community capital research institution. It helps people combine knowledge, skills, relationships, and eventually governed capital to identify, underwrite, build, acquire, improve, and retain productive assets.
 
-**Current implementation: SANDBOX**
+This release is Stage 0, a research sandbox. It accepts structured opportunities, preserves evidence and dissent, runs adversarial manipulation screening, compiles reproducible simulated decision packets, and records every material transition in an append-only hash chain. It cannot place orders, transfer assets, accept investor deposits, coordinate market buying, promote owned assets, activate a higher stage, or move money.
 
-This repository no longer implements memecoin coordination, coordinated buy-ins, automated exits, autonomous trading, or market-manipulation workflows. The first executable version records and validates:
+## Permanent authority rule
 
-1. opportunity intake;
-2. five-role deliberation;
-3. exactly two recursive strengthening passes;
-4. explicit founder authorization;
-5. bounded action proposals;
-6. evidence objects;
-7. simulated outcome reconciliation;
-8. an append-only hash-chained institutional event ledger.
+**Models reason. Agents propose. Policies and authorized humans decide. The UNIIMENTE Kernel determines what may become real. Reality determines what was correct.**
 
-It deliberately does **not** move money, contact counterparties, deploy contracts, trade assets, or execute external actions.
+Agent agreement never creates authority. A founder decision recorded here is not a Kernel permit, and this standalone Venture Cell has no external-effect adapter.
 
-```text
-models reason
-→ agents and members propose
-→ reviewers deliberate
-→ authorized humans decide
-→ the canonical consequence boundary may permit an external effect
-→ evidence and reconciliation determine whether the action worked
-```
+## Current executable surface
 
-Hard invariant:
+- nonce-bound wallet authentication for identity only;
+- opportunity intake against a machine-readable packet;
+- deterministic manipulation-risk classification that fails closed;
+- typed deliberation channels for bull, bear, conflicts, legal, security, community impact, complaints, education, and reconciliation;
+- simulated decision packet compilation;
+- append-only, hash-chained institutional events;
+- hash-bound stage-promotion packets that remain `awaiting_kernel_permit` after founder approval;
+- a founder-visible dashboard;
+- a reproducible synthetic experiment comparing multi-agent, centralized-analyst proxy, deterministic rules, and passive benchmark approaches.
 
-```text
-UNAUTHORIZED_EXTERNAL_EFFECTS = 0
-```
+There are intentionally no exchange SDKs, private-key stores, transaction methods, custody endpoints, order routes, deposit routes, or settlement adapters.
 
-## Why the legacy concept was removed
+## Run locally
 
-The original repository described a decentralized memecoin coordination platform. That concept created market-manipulation, consumer-harm, authority, and evidentiary risks that conflict with the founder's current mission. The useful wallet-authentication idea was retained, but redesigned as one-time nonce-based identity proof. A wallet proves control of an address only; it grants no governance or financial authority.
-
-## Run
-
-Requires Node.js 20 or newer.
+Requirements: Node.js 22 or newer and npm 10 or newer.
 
 ```bash
-cd server
-npm install
+npm run install:server
 npm test
-npm start
+npm run build
+npm run experiment
+npm run dev
 ```
 
-Open `http://localhost:3001`.
+Open `http://localhost:3001`. Local append-only events are written to `server/data/institutional-events.jsonl` unless `PUMPSTATION_EVENT_LOG_PATH=:memory:` is set.
+
+Copy `server/.env.example` to `server/.env` only when local overrides are needed. Wallet authentication is identity-only. The founder address is optional and grants only the ability to record a founder stage decision; it does not activate a stage or authorize a transaction.
 
 ## API
 
-- `GET /health`
-- `GET /api/state`
-- `GET /api/events/verify`
-- `POST /api/identity/challenge`
-- `POST /api/identity/verify`
-- `POST /api/opportunities`
-- `POST /api/opportunities/:id/deliberation`
-- `POST /api/opportunities/:id/authorize`
-- `POST /api/opportunities/:id/actions`
-- `POST /api/opportunities/:id/evidence`
-- `POST /api/opportunities/:id/outcome`
+| Method | Path | Purpose |
+| --- | --- | --- |
+| `GET` | `/api/v1/status` | Simulation and authority status |
+| `POST` | `/api/v1/identity/challenges` | Create a one-time identity challenge |
+| `POST` | `/api/v1/identity/sessions` | Verify a signed challenge |
+| `POST` | `/api/v1/opportunities` | Submit a structured opportunity |
+| `GET` | `/api/v1/opportunities/:id` | Read one opportunity and its review record |
+| `POST` | `/api/v1/opportunities/:id/deliberations` | Add a typed, attributable review |
+| `POST` | `/api/v1/opportunities/:id/simulated-decisions` | Compile a proposal-only decision packet |
+| `POST` | `/api/v1/stage-promotions` | Create a hash-bound promotion request |
+| `POST` | `/api/v1/stage-promotions/:id/founder-decision` | Record a founder decision; never activates the stage |
+| `GET` | `/api/v1/dashboard` | Founder-visible Stage 0 projection |
 
-The bundled interface creates proposal records only. Higher-authority routes require an actor role supplied by a trusted adapter in a future Kernel integration. The current header-based actor selector is development scaffolding and must never be exposed as production authentication.
+Requests to execution, order, trade, transfer, deposit, pooled-capital, promotion-campaign, or custody paths are refused.
 
-## Canonical boundaries
+## Evidence and governance
 
-PumpStation owns its domain state: members, productive-asset opportunities, deliberation records, simulation proposals, evidence packets, and outcome records.
+- [Institutional charter](docs/INSTITUTIONAL_CHARTER.md)
+- [Anti-manipulation constitution](docs/ANTI_MANIPULATION_CONSTITUTION.md)
+- [Public launch ladder](docs/PUBLIC_LAUNCH_LADDER.md)
+- [Agent role contracts](docs/AGENT_ROLE_CONTRACTS.md)
+- [Threat model](docs/THREAT_MODEL.md)
+- [Migration record](docs/MIGRATION.md)
+- [Architecture ownership](docs/ARCHITECTURE_OWNERSHIP.md)
+- [Founder intent ledger](governance/FOUNDER_INTENT_LEDGER.md)
+- [Constitutional deliberation](docs/adr/0001-community-capital-institution.md)
+- [Unresolved decisions](docs/UNRESOLVED_DECISIONS.md)
 
-It does not own constitutional authority, production identity, shared governance contracts, settlement execution, or global causal memory. Those belong in `dababiyoda/uniimente-kernel`. PumpStation must consume those contracts before any production consequence is permitted.
+Tests and synthetic results prove code behavior only. They do not prove investment quality, legal clearance, participant welfare, market demand, or commercial performance.
 
-## Governance records
+## Stage 0 experiment result
 
-- [`docs/FOUNDER_INTENT_LEDGER.md`](docs/FOUNDER_INTENT_LEDGER.md)
-- [`docs/FOUNDER_INTENT_LEDGER.json`](docs/FOUNDER_INTENT_LEDGER.json)
-- [`docs/DELIBERATION-0001.json`](docs/DELIBERATION-0001.json)
-- [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)
-- [`docs/MIGRATION.md`](docs/MIGRATION.md)
-- [`docs/RECURSIVE_COLLABORATION_PROTOCOL.md`](docs/RECURSIVE_COLLABORATION_PROTOCOL.md)
-- [`SECURITY.md`](SECURITY.md)
+The deterministic fixture did not justify multi-agent complexity. Multi-agent review and deterministic rules both scored `1.0` for fixture decision quality and fraud detection, while deterministic rules used one-tenth of the modeled operating-cost units. The committed result therefore sets the complexity gate to `NOT_EARNED`.
+
+This is a synthetic software experiment, not investment performance. See the [complete hash-bound result](experiments/results/stage0-baseline.json).
+
+## License
+
+GPL-3.0-only. See [LICENSE](LICENSE).

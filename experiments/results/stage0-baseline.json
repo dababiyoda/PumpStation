@@ -1,0 +1,98 @@
+{
+  "experiment_id": "stage0-architecture-comparison-v1",
+  "reality_status": "test_fixture",
+  "fixture_id": "pumpstation-stage0-synthetic-v1",
+  "fixture_hash": "sha256:de6f57a79dc639b00964191e63fc8f78d3259eac527ac50cda01b6bce0e7c975",
+  "seed": 26072026,
+  "generated_at": "2026-07-26T00:00:00.000Z",
+  "warning": "Synthetic scenarios are not financial evidence, market performance, legal clearance, or an investment offer.",
+  "systems": [
+    {
+      "system": "coordinated_multi_agent",
+      "decision_quality": 1,
+      "evidence_completeness": 0.8833,
+      "fraud_detection": 1,
+      "maximum_drawdown_percent": 0,
+      "risk_adjusted_return": 1.5814,
+      "operating_cost_units": 10,
+      "time_to_decision_units": 8,
+      "dissent_preservation": 1,
+      "policy_violations": 0,
+      "reproducible": true,
+      "accepted_opportunities": [
+        "syn_001",
+        "syn_005",
+        "syn_006"
+      ]
+    },
+    {
+      "system": "centralized_analyst_proxy",
+      "decision_quality": 0.75,
+      "evidence_completeness": 0.718,
+      "fraud_detection": 0.25,
+      "maximum_drawdown_percent": 0,
+      "risk_adjusted_return": 1.815,
+      "operating_cost_units": 4,
+      "time_to_decision_units": 3,
+      "dissent_preservation": 0,
+      "policy_violations": 1,
+      "reproducible": true,
+      "accepted_opportunities": [
+        "syn_001",
+        "syn_003",
+        "syn_005",
+        "syn_006",
+        "syn_008"
+      ]
+    },
+    {
+      "system": "deterministic_rules",
+      "decision_quality": 1,
+      "evidence_completeness": 0.8833,
+      "fraud_detection": 1,
+      "maximum_drawdown_percent": 0,
+      "risk_adjusted_return": 1.5814,
+      "operating_cost_units": 1,
+      "time_to_decision_units": 1,
+      "dissent_preservation": 0,
+      "policy_violations": 0,
+      "reproducible": true,
+      "accepted_opportunities": [
+        "syn_001",
+        "syn_005",
+        "syn_006"
+      ]
+    },
+    {
+      "system": "passive_benchmark",
+      "decision_quality": 0.375,
+      "evidence_completeness": 0,
+      "fraud_detection": 0,
+      "maximum_drawdown_percent": 15.4617,
+      "risk_adjusted_return": -0.386,
+      "operating_cost_units": 0.2,
+      "time_to_decision_units": 0.1,
+      "dissent_preservation": 0,
+      "policy_violations": 4,
+      "reproducible": true,
+      "accepted_opportunities": [
+        "syn_001",
+        "syn_002",
+        "syn_003",
+        "syn_004",
+        "syn_005",
+        "syn_006",
+        "syn_007",
+        "syn_008"
+      ]
+    }
+  ],
+  "complexity_gate": {
+    "fixture_outperformance": false,
+    "decision": "NOT_EARNED",
+    "reason": "Synthetic fixtures can test code and expose tradeoffs but cannot justify added institutional complexity. A held-out pilot with independently reviewed outcomes is required.",
+    "revival_evidence": "Material outperformance against simpler systems on held-out, independently reviewed opportunities with zero policy violations and measured participant-harm outcomes."
+  },
+  "negative_results_preserved": true,
+  "result_hash": "sha256:7cbdc212fb0256835f736bad50ba10d4047f2445fdeac7dfe86bedff8175b51d"
+}

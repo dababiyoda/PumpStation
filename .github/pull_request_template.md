@@ -1,67 +1,69 @@
-## Intent
+# Change summary
 
-- Founder intent IDs:
-- Decision / deliberation record:
-- Change class: lightweight / standard / constitutional
+## Intent and authority
 
-## Scope and ownership
+- Founder intent references:
+- Deliberation or decision reference:
+- Deliberation level:
+- Authorized scope:
+- Authority impact:
 
-- Canonical owner:
-- Consumed contracts:
-- Prohibited ownership:
+## What changed
+
+- [Change]
+
+## What intentionally did not change
+
+- [Intentionally unchanged item]
+
+## Evidence and claims
+
+| Claim | Class | Evidence tier | Source or command | Result |
+| --- | --- | --- | --- | --- |
+|  |  |  |  |  |
+
+## Structural impact
+
+- Canonical owner before:
+- Canonical owner after:
+- Shared contracts affected:
+- Compatibility shims:
 - External-effect boundary:
+- Generated or vendored files:
+- Evidence or historical artifacts:
 
-## Alternatives
+## Recursive deliberation
 
-- Baseline:
-- Do nothing:
-- Simplest alternative:
-- Strongest competing architecture:
-- Reversible experiment:
-
-## Five-role review
-
-- Founder-Intent Steward:
-- Systems Architect:
-- Adversarial Reviewer:
-- Operator and Maintainer:
-- Evidence and Welfare Guardian:
-
-## Two strengthening passes
-
-### Pass 1
-
-- Advantages amplified:
-- Disadvantages with stable IDs:
-- Redesigns:
-
-### Pass 2
-
-- New weaknesses:
-- Disposition of every Pass-1 disadvantage:
+- Pass 1:
+- Pass 2:
+- Final decision:
 - Residual risks:
-
-## Reality and evidence
-
-- Reality status:
-- Evidence tier:
-- What this PR does not prove:
+- Unresolved dissent:
 
 ## Validation
 
-- [ ] Unit tests
-- [ ] Negative tests
-- [ ] Event-chain verification
-- [ ] No unauthorized external effects
-- [ ] Founder intent ledger validation
-- [ ] Deliberation validation
+- [ ] Format check
+- [ ] Type check
+- [ ] Schema parity
+- [ ] Unit and adversarial tests
+- [ ] Experiment reproducibility
+- [ ] Prohibited-surface scan
+- [ ] Dependency audit
+- [ ] Negative and inconclusive results preserved
 
-## Rollback
+## Migration and rollback
 
-## Kill criteria
+- Migration stage:
+- Dependencies:
+- Rollback:
+- Kill criteria:
+- Review trigger:
 
-## Dissent and unresolved decisions
+## Merge controls
 
-## Merge policy
-
-Draft by default. Do not merge automatically. Constitutional or external-effect changes require explicit authorized-human review.
+- [ ] Dedicated branch
+- [ ] Draft by default
+- [ ] Unrelated work preserved
+- [ ] Only intended changes staged
+- [ ] Unresolved decisions named
+- [ ] No automatic merge

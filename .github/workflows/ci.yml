@@ -1,4 +1,4 @@
-name: CI
+name: Stage 0 verification
 
 on:
   pull_request:
@@ -9,8 +9,9 @@ permissions:
   contents: read
 
 jobs:
-  test:
+  verify:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     defaults:
       run:
         working-directory: server
@@ -19,6 +20,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: npm install
+          cache: npm
+          cache-dependency-path: server/package-lock.json
+      - run: npm ci
       - run: npm run check
-      - run: npm test
+      - run: npm run build
+      - run: npm run experiment
+      - run: git diff --exit-code -- ../experiments/results/stage0-baseline.json
+      - run: npm audit --audit-level=high

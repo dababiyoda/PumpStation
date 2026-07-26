@@ -1,19 +1,46 @@
 {
   "name": "pumpstation-server",
-  "version": "0.2.0",
+  "version": "0.1.0",
   "private": true,
-  "description": "Simulation-only community capital institution runtime",
-  "main": "index.js",
-  "license": "MIT",
-  "engines": { "node": ">=20" },
+  "type": "module",
+  "description": "Simulation-only PumpStation community capital research institution",
+  "main": "dist/src/index.js",
+  "license": "GPL-3.0-only",
+  "engines": {
+    "node": ">=22"
+  },
   "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.0",
     "ethers": "^6.15.0",
-    "express": "^4.21.2"
+    "express": "^5.1.0",
+    "helmet": "^8.1.0",
+    "zod": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.18",
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.1.0",
+    "@types/supertest": "^6.0.3",
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
+    "prettier": "^3.6.2",
+    "supertest": "^7.1.4",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3"
   },
   "scripts": {
-    "start": "node index.js",
-    "dev": "node --watch index.js",
-    "test": "node --test",
-    "check": "node --check index.js && node --check lib/canonical.js && node --check lib/policy.js && node --check lib/store.js && node --check lib/service.js && node --check lib/validators.js"
+    "dev": "node --import tsx --watch src/index.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/src/index.js",
+    "test": "node --import tsx --test test/**/*.test.ts",
+    "test:negative": "node --import tsx --test test/required-negative.test.ts",
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\" \"scripts/**/*.ts\"",
+    "format:check": "prettier --check \"src/**/*.ts\" \"test/**/*.ts\" \"scripts/**/*.ts\"",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "experiment": "node --import tsx scripts/run-experiment.ts",
+    "security:surfaces": "node --import tsx scripts/check-prohibited-surfaces.ts",
+    "security:audit": "npm audit --audit-level=high",
+    "check": "npm run format:check && npm run typecheck && npm test && npm run security:surfaces"
   }
 }
