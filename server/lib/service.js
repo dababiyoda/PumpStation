@@ -15,11 +15,7 @@ function requireRole(actor, roles) {
 }
 
 function recordRefusal(store, actor, subjectId, error) {
-  store.append({
-    type: 'POLICY_REFUSAL', actor, subjectId,
-    payload: { code: error.code || 'POLICY_REFUSAL', message: error.message, findings: error.findings || [] },
-    metadata: { origin: 'SYSTEM_ACTION', realityStatus: 'SANDBOX', truthStatus: 'VERIFIED' },
-  });
+  store.append({ type: 'POLICY_REFUSAL', actor, subjectId, payload: { code: error.code || 'POLICY_REFUSAL', message: error.message, findings: error.findings || [] }, metadata: { origin: 'SYSTEM_ACTION', realityStatus: 'SANDBOX', truthStatus: 'VERIFIED' } });
 }
 
 class PumpStationService {
@@ -37,8 +33,7 @@ class PumpStationService {
   }
 
   recordVerifiedIdentity(actor, address) {
-    const state = this.store.state();
-    const challenge = state.challenges[address.toLowerCase()];
+    const challenge = this.store.state().challenges[address.toLowerCase()];
     if (!challenge) throw new Error('No active challenge exists.');
     if (Date.parse(challenge.expiresAt) <= Date.now()) throw new Error('Challenge expired.');
     const payload = { address: address.toLowerCase(), verifiedAt: new Date().toISOString(), authorityGranted: false };
@@ -54,16 +49,12 @@ class PumpStationService {
       const payload = { ...validated, opportunityId, status: 'PROPOSED', proposer: actor.id, createdAt: new Date().toISOString() };
       this.store.append({ type: 'OPPORTUNITY_SUBMITTED', actor, subjectId: opportunityId, payload });
       return payload;
-    } catch (error) {
-      recordRefusal(this.store, actor, null, error);
-      throw error;
-    }
+    } catch (error) { recordRefusal(this.store, actor, null, error); throw error; }
   }
 
   recordDeliberation(actor, opportunityId, input) {
     requireRole(actor, ['founder', 'member', 'reviewer']);
-    const state = this.store.state();
-    if (!state.opportunities[opportunityId]) throw new Error('Opportunity not found.');
+    if (!this.store.state().opportunities[opportunityId]) throw new Error('Opportunity not found.');
     const validated = validateDeliberation(input);
     const payload = { ...validated, opportunityId, recordedBy: actor.id, recordedAt: new Date().toISOString() };
     this.store.append({ type: 'DELIBERATION_RECORDED', actor, subjectId: opportunityId, payload });
@@ -96,8 +87,7 @@ class PumpStationService {
 
   proposeAction(actor, opportunityId, action) {
     requireRole(actor, ['founder', 'agent', 'member', 'reviewer']);
-    const state = this.store.state();
-    const authorization = state.authorizations[opportunityId];
+    const authorization = this.store.state().authorizations[opportunityId];
     if (!authorization || authorization.decision !== 'APPROVE_SIMULATION') throw new Error('Founder simulation authorization is required.');
     try { assertSimulationAction(action); } catch (error) { recordRefusal(this.store, actor, opportunityId, error); throw error; }
     const payload = { ...action, actionId: newId('act'), opportunityId, status: 'PROPOSED_NOT_EXECUTED', requestedBy: actor.id };
@@ -107,8 +97,7 @@ class PumpStationService {
 
   recordEvidence(actor, opportunityId, evidence) {
     requireRole(actor, ['founder', 'reviewer', 'reconciler', 'member']);
-    const state = this.store.state();
-    if (!state.opportunities[opportunityId]) throw new Error('Opportunity not found.');
+    if (!this.store.state().opportunities[opportunityId]) throw new Error('Opportunity not found.');
     if (!evidence.type || !evidence.source || !evidence.claim) throw new Error('Evidence type, source, and claim are required.');
     assertNoManipulation(evidence);
     const admissible = !['MODEL_OUTPUT', 'UNVERIFIED_CLAIM'].includes(evidence.type);
@@ -123,15 +112,7 @@ class PumpStationService {
     const evidence = Object.values(state.evidence).filter((item) => item.opportunityId === opportunityId && item.admissible);
     if (!evidence.length) throw new Error('At least one admissible evidence object is required.');
     if (outcome.realityStatus && outcome.realityStatus !== 'SIMULATED') throw new Error('This phase can record only SIMULATED outcomes.');
-    const payload = {
-      ...outcome,
-      opportunityId,
-      realityStatus: 'SIMULATED',
-      commercialResult: false,
-      reconciledBy: actor.id,
-      evidenceRefs: evidence.map((item) => item.evidenceId),
-      recordedAt: new Date().toISOString(),
-    };
+    const payload = { ...outcome, opportunityId, realityStatus: 'SIMULATED', commercialResult: false, reconciledBy: actor.id, evidenceRefs: evidence.map((item) => item.evidenceId), recordedAt: new Date().toISOString() };
     this.store.append({ type: 'OUTCOME_RECORDED', actor, subjectId: opportunityId, payload, metadata: { origin: 'SIMULATION', realityStatus: 'SIMULATED', truthStatus: 'VERIFIED' } });
     return payload;
   }
@@ -142,8 +123,16 @@ class PumpStationService {
     const currentIndex = STAGES.indexOf(current);
     const requestedIndex = STAGES.indexOf(requestedStage);
     if (requestedIndex !== currentIndex + 1) throw new Error('Stage promotion must advance exactly one stage.');
+    if (!packet || typeof packet !== 'object') throw new Error('A stage-promotion evidence packet is required.');
+    const required = ['sourceRevision', 'passedEvidence', 'failedEvidence', 'unresolvedRisks', 'legalReview', 'securityReview', 'rollbackPlan', 'killCriteria'];
+    const missing = required.filter((field) => packet[field] === undefined || packet[field] === null || packet[field] === '');
+    if (missing.length) throw new Error(`Stage-promotion packet missing: ${missing.join(', ')}`);
+    if (!/^[a-f0-9]{7,64}$/i.test(packet.sourceRevision)) throw new Error('sourceRevision must be a Git-style hexadecimal revision.');
+    if (!Array.isArray(packet.passedEvidence) || !Array.isArray(packet.failedEvidence) || !Array.isArray(packet.unresolvedRisks) || !Array.isArray(packet.killCriteria)) throw new Error('Stage-promotion evidence, risk, and kill fields must be arrays.');
+    if (!packet.unresolvedRisks.length || !packet.killCriteria.length) throw new Error('Unresolved risks and kill criteria must remain explicit.');
     const requestId = newId('stage');
-    const payload = { requestId, currentStage: current, requestedStage, packet, packetHash: sha256(packet), status: 'PENDING_FOUNDER_DECISION' };
+    const canonicalPacket = { currentStage: current, requestedStage, ...packet };
+    const payload = { requestId, currentStage: current, requestedStage, packet: canonicalPacket, packetHash: sha256(canonicalPacket), status: 'PENDING_FOUNDER_DECISION' };
     this.store.append({ type: 'STAGE_PROMOTION_REQUESTED', actor, subjectId: requestId, payload });
     return payload;
   }
@@ -154,15 +143,23 @@ class PumpStationService {
     if (!request) throw new Error('Stage promotion request not found.');
     if (confirmationHash !== request.packetHash) throw new Error('Stage-promotion hash mismatch.');
     if (!['APPROVE', 'REFUSE'].includes(decision)) throw new Error('Invalid stage decision.');
+    const packet = request.packet || {};
+    if (decision === 'APPROVE' && request.requestedStage === 'CLOSED_PRIVATE_PILOT') {
+      const required = ['identityAccessControls', 'participantConsent', 'complaintAppeal', 'incidentResponse'];
+      const missing = required.filter((field) => packet[field] !== true);
+      if (!packet.securityReview || missing.length) throw new Error(`Closed private pilot prerequisites missing: ${['securityReview', ...missing].join(', ')}`);
+    }
+    if (decision === 'APPROVE' && request.requestedStage === 'PUBLIC_RESEARCH') {
+      const required = ['multilingualDisclosures', 'moderationControls', 'methodologyReview', 'researchPromotionSeparation'];
+      const missing = required.filter((field) => packet[field] !== true);
+      if (!packet.legalReview || missing.length) throw new Error(`Public research prerequisites missing: ${['legalReview', ...missing].join(', ')}`);
+    }
     if (decision === 'APPROVE' && request.requestedStage === 'PROPRIETARY_CAPITAL') {
-      const packet = request.packet || {};
-      if (!packet.legalReview || !packet.securityReview || !packet.founderOwnedCapitalOnly) {
-        throw new Error('Proprietary capital requires legal review, security review, and founder-owned-capital-only attestation.');
-      }
+      const required = ['founderOwnedCapitalOnly', 'independentReconciliation', 'emergencyRevocation'];
+      const missing = required.filter((field) => packet[field] !== true);
+      if (!packet.legalReview || !packet.securityReview || missing.length) throw new Error(`Proprietary capital prerequisites missing: ${['legalReview', 'securityReview', ...missing].join(', ')}`);
     }
-    if (decision === 'APPROVE' && ['PRODUCTIVE_ASSET_OPERATIONS', 'REGULATED_EXTERNAL_CAPITAL'].includes(request.requestedStage)) {
-      throw new Error('This implementation cannot authorize high-consequence capital stages. Kernel integration and external legal prerequisites are required.');
-    }
+    if (decision === 'APPROVE' && ['PRODUCTIVE_ASSET_OPERATIONS', 'REGULATED_EXTERNAL_CAPITAL'].includes(request.requestedStage)) throw new Error('This implementation cannot authorize high-consequence capital stages. Kernel integration and external legal prerequisites are required.');
     const payload = { requestId, requestedStage: request.requestedStage, decision, founderId: actor.id, decidedAt: new Date().toISOString() };
     this.store.append({ type: 'STAGE_PROMOTION_DECIDED', actor, subjectId: requestId, payload, metadata: { truthStatus: 'AUTHORIZED' } });
     return payload;

@@ -5,7 +5,7 @@ const PROHIBITED_PATTERNS = [
   { category: 'WASH_TRADING', regex: /wash trad|self[- ]?trade|fake volume|manufactur(?:e|ed) volume/i },
   { category: 'GUARANTEED_RETURN', regex: /guaranteed (?:return|profit)|risk[- ]?free profit|cannot lose/i },
   { category: 'DECEPTIVE_PROMOTION', regex: /fake partnership|fake community|conceal(?:ed)? holdings|undisclosed promotion/i },
-  { category: 'AFFINITY_PRESSURE', regex: /(?:our people|our community|immigrants|family).{0,50}(?:must|have to|owe it|prove loyalty).{0,50}(?:invest|buy|join)/i },
+  { category: 'AFFINITY_PRESSURE', regex: /(?:our people|our community|immigrant community|immigrants|family).{0,50}(?:must|have to|owe it|prove loyalty).{0,50}(?:invest|buy|join)/i },
   { category: 'EXIT_LIQUIDITY', regex: /exit liquidity|later buyers|outsiders.{0,30}(?:buy|enter)/i },
   { category: 'AUTHORITY_BYPASS', regex: /bypass (?:approval|kernel|gate)|disable logging|self[- ]?approve/i },
 ];
@@ -22,11 +22,7 @@ function assessManipulationRisk(value) {
   const findings = PROHIBITED_PATTERNS
     .filter(({ regex }) => regex.test(text))
     .map(({ category }) => category);
-  return {
-    allowed: findings.length === 0,
-    findings,
-    disposition: findings.length ? 'REFUSE' : 'CLEAR',
-  };
+  return { allowed: findings.length === 0, findings, disposition: findings.length ? 'REFUSE' : 'CLEAR' };
 }
 
 function assertNoManipulation(value) {
@@ -54,9 +50,4 @@ function assertSimulationAction(action) {
   assertNoManipulation(action);
 }
 
-module.exports = {
-  PROHIBITED_PATTERNS,
-  assessManipulationRisk,
-  assertNoManipulation,
-  assertSimulationAction,
-};
+module.exports = { PROHIBITED_PATTERNS, assessManipulationRisk, assertNoManipulation, assertSimulationAction };
