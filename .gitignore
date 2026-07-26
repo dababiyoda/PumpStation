@@ -134,3 +134,8 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# PumpStation Labs local institutional state
+server/data/*.jsonl
+server/data/*.tmp
+server/dist/
