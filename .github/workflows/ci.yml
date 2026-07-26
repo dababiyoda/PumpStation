@@ -27,4 +27,6 @@ jobs:
       - run: npm run build
       - run: npm run experiment
       - run: git diff --exit-code -- ../experiments/results/stage0-baseline.json
+      - run: npm run experiment:v2
+      - run: git diff --exit-code -- ../experiments/results/tiered-benchmark-v2.json
       - run: npm audit --audit-level=high
