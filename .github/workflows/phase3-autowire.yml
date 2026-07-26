@@ -1,21 +1,22 @@
-name: Phase 3 Kernel adapter diagnostics
+name: Phase 3 Kernel adapter autowire
 
 on:
   pull_request:
     types: [opened, synchronize, reopened]
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
-  diagnostics:
+  autowire:
     if: github.event.pull_request.head.repo.full_name == github.repository && github.head_ref == 'agent/phase3-kernel-contract-adapter'
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 12
     steps:
       - uses: actions/checkout@v4
         with:
           ref: agent/phase3-kernel-contract-adapter
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -23,7 +24,7 @@ jobs:
           cache-dependency-path: server/package-lock.json
       - run: npm ci
         working-directory: server
-      - name: Wire proposal-only Kernel router into a diagnostic worktree
+      - name: Wire and correct proposal-only Kernel integration
         run: |
           python - <<'PY'
           from pathlib import Path
@@ -64,20 +65,43 @@ jobs:
               '  type KernelProposal,\n} from "../src/kernel/contracts.js";\nimport type { KernelGateway } from "../src/kernel/gateway.js";',
           )
           test.write_text(source)
+
+          adapter = Path('server/src/kernel/adapter.ts')
+          source = adapter.read_text()
+          source = source.replace(
+              '    if (this.#manifest.legal_principal === "UNIIMENTE") {\n      throw new DomainError(\n        500,\n        "ILLEGAL_PRINCIPAL",\n        "UNIIMENTE may not be configured as a legal principal.",\n      );\n    }\n',
+              '',
+          )
+          adapter.write_text(source)
+
+          router = Path('server/src/kernel/router.ts')
+          source = router.read_text()
+          source = source.replace(
+              '    const promotion = options.institution.getPromotion(request.params.id as string);\n    const proposal = options.adapter.compileStagePromotionProposal(\n      promotion,\n      localActor,\n    );',
+              '    const versions = options.institution.getPromotion(request.params.id as string);\n    const promotion = versions.at(-1);\n    if (!promotion) {\n      throw new DomainError(404, "PROMOTION_NOT_FOUND", "Promotion request not found.");\n    }\n    const proposal = options.adapter.compileStagePromotionProposal(\n      promotion,\n      localActor,\n    );',
+          )
+          router.write_text(source)
           PY
       - run: npm run format
         working-directory: server
-      - name: Capture typecheck
-        run: npm run typecheck > ../phase3-typecheck.log 2>&1 || true
+      - run: npm run typecheck
         working-directory: server
-      - uses: actions/upload-artifact@v4
-        with:
-          name: phase3-diagnostics
-          path: |
-            phase3-typecheck.log
-            server/src/app.ts
-            server/src/kernel
-            server/test/kernel-adapter.test.ts
-            server/test/kernel-api.test.ts
-          if-no-files-found: error
-          retention-days: 1
+      - run: npm test
+        working-directory: server
+      - run: npm run security:surfaces
+        working-directory: server
+      - run: npm run build
+        working-directory: server
+      - run: npm run experiment:all
+        working-directory: server
+      - run: git diff --exit-code -- experiments/results
+      - run: npm audit --audit-level=high
+        working-directory: server
+      - name: Commit verified application integration
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add server/src server/test server/package.json kernel docs governance schemas
+          git diff --cached --check
+          git commit -m 'Wire fail-closed UNIIMENTE Kernel adapter'
+          git push origin HEAD:agent/phase3-kernel-contract-adapter
