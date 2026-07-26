@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pumpstation.local/schemas/semantic-firewall-decision.schema.json",
+  "title": "PumpStation Semantic Firewall Decision",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "screen_id",
+    "input_id",
+    "status",
+    "trust_class",
+    "raw_hash",
+    "normalized_hash",
+    "matches",
+    "decoded_variant_hashes",
+    "instruction_data_boundary",
+    "default_action",
+    "classifier_version",
+    "screened_at"
+  ],
+  "properties": {
+    "screen_id": { "type": "string", "pattern": "^screen_" },
+    "input_id": { "type": "string", "pattern": "^input_" },
+    "status": { "enum": ["clear", "review", "quarantined", "error"] },
+    "trust_class": {
+      "enum": [
+        "trusted_internal",
+        "authenticated_participant",
+        "external_untrusted",
+        "unknown"
+      ]
+    },
+    "raw_hash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "normalized_hash": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "matches": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["rule_id", "category", "severity", "evidence", "variant"],
+        "properties": {
+          "rule_id": { "type": "string", "minLength": 1 },
+          "category": { "type": "string", "minLength": 1 },
+          "severity": { "enum": ["medium", "high", "critical"] },
+          "evidence": { "type": "string", "minLength": 1 },
+          "variant": {
+            "enum": [
+              "normalized",
+              "deobfuscated",
+              "decoded_base64",
+              "decoded_hex",
+              "url_decoded"
+            ]
+          }
+        }
+      }
+    },
+    "decoded_variant_hashes": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+    },
+    "instruction_data_boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "declared_purpose",
+        "content_is_instruction",
+        "tool_access_permitted",
+        "evidence_admissible",
+        "authority_effect"
+      ],
+      "properties": {
+        "declared_purpose": {
+          "enum": ["data", "discussion", "instruction", "evidence_claim"]
+        },
+        "content_is_instruction": { "const": false },
+        "tool_access_permitted": { "const": false },
+        "evidence_admissible": { "const": false },
+        "authority_effect": { "const": false }
+      }
+    },
+    "default_action": {
+      "enum": [
+        "continue_as_data",
+        "hold_for_human_review",
+        "quarantine",
+        "fail_closed_quarantine"
+      ]
+    },
+    "classifier_version": { "type": "string", "minLength": 1 },
+    "screened_at": { "type": "string", "format": "date-time" }
+  }
+}
