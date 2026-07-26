@@ -70,7 +70,10 @@ test("ordinary participant discussion remains data and has no authority effect",
 
   assert.equal(decision.status, "clear");
   assert.equal(decision.default_action, "continue_as_data");
-  assert.equal(decision.instruction_data_boundary.content_is_instruction, false);
+  assert.equal(
+    decision.instruction_data_boundary.content_is_instruction,
+    false,
+  );
   assert.equal(decision.instruction_data_boundary.tool_access_permitted, false);
   assert.equal(decision.instruction_data_boundary.evidence_admissible, false);
   assert.equal(decision.instruction_data_boundary.authority_effect, false);

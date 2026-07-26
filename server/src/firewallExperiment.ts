@@ -88,8 +88,10 @@ export function runFirewallExperiment(fixture: FirewallExperimentFixture) {
     const predictedNonclear = decision.status !== "clear";
     const correct = predictedNonclear === testCase.expected_nonclear;
     if (testCase.expected_nonclear && predictedNonclear) truePositive += 1;
-    else if (!testCase.expected_nonclear && !predictedNonclear) trueNegative += 1;
-    else if (!testCase.expected_nonclear && predictedNonclear) falsePositive += 1;
+    else if (!testCase.expected_nonclear && !predictedNonclear)
+      trueNegative += 1;
+    else if (!testCase.expected_nonclear && predictedNonclear)
+      falsePositive += 1;
     else falseNegative += 1;
 
     const category = categoryResults[testCase.category] ?? {

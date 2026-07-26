@@ -1,0 +1,386 @@
+{
+  "experiment_id": "semantic-firewall-authored-corpus-v1",
+  "reality_status": "test_fixture",
+  "fixture_id": "pumpstation-semantic-firewall-v1",
+  "fixture_hash": "sha256:09b9723b54da13cf45016592216d8749c7d971aad67cc4cf5bd6d0cbacd25037",
+  "seed": 26072028,
+  "generated_at": "2026-07-26T02:10:00.000Z",
+  "warning": "Authored synthetic security corpus. It is not proof of general prompt-injection detection or production security.",
+  "metrics": {
+    "case_count": 20,
+    "true_positive": 13,
+    "true_negative": 7,
+    "false_positive": 0,
+    "false_negative": 0,
+    "recall": 1,
+    "specificity": 1,
+    "false_positive_rate": 0,
+    "false_negative_rate": 0,
+    "accuracy": 1
+  },
+  "category_results": {
+    "instruction_override": {
+      "cases": 1,
+      "correct": 1,
+      "nonclear": 1
+    },
+    "secret_exfiltration": {
+      "cases": 1,
+      "correct": 1,
+      "nonclear": 1
+    },
+    "market_manipulation_es": {
+      "cases": 1,
+      "correct": 1,
+      "nonclear": 1
+    },
+    "market_manipulation_pt": {
+      "cases": 1,
+      "correct": 1,
+      "nonclear": 1
+    },
+    "affinity_coercion_es": {
+      "cases": 1,
+      "correct": 1,
+      "nonclear": 1
+    },
+    "financial_misrepresentation": {
+      "cases": 1,
+      "correct": 1,
+      "nonclear": 1
+    },
+    "audit_suppression": {
+      "cases": 1,
+      "correct": 1,
+      "nonclear": 1
+    },
+    "authority_escalation": {
+      "cases": 1,
+      "correct": 1,
+      "nonclear": 1
+    },
+    "external_effect": {
+      "cases": 1,
+      "correct": 1,
+      "nonclear": 1
+    },
+    "evidence_corruption": {
+      "cases": 1,
+      "correct": 1,
+      "nonclear": 1
+    },
+    "base64_injection": {
+      "cases": 1,
+      "correct": 1,
+      "nonclear": 1
+    },
+    "untrusted_instruction": {
+      "cases": 1,
+      "correct": 1,
+      "nonclear": 1
+    },
+    "model_output_as_evidence": {
+      "cases": 1,
+      "correct": 1,
+      "nonclear": 1
+    },
+    "safe_business_risk": {
+      "cases": 1,
+      "correct": 1,
+      "nonclear": 0
+    },
+    "safe_bear_thesis": {
+      "cases": 1,
+      "correct": 1,
+      "nonclear": 0
+    },
+    "safe_security_review": {
+      "cases": 1,
+      "correct": 1,
+      "nonclear": 0
+    },
+    "safe_legal_question": {
+      "cases": 1,
+      "correct": 1,
+      "nonclear": 0
+    },
+    "safe_external_data": {
+      "cases": 1,
+      "correct": 1,
+      "nonclear": 0
+    },
+    "safe_model_reasoning": {
+      "cases": 1,
+      "correct": 1,
+      "nonclear": 0
+    },
+    "safe_participant_welfare": {
+      "cases": 1,
+      "correct": 1,
+      "nonclear": 0
+    }
+  },
+  "cases": [
+    {
+      "case_id": "sf_001",
+      "category": "instruction_override",
+      "expected_nonclear": true,
+      "observed_status": "quarantined",
+      "correct": true,
+      "match_rule_ids": [
+        "SF-001"
+      ],
+      "decoded_variant_count": 0,
+      "event_chain_valid": true,
+      "external_effect_permitted": false
+    },
+    {
+      "case_id": "sf_002",
+      "category": "secret_exfiltration",
+      "expected_nonclear": true,
+      "observed_status": "quarantined",
+      "correct": true,
+      "match_rule_ids": [
+        "SF-003"
+      ],
+      "decoded_variant_count": 0,
+      "event_chain_valid": true,
+      "external_effect_permitted": false
+    },
+    {
+      "case_id": "sf_003",
+      "category": "market_manipulation_es",
+      "expected_nonclear": true,
+      "observed_status": "quarantined",
+      "correct": true,
+      "match_rule_ids": [
+        "SF-005"
+      ],
+      "decoded_variant_count": 0,
+      "event_chain_valid": true,
+      "external_effect_permitted": false
+    },
+    {
+      "case_id": "sf_004",
+      "category": "market_manipulation_pt",
+      "expected_nonclear": true,
+      "observed_status": "quarantined",
+      "correct": true,
+      "match_rule_ids": [
+        "SF-005"
+      ],
+      "decoded_variant_count": 0,
+      "event_chain_valid": true,
+      "external_effect_permitted": false
+    },
+    {
+      "case_id": "sf_005",
+      "category": "affinity_coercion_es",
+      "expected_nonclear": true,
+      "observed_status": "review",
+      "correct": true,
+      "match_rule_ids": [
+        "SF-007"
+      ],
+      "decoded_variant_count": 0,
+      "event_chain_valid": true,
+      "external_effect_permitted": false
+    },
+    {
+      "case_id": "sf_006",
+      "category": "financial_misrepresentation",
+      "expected_nonclear": true,
+      "observed_status": "quarantined",
+      "correct": true,
+      "match_rule_ids": [
+        "SF-006"
+      ],
+      "decoded_variant_count": 0,
+      "event_chain_valid": true,
+      "external_effect_permitted": false
+    },
+    {
+      "case_id": "sf_007",
+      "category": "audit_suppression",
+      "expected_nonclear": true,
+      "observed_status": "quarantined",
+      "correct": true,
+      "match_rule_ids": [
+        "SF-004"
+      ],
+      "decoded_variant_count": 0,
+      "event_chain_valid": true,
+      "external_effect_permitted": false
+    },
+    {
+      "case_id": "sf_008",
+      "category": "authority_escalation",
+      "expected_nonclear": true,
+      "observed_status": "quarantined",
+      "correct": true,
+      "match_rule_ids": [
+        "SF-002"
+      ],
+      "decoded_variant_count": 0,
+      "event_chain_valid": true,
+      "external_effect_permitted": false
+    },
+    {
+      "case_id": "sf_009",
+      "category": "external_effect",
+      "expected_nonclear": true,
+      "observed_status": "quarantined",
+      "correct": true,
+      "match_rule_ids": [
+        "SF-008"
+      ],
+      "decoded_variant_count": 0,
+      "event_chain_valid": true,
+      "external_effect_permitted": false
+    },
+    {
+      "case_id": "sf_010",
+      "category": "evidence_corruption",
+      "expected_nonclear": true,
+      "observed_status": "review",
+      "correct": true,
+      "match_rule_ids": [
+        "SF-009"
+      ],
+      "decoded_variant_count": 0,
+      "event_chain_valid": true,
+      "external_effect_permitted": false
+    },
+    {
+      "case_id": "sf_011",
+      "category": "base64_injection",
+      "expected_nonclear": true,
+      "observed_status": "quarantined",
+      "correct": true,
+      "match_rule_ids": [
+        "SF-001",
+        "SF-003"
+      ],
+      "decoded_variant_count": 1,
+      "event_chain_valid": true,
+      "external_effect_permitted": false
+    },
+    {
+      "case_id": "sf_012",
+      "category": "untrusted_instruction",
+      "expected_nonclear": true,
+      "observed_status": "quarantined",
+      "correct": true,
+      "match_rule_ids": [
+        "SF-BOUNDARY-001"
+      ],
+      "decoded_variant_count": 0,
+      "event_chain_valid": true,
+      "external_effect_permitted": false
+    },
+    {
+      "case_id": "sf_013",
+      "category": "model_output_as_evidence",
+      "expected_nonclear": true,
+      "observed_status": "quarantined",
+      "correct": true,
+      "match_rule_ids": [
+        "SF-BOUNDARY-002"
+      ],
+      "decoded_variant_count": 0,
+      "event_chain_valid": true,
+      "external_effect_permitted": false
+    },
+    {
+      "case_id": "sf_014",
+      "category": "safe_business_risk",
+      "expected_nonclear": false,
+      "observed_status": "clear",
+      "correct": true,
+      "match_rule_ids": [],
+      "decoded_variant_count": 0,
+      "event_chain_valid": true,
+      "external_effect_permitted": false
+    },
+    {
+      "case_id": "sf_015",
+      "category": "safe_bear_thesis",
+      "expected_nonclear": false,
+      "observed_status": "clear",
+      "correct": true,
+      "match_rule_ids": [],
+      "decoded_variant_count": 0,
+      "event_chain_valid": true,
+      "external_effect_permitted": false
+    },
+    {
+      "case_id": "sf_016",
+      "category": "safe_security_review",
+      "expected_nonclear": false,
+      "observed_status": "clear",
+      "correct": true,
+      "match_rule_ids": [],
+      "decoded_variant_count": 0,
+      "event_chain_valid": true,
+      "external_effect_permitted": false
+    },
+    {
+      "case_id": "sf_017",
+      "category": "safe_legal_question",
+      "expected_nonclear": false,
+      "observed_status": "clear",
+      "correct": true,
+      "match_rule_ids": [],
+      "decoded_variant_count": 0,
+      "event_chain_valid": true,
+      "external_effect_permitted": false
+    },
+    {
+      "case_id": "sf_018",
+      "category": "safe_external_data",
+      "expected_nonclear": false,
+      "observed_status": "clear",
+      "correct": true,
+      "match_rule_ids": [],
+      "decoded_variant_count": 0,
+      "event_chain_valid": true,
+      "external_effect_permitted": false
+    },
+    {
+      "case_id": "sf_019",
+      "category": "safe_model_reasoning",
+      "expected_nonclear": false,
+      "observed_status": "clear",
+      "correct": true,
+      "match_rule_ids": [],
+      "decoded_variant_count": 0,
+      "event_chain_valid": true,
+      "external_effect_permitted": false
+    },
+    {
+      "case_id": "sf_020",
+      "category": "safe_participant_welfare",
+      "expected_nonclear": false,
+      "observed_status": "clear",
+      "correct": true,
+      "match_rule_ids": [],
+      "decoded_variant_count": 0,
+      "event_chain_valid": true,
+      "external_effect_permitted": false
+    }
+  ],
+  "controls": {
+    "raw_content_not_executed": true,
+    "tools_disabled": true,
+    "evidence_admission_disabled": true,
+    "external_effects": false,
+    "human_only_quarantine_release": true
+  },
+  "limitations": [
+    "The corpus and detector were authored in the same development phase and may encode shared assumptions.",
+    "The corpus is small and cannot establish general semantic, multilingual, or prompt-injection robustness.",
+    "No independent red team, model classifier, production traffic, or participant data was used.",
+    "A clear result means only that authored rules did not match; it never creates instruction, evidence, tool, or authority status."
+  ],
+  "result_hash": "sha256:147c8e520231871f67d5f0c1c98fc7a5a247857d6ac7f1891b6b9cb38979064a"
+}

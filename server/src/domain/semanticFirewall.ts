@@ -124,11 +124,7 @@ export type QuarantineRecord = {
   quarantine_id: string;
   input: SemanticFirewallInput;
   decision: SemanticFirewallDecision;
-  state:
-    | "pending"
-    | "rejected"
-    | "released_as_data"
-    | "corrected_replacement";
+  state: "pending" | "rejected" | "released_as_data" | "corrected_replacement";
   review: {
     reviewer_id: string | null;
     decision: FirewallReviewInput["decision"] | null;
@@ -163,7 +159,7 @@ const RULES: readonly Rule[] = [
     category: "instruction_override",
     severity: "critical",
     patterns: [
-      /ignore (?:all |any )?(?:previous|prior|system|developer) instructions?/i,
+      /ignore (?:all |any )?(?:(?:previous|prior) (?:system |developer )?|system |developer )instructions?/i,
       /override (?:the )?(?:system|policy|constitution|safety|guardrails?)/i,
       /treat (?:this|me|the request) as (?:approved|authorized|trusted)/i,
       /bypass (?:the )?(?:kernel|approval|policy|firewall|safety|review)/i,
@@ -197,7 +193,8 @@ const RULES: readonly Rule[] = [
       /(?:env|environment) variables?.{0,30}(?:show|dump|return|print)/i,
       /muestra.{0,30}(?:clave privada|frase semilla|secreto|contrasena)/i,
     ],
-    evidence: "Content requests protected secrets or hidden control instructions.",
+    evidence:
+      "Content requests protected secrets or hidden control instructions.",
   },
   {
     rule_id: "SF-004",
@@ -263,7 +260,8 @@ const RULES: readonly Rule[] = [
       /(?:deploy|publish).{0,30}(?:contract|campaign|promotion)/i,
       /(?:ejecuta|envia|transfiere).{0,30}(?:operacion|pago|fondos)/i,
     ],
-    evidence: "Content requests an external effect that Stage 0 cannot perform.",
+    evidence:
+      "Content requests an external effect that Stage 0 cannot perform.",
   },
   {
     rule_id: "SF-009",
@@ -275,7 +273,8 @@ const RULES: readonly Rule[] = [
       /treat (?:model output|simulation|fixture) as (?:real|verified|evidence|commercial result)/i,
       /(?:fabrica|inventa|oculta).{0,30}(?:evidencia|recibo|resultado|disenso)/i,
     ],
-    evidence: "Content attempts to fabricate, reclassify, or suppress evidence.",
+    evidence:
+      "Content attempts to fabricate, reclassify, or suppress evidence.",
   },
   {
     rule_id: "SF-010",
@@ -424,7 +423,10 @@ function sourceBoundaryMatches(
   classifiedTrust: FirewallTrustClass,
 ): FirewallMatch[] {
   const matches: FirewallMatch[] = [];
-  if (input.purpose === "instruction" && classifiedTrust !== "trusted_internal") {
+  if (
+    input.purpose === "instruction" &&
+    classifiedTrust !== "trusted_internal"
+  ) {
     matches.push({
       rule_id: "SF-BOUNDARY-001",
       category: "untrusted_instruction",
@@ -442,7 +444,8 @@ function sourceBoundaryMatches(
       rule_id: "SF-BOUNDARY-002",
       category: "model_output_as_evidence",
       severity: "critical",
-      evidence: "Model output cannot become admissible evidence by declaration.",
+      evidence:
+        "Model output cannot become admissible evidence by declaration.",
       variant: "normalized",
     });
   }

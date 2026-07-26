@@ -217,12 +217,16 @@ export function createApp(options: CreateAppOptions = {}): {
     });
   });
 
-  app.get("/api/v1/firewall/quarantine", requireIdentity, (request, response) => {
-    response.json({
-      records: firewall.listQuarantine(request.pumpstationActor as Actor),
-      release_means_data_only: true,
-    });
-  });
+  app.get(
+    "/api/v1/firewall/quarantine",
+    requireIdentity,
+    (request, response) => {
+      response.json({
+        records: firewall.listQuarantine(request.pumpstationActor as Actor),
+        release_means_data_only: true,
+      });
+    },
+  );
 
   app.post(
     "/api/v1/firewall/quarantine/:id/review",
@@ -278,9 +282,7 @@ export function createApp(options: CreateAppOptions = {}): {
           content: input.content,
           content_type: "text/plain",
           purpose:
-            input.channel_type === "evidence"
-              ? "evidence_claim"
-              : "discussion",
+            input.channel_type === "evidence" ? "evidence_claim" : "discussion",
           handling_mode: "direct",
           source: {
             source_id: actor.actor_id,
