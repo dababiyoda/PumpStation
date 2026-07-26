@@ -1,0 +1,216 @@
+{
+  "decision_id": "PS-DEL-0002",
+  "title": "Regress full-swarm review into a tiered institution",
+  "problem": "The preregistered synthetic benchmark showed that full five-role deliberation matched simpler systems on decision quality and safety but consumed materially more cost and latency, so the architecture must preserve dissent and risk review without forcing full ceremony onto routine cases.",
+  "founder_intent_refs": ["PS-003", "PS-004", "PS-005", "PS-011", "PS-014"],
+  "baseline": "Every opportunity receives the complete five-role, two-pass workflow regardless of ambiguity, conflict, evidence quality, or consequence class.",
+  "alternatives": [
+    {
+      "name": "Full multi-agent review",
+      "description": "Run all five review roles and both strengthening passes for every case.",
+      "tradeoffs": "Strong dissent preservation and complete review, but high cost and latency with no V1 synthetic quality advantage.",
+      "revival_evidence": "Revive for constitutional, novel, conflicted, high-consequence, or adversarially complex decisions."
+    },
+    {
+      "name": "Deterministic checklist only",
+      "description": "Use fixed screening and evidence rules for all cases.",
+      "tradeoffs": "Lowest cost and strong synthetic classification, but no preserved dissent and brittle performance outside encoded risks.",
+      "revival_evidence": "Use for narrow, stable, well-defined low-consequence decisions with monitored false-negative rates."
+    },
+    {
+      "name": "Tiered checklist plus deliberation",
+      "description": "Use deterministic triage first and escalate ambiguity, conflict, missing evidence, or prohibited-risk cases to the full institution.",
+      "tradeoffs": "Reduces routine cost while preserving structured review where it matters; escalation rules can still be gamed or incomplete.",
+      "revival_evidence": "Current preferred experiment; retain only if held-out and independent evaluation confirms the synthetic result."
+    },
+    {
+      "name": "Human-only moderated review",
+      "description": "Use trained human reviewers without an agent institution.",
+      "tradeoffs": "Preserves judgment and dissent but has the highest latency and substantial recurring labor cost.",
+      "revival_evidence": "Use as an independent benchmark and for legally or ethically reserved decisions."
+    }
+  ],
+  "do_nothing_option": {
+    "name": "Do nothing",
+    "description": "Defer all opportunities and build no review institution.",
+    "tradeoffs": "Minimizes immediate risk and cost but creates no productive ownership or learning.",
+    "revival_evidence": "Choose when evidence quality, legal authority, or participant protections are inadequate."
+  },
+  "roles": [
+    {
+      "name": "Founder-Intent Steward",
+      "analysis": "The founder wants organized agents to create measurable advantage, not ceremonial complexity. Preserve collaboration but remove unnecessary full-swarm invocation.",
+      "position": "Support tiered escalation and preserve the negative V1 result."
+    },
+    {
+      "name": "Systems Architect",
+      "analysis": "A deterministic intake membrane followed by consequence-sensitive deliberation is more modular and makes the full institution a bounded capability rather than the default path.",
+      "position": "Support tiered architecture with explicit escalation contracts."
+    },
+    {
+      "name": "Adversarial Reviewer",
+      "analysis": "The V2 design was created after seeing V1 and may be overfit to the same authored corpus. Perfect synthetic scores are not trustworthy external evidence.",
+      "position": "Permit only as an experiment and require held-out independent cases."
+    },
+    {
+      "name": "Operator and Maintainer",
+      "analysis": "Tiered review cuts synthetic cost and latency while preserving a simple deterministic fast path. It also creates another policy surface that must be observable and testable.",
+      "position": "Support with escalation telemetry, rollback, and simple configuration."
+    },
+    {
+      "name": "Evidence and Welfare Guardian",
+      "analysis": "Routine automation must never suppress conflicts, affinity pressure, missing evidence, or participant harm. Required dissent must remain preserved on escalated cases.",
+      "position": "Support only while safety cases always escalate and no real capital authority is created."
+    }
+  ],
+  "evidence": [
+    {
+      "claim": "V1 full-swarm review achieved perfect synthetic decision quality and fraud detection, but deterministic rules matched it at one tenth the cost.",
+      "tier": "fixture",
+      "reference": "experiments/results/stage0-baseline.json"
+    },
+    {
+      "claim": "V2 tiered review matched the full workflow on the authored synthetic corpus while reducing cost and latency from 60 to 29.55 units.",
+      "tier": "fixture",
+      "reference": "experiments/results/tiered-benchmark-v2.json"
+    },
+    {
+      "claim": "All benchmark tests execute without real money, market action, promotion, custody, or external effects.",
+      "tier": "unit_test",
+      "reference": "server/test/experiment-v2.test.ts"
+    }
+  ],
+  "counterevidence": [
+    {
+      "claim": "The deterministic checklist also reached perfect V2 synthetic accuracy and risk recall at far lower cost, showing that the corpus may be too easy or encoded into the rules.",
+      "tier": "fixture",
+      "reference": "experiments/results/tiered-benchmark-v2.json"
+    },
+    {
+      "claim": "V2 was designed after observing V1 and is not an independent confirmation study.",
+      "tier": "claim",
+      "reference": "docs/BENCHMARK_RESULT_V2.md"
+    },
+    {
+      "claim": "No independent analyst, frontier model, real participant, or external outcome has validated the architecture.",
+      "tier": "claim",
+      "reference": "docs/BENCHMARK_RESULT_V2.md"
+    }
+  ],
+  "pass_1": {
+    "intended_outcome": "Determine whether organized multi-agent collaboration earns its complexity and redesign the architecture when evidence says it does not.",
+    "advantages": [
+      "Full deliberation preserves dissent, alternatives, conflicts, and welfare review.",
+      "Synthetic harmful approvals remained zero across both experimental versions.",
+      "The benchmark makes architectural complexity falsifiable instead of doctrinal."
+    ],
+    "disadvantages": [
+      {
+        "id": "PS-BENCH-D1",
+        "description": "Full-swarm deliberation creates high routine cost and latency.",
+        "redesign": "Use deterministic triage and invoke full deliberation only for ambiguity, conflicts, missing evidence, prohibited risks, or high consequence."
+      },
+      {
+        "id": "PS-BENCH-D2",
+        "description": "The authored synthetic corpus may reward rules derived from the same design assumptions.",
+        "redesign": "Preserve V1 and V2 as fixtures, then require held-out externally authored cases and independent reviewers."
+      },
+      {
+        "id": "PS-BENCH-D3",
+        "description": "Perfect V2 scores can create false confidence.",
+        "redesign": "Prohibit production claims and report component metrics, limitations, and counterevidence beside the score."
+      },
+      {
+        "id": "PS-BENCH-D4",
+        "description": "Triage can suppress dissent if a risky case is misclassified as routine.",
+        "redesign": "Escalate conflicts, prohibited risks, missing evidence, low evidence depth, and later consequence classes; measure escalation escapes."
+      }
+    ],
+    "comparisons": [
+      "Baseline full-swarm review",
+      "Do-nothing deferral",
+      "Simplest deterministic checklist",
+      "Strongest human-moderated competitor",
+      "Reversible tiered experiment"
+    ],
+    "rejected_alternatives": [
+      {
+        "name": "Declare full swarm successful",
+        "description": "Treat V1 safety and accuracy as sufficient despite equal simpler alternatives.",
+        "tradeoffs": "Would preserve the original architecture but violate the evidence and simplification doctrine.",
+        "revival_evidence": "Only revive if independent held-out studies show material advantage."
+      },
+      {
+        "name": "Delete multi-agent review",
+        "description": "Replace every case with deterministic rules.",
+        "tradeoffs": "Cheap but loses dissent, contextual judgment, and unknown-risk discovery.",
+        "revival_evidence": "Revive only for narrowly bounded rule-complete domains."
+      }
+    ]
+  },
+  "pass_2": {
+    "new_weaknesses": [
+      "Escalation logic becomes a new attack and maintenance surface.",
+      "The V2 benchmark is post-hoc and may be overfit.",
+      "Cost units are synthetic rather than measured model and human costs.",
+      "The deterministic checklist equaling full review suggests the corpus lacks sufficient ambiguity."
+    ],
+    "disadvantage_dispositions": [
+      {
+        "disadvantage_id": "PS-BENCH-D1",
+        "status": "experiment",
+        "action": "Retain the tiered architecture only in sandbox and measure real compute, latency, and operator burden on held-out cases."
+      },
+      {
+        "disadvantage_id": "PS-BENCH-D2",
+        "status": "deferred",
+        "action": "Create an independently authored and sealed holdout corpus before any stronger claim."
+      },
+      {
+        "disadvantage_id": "PS-BENCH-D3",
+        "status": "resolved",
+        "action": "Store both negative and improved reports with explicit simulation and limitation labels."
+      },
+      {
+        "disadvantage_id": "PS-BENCH-D4",
+        "status": "experiment",
+        "action": "Add escape-rate tests, random review sampling, and mandatory escalation by consequence class in the next benchmark phase."
+      }
+    ],
+    "strengthened_design": "Regress the full swarm as the universal default. Retain a tiered sandbox architecture: deterministic triage for routine cases, five-role and two-pass deliberation for ambiguity, conflict, missing evidence, prohibited conduct, or material consequence. Preserve V1 as negative evidence and treat V2 only as a reconfiguration result.",
+    "residual_risks": [
+      "Synthetic overfitting remains unresolved.",
+      "Unknown risks may evade deterministic escalation.",
+      "No real model, analyst, participant, or outcome has been measured.",
+      "No production authority or public launch is justified."
+    ]
+  },
+  "dissent": [
+    {
+      "position": "Use deterministic checklists only because they matched the tiered system at a fraction of synthetic cost.",
+      "rationale": "The current corpus does not prove that agent deliberation adds decision quality.",
+      "evidence_threshold": "Retain multi-agent review only if independent ambiguous cases show better unknown-risk detection, welfare analysis, or calibrated decisions.",
+      "owner": "Simplification Advocate",
+      "review_trigger": "Completion of an independently authored holdout benchmark."
+    },
+    {
+      "position": "The tiered system may miss novel harms that do not match escalation rules.",
+      "rationale": "A deterministic membrane can create false negatives before the deliberative layer sees the case.",
+      "evidence_threshold": "Measure sampled-review escape rates and require consequence-class escalation.",
+      "owner": "Evidence and Welfare Guardian",
+      "review_trigger": "Any missed harmful case or material false negative."
+    }
+  ],
+  "authority_impact": "None. The benchmark and architecture decision remain simulation-only and create no trading, custody, promotion, public-launch, or capital authority.",
+  "migration_plan": "Implement tiered review as a sandbox candidate on a stacked branch, preserve V1 and V2 artifacts, and do not change the production or external-effect boundary.",
+  "rollback_plan": "Close the stacked PR or revert the benchmark commits. PR #7 remains the unchanged foundation and main remains untouched.",
+  "kill_criteria": [
+    "Any benchmark or tiered path causes a real external effect.",
+    "A harmful case is approved in the safety corpus.",
+    "Independent evaluation shows no material value from deliberation beyond deterministic rules.",
+    "Escalation escapes cannot be measured or bounded."
+  ],
+  "decision": "REGRESS",
+  "decision_owner": "Founder and Systems Architect",
+  "review_trigger": "Independent holdout benchmark or any proposed move beyond simulation."
+}

@@ -1,0 +1,116 @@
+{
+  "experiment_id": "stage0-tiered-architecture-comparison-v2",
+  "reality_status": "test_fixture",
+  "protocol_status": "post_v1_reconfiguration",
+  "fixture_id": "pumpstation-tiered-synthetic-v2",
+  "fixture_hash": "sha256:fb9bf4f2fcd7eea2e193cbfbce35e6b1e0ba354e17ddae10efa60fcca811e5b7",
+  "prior_result_hash": "sha256:7cbdc212fb0256835f736bad50ba10d4047f2445fdeac7dfe86bedff8175b51d",
+  "seed": 26072027,
+  "generated_at": "2026-07-26T01:05:00.000Z",
+  "warning": "Synthetic scenarios are not financial evidence, market performance, legal clearance, or an investment offer.",
+  "systems": [
+    {
+      "system": "full_multi_agent_two_pass",
+      "decision_quality": 1,
+      "harmful_approval_rate": 0,
+      "critical_risk_recall": 1,
+      "missing_evidence_recall": 1,
+      "required_dissent_preservation": 1,
+      "deliberation_rate": 1,
+      "operating_cost_units": 60,
+      "time_to_decision_units": 60,
+      "policy_violations": 0,
+      "reproducible": true
+    },
+    {
+      "system": "tiered_rules_plus_deliberation",
+      "decision_quality": 1,
+      "harmful_approval_rate": 0,
+      "critical_risk_recall": 1,
+      "missing_evidence_recall": 1,
+      "required_dissent_preservation": 1,
+      "deliberation_rate": 0.75,
+      "operating_cost_units": 29.55,
+      "time_to_decision_units": 29.55,
+      "policy_violations": 0,
+      "reproducible": true
+    },
+    {
+      "system": "centralized_analyst_proxy",
+      "decision_quality": 0.8333,
+      "harmful_approval_rate": 0,
+      "critical_risk_recall": 0.2414,
+      "missing_evidence_recall": 0.3077,
+      "required_dissent_preservation": 0,
+      "deliberation_rate": 0,
+      "operating_cost_units": 12,
+      "time_to_decision_units": 12,
+      "policy_violations": 0,
+      "reproducible": true
+    },
+    {
+      "system": "deterministic_rules",
+      "decision_quality": 1,
+      "harmful_approval_rate": 0,
+      "critical_risk_recall": 1,
+      "missing_evidence_recall": 1,
+      "required_dissent_preservation": 0,
+      "deliberation_rate": 0,
+      "operating_cost_units": 2.4,
+      "time_to_decision_units": 2.4,
+      "policy_violations": 0,
+      "reproducible": true
+    },
+    {
+      "system": "human_moderated_proxy",
+      "decision_quality": 1,
+      "harmful_approval_rate": 0,
+      "critical_risk_recall": 1,
+      "missing_evidence_recall": 1,
+      "required_dissent_preservation": 1,
+      "deliberation_rate": 1,
+      "operating_cost_units": 48,
+      "time_to_decision_units": 96,
+      "policy_violations": 0,
+      "reproducible": true
+    },
+    {
+      "system": "do_nothing",
+      "decision_quality": 0.3333,
+      "harmful_approval_rate": 0,
+      "critical_risk_recall": 0,
+      "missing_evidence_recall": 0,
+      "required_dissent_preservation": 0,
+      "deliberation_rate": 0,
+      "operating_cost_units": 0.6,
+      "time_to_decision_units": 0.6,
+      "policy_violations": 0,
+      "reproducible": true
+    }
+  ],
+  "architecture_decision": {
+    "decision": "REGRESS_FULL_SWARM_RETAIN_TIERED_EXPERIMENT",
+    "reason": "Use deterministic triage for routine cases and invoke five-role, two-pass deliberation only for ambiguity, conflict, missing evidence, prohibited conduct, or higher consequence. This remains a sandbox experiment."
+  },
+  "complexity_gate": {
+    "multi_agent_advantage_over_rules": false,
+    "decision": "NOT_EARNED_AGAINST_DETERMINISTIC_RULES",
+    "reason": "The authored deterministic rules matched the tiered workflow on this synthetic corpus at lower cost. Independent ambiguous holdout cases are required before claiming agent advantage.",
+    "revival_evidence": "Material improvement on independently authored, sealed, ambiguity-rich cases with measured escalation escapes, participant welfare, cost, and zero policy violations."
+  },
+  "contamination_controls": {
+    "hidden_labels_removed_before_evaluation": true,
+    "identical_public_cases_across_systems": true,
+    "v1_negative_result_preserved": true,
+    "external_effects": false,
+    "independent_reviewer": false
+  },
+  "limitations": [
+    "V2 was designed after observing V1 and is a reconfiguration test, not an independent confirmation study.",
+    "The fixture and strategy rules share authorship and may encode design bias.",
+    "No independent model, analyst, participant, legal review, or external outcome was used.",
+    "The result cannot authorize public launch, capital movement, promotion, custody, trading, or fund activity."
+  ],
+  "negative_results_preserved": true,
+  "result_hash": "sha256:68fb9545beac09c2cd4d6a750dc68f1771ccbc719e4b542fef399c95c6f2b20e"
+}
