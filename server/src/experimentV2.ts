@@ -31,7 +31,10 @@ export type TieredExperimentFixture = {
 
 type PublicOpportunity = Omit<
   TieredSyntheticOpportunity,
-  "expected_decision" | "critical_risks" | "required_evidence" | "harmful_if_approved"
+  | "expected_decision"
+  | "critical_risks"
+  | "required_evidence"
+  | "harmful_if_approved"
 >;
 
 type StrategyDecision = {
@@ -88,7 +91,9 @@ const RISK_EVIDENCE: Record<string, string[]> = {
   missing_audit: ["audited_reserves"],
 };
 
-function publicView(opportunity: TieredSyntheticOpportunity): PublicOpportunity {
+function publicView(
+  opportunity: TieredSyntheticOpportunity,
+): PublicOpportunity {
   const {
     expected_decision: _expectedDecision,
     critical_risks: _criticalRisks,
@@ -170,7 +175,9 @@ function centralizedAnalyst(opportunity: PublicOpportunity): StrategyDecision {
     "licensing_gap",
     "environmental_liability",
   ]);
-  const detected = opportunity.risk_labels.filter((risk) => recognized.has(risk));
+  const detected = opportunity.risk_labels.filter((risk) =>
+    recognized.has(risk),
+  );
   const narrowed: PublicOpportunity = { ...opportunity, risk_labels: detected };
   const missing = missingEvidence(narrowed);
   let decision: TieredDecision =
@@ -354,7 +361,9 @@ export function runTieredExperiment(fixture: TieredExperimentFixture) {
   const tiered = systems.find(
     (system) => system.system === "tiered_rules_plus_deliberation",
   );
-  const rules = systems.find((system) => system.system === "deterministic_rules");
+  const rules = systems.find(
+    (system) => system.system === "deterministic_rules",
+  );
   if (!full || !tiered || !rules) throw new Error("Required systems missing");
 
   const tieredPreservesFull =
