@@ -1,0 +1,46 @@
+name: Phase 2 preview
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: server/package-lock.json
+      - run: npm ci
+        working-directory: server
+      - run: npm run format
+        working-directory: server
+      - run: npm run typecheck
+        working-directory: server
+      - run: npm test
+        working-directory: server
+      - run: npm run security:surfaces
+        working-directory: server
+      - run: npm run experiment:firewall
+        working-directory: server
+      - uses: actions/upload-artifact@v4
+        with:
+          name: phase2-preview-output
+          path: |
+            server/src/app.ts
+            server/src/domain/semanticFirewall.ts
+            server/src/domain/identity.ts
+            server/src/firewallExperiment.ts
+            server/scripts/run-firewall-experiment.ts
+            server/test/semantic-firewall.test.ts
+            server/test/firewall-api.test.ts
+            server/test/firewall-experiment.test.ts
+            experiments/results/semantic-firewall-v1.json
+          if-no-files-found: error
+          retention-days: 1
