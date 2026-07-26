@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pumpstation.local/schemas/quarantine-record.schema.json",
+  "title": "PumpStation Quarantine Record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["quarantine_id", "input", "decision", "state", "review"],
+  "properties": {
+    "quarantine_id": { "type": "string", "pattern": "^quarantine_" },
+    "input": {
+      "$ref": "https://pumpstation.local/schemas/semantic-firewall-input.schema.json"
+    },
+    "decision": {
+      "$ref": "https://pumpstation.local/schemas/semantic-firewall-decision.schema.json"
+    },
+    "state": {
+      "enum": [
+        "pending",
+        "rejected",
+        "released_as_data",
+        "corrected_replacement"
+      ]
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reviewer_id",
+        "decision",
+        "reason",
+        "corrected_text_hash",
+        "reviewed_at"
+      ],
+      "properties": {
+        "reviewer_id": { "type": ["string", "null"] },
+        "decision": {
+          "type": ["string", "null"],
+          "enum": [
+            "reject",
+            "release_as_data",
+            "replace_with_corrected_text",
+            null
+          ]
+        },
+        "reason": { "type": ["string", "null"] },
+        "corrected_text_hash": {
+          "type": ["string", "null"],
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        },
+        "reviewed_at": {
+          "type": ["string", "null"],
+          "format": "date-time"
+        }
+      }
+    }
+  }
+}
