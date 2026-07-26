@@ -1,69 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Wallet Connect</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.production.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.production.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/ethers@6.7.0/dist/ethers.umd.min.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PumpStation Labs</title>
+  <style>
+    :root { color-scheme: dark; font-family: Inter, ui-sans-serif, system-ui, sans-serif; }
+    body { margin: 0; background: #0b0d10; color: #edf1f5; }
+    main { max-width: 1100px; margin: 0 auto; padding: 32px 20px 80px; }
+    .banner { border: 1px solid #8f6a25; background: #241b0d; padding: 16px; border-radius: 10px; font-weight: 700; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-top: 20px; }
+    section { background: #14181e; border: 1px solid #2a313b; border-radius: 12px; padding: 18px; }
+    h1, h2 { margin-top: 0; }
+    label { display: block; margin: 12px 0 4px; color: #bdc6d1; }
+    input, textarea, select, button { width: 100%; box-sizing: border-box; border-radius: 8px; border: 1px solid #3a4450; padding: 10px; background: #0f1318; color: #edf1f5; }
+    button { margin-top: 14px; background: #e4b85a; color: #111; font-weight: 700; cursor: pointer; }
+    pre { white-space: pre-wrap; overflow-wrap: anywhere; background: #0d1014; padding: 12px; border-radius: 8px; max-height: 420px; overflow: auto; }
+    .muted { color: #9da8b4; }
+    .metric { font-size: 1.7rem; font-weight: 800; }
+  </style>
 </head>
 <body>
-  <div id="root"></div>
-  <script type="text/babel">
-    const { useState } = React;
+<main>
+  <h1>PumpStation Labs</h1>
+  <div class="banner">SIMULATION ONLY · NO REAL MONEY · NO INVESTMENT OFFER · NO COORDINATED MARKET ACTION · NO PUBLIC ASSET PROMOTION</div>
+  <p class="muted">A founder-governed community capital laboratory for productive assets. Wallets prove identity only and grant no financial authority.</p>
 
-    function WalletConnect() {
-      const [address, setAddress] = useState('');
-      const [email, setEmail] = useState('');
-      const [status, setStatus] = useState('');
+  <div class="grid">
+    <section><h2>Institution state</h2><div id="stage" class="metric">Loading…</div><p>Unauthorized external effects: <strong id="effects">0</strong></p><p>Event chain: <strong id="chain">—</strong></p><button onclick="refresh()">Refresh</button></section>
+    <section><h2>Policy screen</h2><label>Text to assess</label><textarea id="policyText" rows="6" placeholder="Describe an opportunity or coordination request"></textarea><button onclick="assess()">Assess risk</button><pre id="policyResult"></pre></section>
+    <section><h2>Submit productive opportunity</h2><p class="muted">This compact form creates a proposal only. Full fields are populated as explicit sandbox declarations.</p><label>Title</label><input id="title" value="Acquire a revenue-producing local service business" /><label>Problem</label><textarea id="problem">Succession gap in a profitable local service company</textarea><label>Productive value</label><textarea id="value">Preserve jobs, improve operations, and broaden ownership</textarea><button onclick="submitOpportunity()">Create proposal</button><pre id="submitResult"></pre></section>
+  </div>
 
-      const connectWallet = async () => {
-        if (!window.ethereum) {
-          setStatus('MetaMask not found');
-          return;
-        }
-        try {
-          const provider = new ethers.BrowserProvider(window.ethereum);
-          await provider.send('eth_requestAccounts', []);
-          const signer = await provider.getSigner();
-          const addr = await signer.getAddress();
-          const signature = await signer.signMessage('Connect PumpStation');
-          setAddress(addr);
-          const res = await fetch('/api/connect-wallet', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ address: addr, email, signature })
-          });
-          const data = await res.json();
-          if (data.success) {
-            setStatus('Wallet connected');
-          } else {
-            setStatus('Error connecting wallet');
-          }
-        } catch (err) {
-          setStatus('Connection failed');
-        }
-      };
-
-      return (
-        <div>
-          <h1>Wallet Connection</h1>
-          <input
-            type="email"
-            placeholder="Optional email"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-          />
-          <button onClick={connectWallet}>Connect Wallet</button>
-          {address && <p>Address: {address}</p>}
-          {status && <p>{status}</p>}
-        </div>
-      );
-    }
-
-    ReactDOM.render(<WalletConnect />, document.getElementById('root'));
-  </script>
+  <section style="margin-top:16px"><h2>Append-only institutional record</h2><pre id="state"></pre></section>
+</main>
+<script>
+async function jsonFetch(url, options={}) {
+  const response = await fetch(url, { headers: { 'Content-Type': 'application/json', 'x-actor-id': 'web-member', 'x-actor-role': 'member', ...(options.headers||{}) }, ...options });
+  const data = await response.json(); if (!response.ok) throw new Error(data.error || 'Request failed'); return data;
+}
+async function refresh() {
+  const data = await jsonFetch('/api/state'); const chain = await jsonFetch('/api/events/verify');
+  document.getElementById('stage').textContent = data.state.stage;
+  document.getElementById('effects').textContent = data.state.metrics.unauthorizedExternalEffects;
+  document.getElementById('chain').textContent = chain.valid ? `VALID · ${chain.count} events` : 'INVALID';
+  document.getElementById('state').textContent = JSON.stringify(data, null, 2);
+}
+async function assess() {
+  try { document.getElementById('policyResult').textContent = JSON.stringify(await jsonFetch('/api/policy/assess', { method:'POST', body:JSON.stringify({ text: document.getElementById('policyText').value }) }), null, 2); }
+  catch (e) { document.getElementById('policyResult').textContent = e.message; }
+}
+async function submitOpportunity() {
+  const body = {
+    title: title.value, assetType:'SMALL_BUSINESS', problemSolved:problem.value, productiveValue:value.value,
+    beneficiary:'Workers, customers, and community co-owners', buyerOrCustomer:'Existing customers', revenueSource:'Operating revenue',
+    capitalRequired:0, maximumLoss:0, holdingPeriod:'Long-term', proposerHoldings:'None', proposerCompensation:'None in sandbox',
+    conflicts:[], legalQuestions:['External legal review required before capital activity'], securityRisks:['Identity and payment fraud'],
+    communityBenefit:'Shared diligence and productive ownership', communityHarmRisks:['Capital loss and governance capture'],
+    killConditions:['Unverifiable cash flow','Hidden conflicts'], simulationPlan:'Research, historical replay, and downside stress test only'
+  };
+  try { submitResult.textContent = JSON.stringify(await jsonFetch('/api/opportunities', { method:'POST', body:JSON.stringify(body) }), null, 2); await refresh(); }
+  catch (e) { submitResult.textContent = e.message; }
+}
+refresh();
+</script>
 </body>
 </html>
