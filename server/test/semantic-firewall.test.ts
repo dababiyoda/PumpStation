@@ -44,7 +44,9 @@ function input(
   };
 }
 
-function createFirewall(options: ConstructorParameters<typeof SemanticFirewall>[1] = {}) {
+function createFirewall(
+  options: ConstructorParameters<typeof SemanticFirewall>[1] = {},
+) {
   let sequence = 0;
   const store = new AppendOnlyEventStore({
     logPath: ":memory:",
@@ -224,11 +226,6 @@ test("human release remains data-only and creates an append-only correction", ()
   assert.equal(reviewed.review.decision, "release_as_data");
   assert.equal(store.size, 2);
   assert.equal(store.list()[1]?.event_type, "correction");
-  assert.equal(
-    store.list()[1]?.payload.release_boundary,
-    undefined,
-    "nested boundary is retained inside the append-only payload object",
-  );
   const payload = store.list()[1]?.payload as {
     release_boundary: {
       evidence_admissible: boolean;
