@@ -1,33 +1,84 @@
 # PumpStation
-A real-time, decentralized memecoin coordination platform for transparent buy-ins, democratic voting, and automated exit strategies. Built with Next.js, Tailwind, Web3.js, and Socket.IO for seamless wallet integration, live updates, and community-driven crypto movements.
 
-## Development Setup
+> An immigrant-led, founder-governed community capital institution that helps real people combine knowledge, skills, relationships, and eventually governed capital to identify, acquire, build, improve, and retain productive assets.
 
-### Backend
-1. Navigate to the `server` directory and install dependencies:
-   ```bash
-   cd server
-   npm install
-   ```
-2. Copy `.env.example` to `.env` and adjust `MONGODB_URI` for your database.
-3. Start the server in development mode:
-   ```bash
-   npm run dev
-   ```
-   The API will run on port `3001` by default.
+## Reality status
 
-### Frontend
-1. Navigate to the `client` folder and install dependencies if needed:
-   ```bash
-   cd client
-   npm install
-   npm run dev
-   ```
-   The demo page will open in your browser. Use MetaMask to connect your wallet and optionally submit an email. The page posts the wallet address and signature to `/api/connect-wallet`.
+**Current implementation: SANDBOX**
 
-### MongoDB Setup
-Ensure MongoDB is running locally or provide a cloud connection string in `.env`.
+This repository no longer implements memecoin coordination, coordinated buy-ins, automated exits, autonomous trading, or market-manipulation workflows. The first executable version records and validates:
 
-### Troubleshooting
-- Enable CORS if you see network errors.
-- Check MetaMask for pending signature requests when connecting the wallet.
+1. opportunity intake;
+2. five-role deliberation;
+3. exactly two recursive strengthening passes;
+4. explicit founder authorization;
+5. bounded action proposals;
+6. evidence objects;
+7. simulated outcome reconciliation;
+8. an append-only hash-chained institutional event ledger.
+
+It deliberately does **not** move money, contact counterparties, deploy contracts, trade assets, or execute external actions.
+
+```text
+models reason
+→ agents and members propose
+→ reviewers deliberate
+→ authorized humans decide
+→ the canonical consequence boundary may permit an external effect
+→ evidence and reconciliation determine whether the action worked
+```
+
+Hard invariant:
+
+```text
+UNAUTHORIZED_EXTERNAL_EFFECTS = 0
+```
+
+## Why the legacy concept was removed
+
+The original repository described a decentralized memecoin coordination platform. That concept created market-manipulation, consumer-harm, authority, and evidentiary risks that conflict with the founder's current mission. The useful wallet-authentication idea was retained, but redesigned as one-time nonce-based identity proof. A wallet proves control of an address only; it grants no governance or financial authority.
+
+## Run
+
+Requires Node.js 20 or newer.
+
+```bash
+cd server
+npm install
+npm test
+npm start
+```
+
+Open `http://localhost:3001`.
+
+## API
+
+- `GET /health`
+- `GET /api/state`
+- `GET /api/events/verify`
+- `POST /api/identity/challenge`
+- `POST /api/identity/verify`
+- `POST /api/opportunities`
+- `POST /api/opportunities/:id/deliberation`
+- `POST /api/opportunities/:id/authorize`
+- `POST /api/opportunities/:id/actions`
+- `POST /api/opportunities/:id/evidence`
+- `POST /api/opportunities/:id/outcome`
+
+The bundled interface creates proposal records only. Higher-authority routes require an actor role supplied by a trusted adapter in a future Kernel integration. The current header-based actor selector is development scaffolding and must never be exposed as production authentication.
+
+## Canonical boundaries
+
+PumpStation owns its domain state: members, productive-asset opportunities, deliberation records, simulation proposals, evidence packets, and outcome records.
+
+It does not own constitutional authority, production identity, shared governance contracts, settlement execution, or global causal memory. Those belong in `dababiyoda/uniimente-kernel`. PumpStation must consume those contracts before any production consequence is permitted.
+
+## Governance records
+
+- [`docs/FOUNDER_INTENT_LEDGER.md`](docs/FOUNDER_INTENT_LEDGER.md)
+- [`docs/FOUNDER_INTENT_LEDGER.json`](docs/FOUNDER_INTENT_LEDGER.json)
+- [`docs/DELIBERATION-0001.json`](docs/DELIBERATION-0001.json)
+- [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)
+- [`docs/MIGRATION.md`](docs/MIGRATION.md)
+- [`docs/RECURSIVE_COLLABORATION_PROTOCOL.md`](docs/RECURSIVE_COLLABORATION_PROTOCOL.md)
+- [`SECURITY.md`](SECURITY.md)
