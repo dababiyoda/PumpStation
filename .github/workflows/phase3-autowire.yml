@@ -1,0 +1,95 @@
+name: Phase 3 Kernel adapter autowire
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+
+jobs:
+  autowire:
+    if: github.event.pull_request.head.repo.full_name == github.repository && github.head_ref == 'agent/phase3-kernel-contract-adapter'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/phase3-kernel-contract-adapter
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: server/package-lock.json
+      - run: npm ci
+        working-directory: server
+      - name: Wire proposal-only Kernel router into the application
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          app = Path('server/src/app.ts')
+          text = app.read_text()
+          import_marker = '} from "./domain/semanticFirewall.js";\n'
+          imports = import_marker + 'import { PumpStationKernelAdapter } from "./kernel/adapter.js";\nimport { createKernelRouter } from "./kernel/router.js";\n'
+          if 'from "./kernel/adapter.js"' not in text:
+              if import_marker not in text:
+                  raise SystemExit('Semantic firewall import marker not found')
+              text = text.replace(import_marker, imports)
+          text = text.replace(
+              '  firewall: SemanticFirewall;\n  store: AppendOnlyEventStore;\n',
+              '  firewall: SemanticFirewall;\n  kernel: PumpStationKernelAdapter;\n  store: AppendOnlyEventStore;\n',
+          )
+          instantiate_marker = '  const app = express();\n'
+          instantiate = '  const kernel = new PumpStationKernelAdapter({\n    now: nowIso,\n    ...(options.idFactory ? { idFactory: options.idFactory } : {}),\n  });\n  const app = express();\n'
+          if 'const kernel = new PumpStationKernelAdapter' not in text:
+              if instantiate_marker not in text:
+                  raise SystemExit('Application instantiation marker not found')
+              text = text.replace(instantiate_marker, instantiate)
+          text = text.replace(
+              '      kernel_connection: "not_implemented",',
+              '      kernel_connection: "pinned_adapter_disconnected",',
+          )
+          route_marker = '  app.post("/api/v1/firewall/screens", requireIdentity, (request, response) => {\n'
+          route = '  app.use(\n    "/api/v1/kernel",\n    requireIdentity,\n    createKernelRouter({ adapter: kernel, institution, store }),\n  );\n\n' + route_marker
+          if 'createKernelRouter({ adapter: kernel, institution, store })' not in text:
+              if route_marker not in text:
+                  raise SystemExit('Authenticated route insertion marker not found')
+              text = text.replace(route_marker, route)
+          text = text.replace(
+              '  return { app, institution, identity, firewall, store };',
+              '  return { app, institution, identity, firewall, kernel, store };',
+          )
+          app.write_text(text)
+
+          test = Path('server/test/kernel-adapter.test.ts')
+          source = test.read_text()
+          source = source.replace(
+              '  type KernelGateway,\n  type KernelProposal,\n} from "../src/kernel/contracts.js";',
+              '  type KernelProposal,\n} from "../src/kernel/contracts.js";\nimport type { KernelGateway } from "../src/kernel/gateway.js";',
+          )
+          test.write_text(source)
+          PY
+      - run: npm run format
+        working-directory: server
+      - run: npm run typecheck
+        working-directory: server
+      - run: npm test
+        working-directory: server
+      - run: npm run security:surfaces
+        working-directory: server
+      - run: npm run build
+        working-directory: server
+      - run: npm run experiment:all
+        working-directory: server
+      - run: git diff --exit-code -- experiments/results
+      - run: npm audit --audit-level=high
+        working-directory: server
+      - name: Commit verified application integration
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add server/src server/test server/package.json kernel docs governance schemas
+          git diff --cached --check
+          git commit -m 'Wire fail-closed UNIIMENTE Kernel adapter'
+          git push origin HEAD:agent/phase3-kernel-contract-adapter
