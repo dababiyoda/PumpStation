@@ -1,0 +1,44 @@
+name: Phase 2 governance format
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+
+jobs:
+  format:
+    if: github.event.pull_request.head.repo.full_name == github.repository && github.head_ref == 'agent/phase2-semantic-firewall'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/phase2-semantic-firewall
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: server/package-lock.json
+      - run: npm ci
+        working-directory: server
+      - run: npx prettier --write test/governance-deliberation.test.ts
+        working-directory: server
+      - run: npm run typecheck
+        working-directory: server
+      - run: npm test
+        working-directory: server
+      - name: Commit formatted governance test
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add server/test/governance-deliberation.test.ts
+          git diff --cached --check
+          if git diff --cached --quiet; then
+            echo 'No formatting change required.'
+          else
+            git commit -m 'Format recursive governance contract test'
+            git push origin HEAD:agent/phase2-semantic-firewall
+          fi
