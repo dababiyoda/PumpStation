@@ -39,6 +39,8 @@
     "format:check": "prettier --check \"src/**/*.ts\" \"test/**/*.ts\" \"scripts/**/*.ts\"",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "experiment": "node --import tsx scripts/run-experiment.ts",
+    "experiment:v2": "node --import tsx scripts/run-experiment-v2.ts",
+    "experiment:all": "npm run experiment && npm run experiment:v2",
     "security:surfaces": "node --import tsx scripts/check-prohibited-surfaces.ts",
     "security:audit": "npm audit --audit-level=high",
     "check": "npm run format:check && npm run typecheck && npm test && npm run security:surfaces"
