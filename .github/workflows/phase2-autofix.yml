@@ -74,29 +74,11 @@ jobs:
         working-directory: server
       - run: npm run experiment:firewall
         working-directory: server
-      - name: Add permanent firewall regeneration gate
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-          path = Path('.github/workflows/ci.yml')
-          text = path.read_text()
-          marker = '      - run: git diff --exit-code -- ../experiments/results/tiered-benchmark-v2.json\n'
-          addition = marker + '      - run: npm run experiment:firewall\n      - run: git diff --exit-code -- ../experiments/results/semantic-firewall-v1.json\n'
-          if 'npm run experiment:firewall' not in text:
-              if marker not in text:
-                  raise SystemExit('CI insertion marker not found')
-              text = text.replace(marker, addition)
-              path.write_text(text)
-          PY
-      - name: Remove temporary Phase 2 workflows
-        run: |
-          rm -f .github/workflows/phase2-preview.yml
-          rm -f .github/workflows/phase2-autofix.yml
-      - name: Commit verified branch correction
+      - name: Commit verified source and evidence correction
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add server/src server/scripts server/test server/package.json experiments/results .github/workflows
+          git add server/src server/scripts server/test server/package.json experiments/results
           git diff --cached --check
           git commit -m 'Verify semantic firewall and preserve false-negative evidence'
           git push origin HEAD:agent/phase2-semantic-firewall
