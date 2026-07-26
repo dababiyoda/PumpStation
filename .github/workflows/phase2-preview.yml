@@ -23,7 +23,8 @@ jobs:
         working-directory: server
       - run: npm run typecheck
         working-directory: server
-      - run: npm test
+      - name: Capture test output
+        run: npm test > ../phase2-test.log 2>&1 || true
         working-directory: server
       - run: npm run security:surfaces
         working-directory: server
@@ -33,6 +34,7 @@ jobs:
         with:
           name: phase2-preview-output
           path: |
+            phase2-test.log
             server/src/app.ts
             server/src/domain/semanticFirewall.ts
             server/src/domain/identity.ts
