@@ -124,9 +124,10 @@ export class IdentityService {
       "deliberation:write",
       "simulation:compile",
       "stage:request",
+      "firewall:screen",
     ];
     if (this.#founderAddress && address === this.#founderAddress) {
-      capabilities.push("stage:decide");
+      capabilities.push("stage:decide", "firewall:review");
     }
 
     const actor: Actor = {
