@@ -1,0 +1,89 @@
+{
+  "manifest_version": "1.0.0",
+  "organ_id": "pumpstation-community-capital",
+  "display_name": "PumpStation Community Capital Venture Cell",
+  "lifecycle_status": "proposed_not_registered",
+  "reality_status": "sandbox",
+  "service_identity": "spiffe://uniimente.internal/venture/pumpstation",
+  "service_identity_status": "proposed_not_present_in_pinned_kernel_registry",
+  "legal_principal": "alfonso_lopez",
+  "legal_principal_scope": "sandbox research and proposal authorship only",
+  "autonomy_level": 0,
+  "mission": "Help participants research productive assets, preserve dissent and conflicts, compile simulation-only decisions, and submit bounded proposals to the UNIIMENTE Kernel without owning constitutional authority or consequence execution.",
+  "canonical_state_owned": [
+    "productive asset opportunity packets",
+    "structured participant deliberation",
+    "simulation fixtures and benchmark results",
+    "semantic firewall quarantine projections",
+    "PumpStation-specific proposal projections"
+  ],
+  "canonical_state_prohibited": [
+    "constitutional law",
+    "legal principal registry",
+    "institutional service identity issuance",
+    "capability grants",
+    "policy decisions",
+    "budget authority",
+    "commit witnesses",
+    "external-effect receipts",
+    "global causal memory",
+    "settlement authority"
+  ],
+  "contracts_consumed": [
+    "capability-grant",
+    "decision",
+    "evidence",
+    "event",
+    "outcome",
+    "venture-cell-charter"
+  ],
+  "proposal_capabilities": [
+    "pumpstation.opportunity.submit",
+    "pumpstation.deliberation.record",
+    "pumpstation.simulation.compile",
+    "pumpstation.kernel.proposal.compile"
+  ],
+  "prohibited_capabilities": [
+    "trade.place",
+    "asset.transfer",
+    "wallet.custody",
+    "outside_capital.accept",
+    "public_asset_promotion.publish",
+    "contract.sign",
+    "grant.issue",
+    "budget.increase",
+    "policy.change",
+    "stage.self_approve",
+    "kernel.allow.manufacture"
+  ],
+  "authority_envelope": {
+    "maximum_consequence_class": "internal_write",
+    "maximum_cost_usd": 0,
+    "human_required": true,
+    "external_targets": [],
+    "initial_stage": "simulate",
+    "self_activation": false
+  },
+  "shutdown_behavior": {
+    "authorized_shutdown_must_succeed": true,
+    "new_proposals_after_shutdown": false,
+    "open_records_preserved": true,
+    "external_effects_during_shutdown": false
+  },
+  "recovery_behavior": {
+    "default_mode": "fail_closed",
+    "missing_kernel": "deny",
+    "contract_lock_mismatch": "deny",
+    "unregistered_identity": "deny",
+    "expired_or_revoked_grant": "deny",
+    "unknown_legal_principal": "deny"
+  },
+  "registration_dependencies": [
+    "PumpStation service identity added to the UNIIMENTE Kernel registry",
+    "Venture Cell charter validated against the pinned Kernel schema",
+    "Kernel gateway transport selected and authenticated",
+    "short-lived capability grant issued by the Kernel",
+    "commit-time revalidation and receipt contracts integrated",
+    "founder approval of the exact manifest and contract lock"
+  ]
+}

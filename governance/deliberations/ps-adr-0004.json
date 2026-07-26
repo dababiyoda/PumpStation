@@ -1,0 +1,228 @@
+{
+  "decision_id": "PS-DEL-0004",
+  "title": "Bind PumpStation to pinned UNIIMENTE Kernel contracts without creating local authority",
+  "problem": "PumpStation needs a real institutional boundary for identity, legal principal, grants, policy, budgets, commitment, receipts, and reconciliation without copying the Kernel or allowing local wallet sessions to become consequence authority.",
+  "founder_intent_refs": ["PS-003", "PS-004", "PS-005", "PS-011", "PS-013", "PS-014"],
+  "baseline": "PumpStation has local authentication, simulation decisions, founder stage records, and zero external effects, but it has no exact binding to the canonical UNIIMENTE Kernel source or proposal transport contract.",
+  "alternatives": [
+    {
+      "name": "Copy Kernel logic into PumpStation",
+      "description": "Reimplement identity, grants, policy, and consequence checks locally.",
+      "tradeoffs": "Fast local integration but creates a second constitutional authority and inevitable drift.",
+      "revival_evidence": "Never revive as active authority. Local code may only validate and refuse against pinned contracts."
+    },
+    {
+      "name": "Use wallet identity as institutional authority",
+      "description": "Treat a signed wallet session as the actor, legal principal, and financial mandate.",
+      "tradeoffs": "Simple user experience but collapses authentication, legal responsibility, and capability authority into one unsafe primitive.",
+      "revival_evidence": "Never revive. Wallet control may remain one authentication signal only."
+    },
+    {
+      "name": "Pinned proposal adapter with deny-all gateway",
+      "description": "Pin exact Kernel source, compile bounded proposals, and refuse every consequence until live Kernel identity and grants exist.",
+      "tradeoffs": "Preserves one authority source and testability but requires contract-lock maintenance and a later authenticated gateway.",
+      "revival_evidence": "Current preferred experiment. Promote only after companion Kernel registration and live shadow transport."
+    },
+    {
+      "name": "Wait for a completed TypeScript Kernel SDK",
+      "description": "Do no integration work until the Kernel publishes its planned SDK.",
+      "tradeoffs": "Avoids adapter code but leaves PumpStation architecture disconnected and ownership ambiguous.",
+      "revival_evidence": "Replace the adapter when an approved SDK provides equal or stronger contracts and tests."
+    }
+  ],
+  "do_nothing_option": {
+    "name": "Do nothing",
+    "description": "Keep PumpStation simulation-only and do not expose a Kernel proposal boundary.",
+    "tradeoffs": "Preserves current safety but delays proof that PumpStation can become a governed Venture Cell.",
+    "revival_evidence": "Choose if the pinned adapter creates split-brain authority or cannot remain fail-closed."
+  },
+  "roles": [
+    {
+      "name": "Founder-Intent Steward",
+      "analysis": "The founder wants agents and community capital to work as one organized institution, but human sovereignty and one canonical authority path must remain intact.",
+      "position": "Support a proposal-only adapter and separate companion registration proposal."
+    },
+    {
+      "name": "Systems Architect",
+      "analysis": "The Kernel contract lock, organ manifest, gateway interface, and deny-all default establish clear state and authority ownership without importing the Kernel runtime.",
+      "position": "Support with exact source hashes, strict schemas, and replaceability by a future SDK."
+    },
+    {
+      "name": "Adversarial Reviewer",
+      "analysis": "A local adapter can be mistaken for the real Kernel, a stale lock can normalize obsolete rules, and a malicious gateway can attempt to return allow.",
+      "position": "Support only if every allow is locally denied while unregistered and all source or payload changes invalidate the proposal."
+    },
+    {
+      "name": "Operator and Maintainer",
+      "analysis": "Pinned blobs and explicit status routes make drift observable, but two repositories and stacked PRs increase release coordination burden.",
+      "position": "Support with companion PR lineage, CI, rollback, and one future SDK migration path."
+    },
+    {
+      "name": "Evidence and Welfare Guardian",
+      "analysis": "No local authentication, community vote, or founder-interface action should silently become authority to move money or expose participants.",
+      "position": "Support while all proposals remain nonexecuting and legal, security, receipt, and reconciliation evidence remain explicit missing gates."
+    }
+  ],
+  "evidence": [
+    {
+      "claim": "The adapter pins exact Kernel contract, authority, identity, policy, and Consequence-Gate source revisions.",
+      "tier": "source_review",
+      "reference": "kernel/kernel-contract-lock.json"
+    },
+    {
+      "claim": "The PumpStation manifest has Level 0 autonomy, zero budget, no external targets, and no self-activation.",
+      "tier": "source_review",
+      "reference": "kernel/pumpstation-organ-manifest.json"
+    },
+    {
+      "claim": "Tests reject tampering, stale locks, invalid grants, stage skipping, and malicious allow responses.",
+      "tier": "unit_test",
+      "reference": "server/test/kernel-adapter.test.ts and server/test/kernel-api.test.ts"
+    }
+  ],
+  "counterevidence": [
+    {
+      "claim": "PumpStation is not registered in the pinned Kernel service identity registry.",
+      "tier": "source_review",
+      "reference": "dababiyoda/uniimente-kernel identity/service-identities.yaml at pinned commit"
+    },
+    {
+      "claim": "The pinned Kernel TypeScript SDK is a placeholder and not a live client.",
+      "tier": "source_review",
+      "reference": "kernel/kernel-contract-lock.json"
+    },
+    {
+      "claim": "No live Kernel decision, grant, commit witness, receipt, reconciliation, or external outcome exists.",
+      "tier": "claim",
+      "reference": "docs/KERNEL_INTEGRATION.md"
+    }
+  ],
+  "pass_1": {
+    "intended_outcome": "Make PumpStation structurally compatible with one canonical Kernel while preserving zero unauthorized external effects.",
+    "advantages": [
+      "Exact source and contract lineage is machine-readable.",
+      "Wallet authentication is explicitly separated from workload identity and legal authority.",
+      "The adapter can compile proposals while remaining unable to authorize them.",
+      "Local grant checks only narrow or refuse authority."
+    ],
+    "disadvantages": [
+      {
+        "id": "PS-KERNEL-D1",
+        "description": "A stale pinned contract set can drift from the current Kernel.",
+        "redesign": "Bind every proposal to the lock hash and source commit; require new review on any changed blob."
+      },
+      {
+        "id": "PS-KERNEL-D2",
+        "description": "Developers or users may mistake the adapter for a live Kernel connection.",
+        "redesign": "Expose disconnected and unregistered status, deny every proposal, and label all responses nonexecuting."
+      },
+      {
+        "id": "PS-KERNEL-D3",
+        "description": "A gateway implementation could return allow before registration or complete consequence evidence.",
+        "redesign": "Convert all allow responses into local denials while the manifest remains proposed and unregistered."
+      },
+      {
+        "id": "PS-KERNEL-D4",
+        "description": "The companion registration proposal could be confused with active identity or grant issuance.",
+        "redesign": "Keep it outside the active registry, status INACTIVE, approval NOT_REQUESTED, budget zero, and test that no active identity exists."
+      },
+      {
+        "id": "PS-KERNEL-D5",
+        "description": "Cross-repository updates can create release-order and rollback complexity.",
+        "redesign": "Use independent draft PRs, exact source references, no automatic merge, and a future SDK replacement path."
+      }
+    ],
+    "comparisons": [
+      "Local copied Kernel baseline",
+      "Do-nothing disconnected sandbox",
+      "Simplest wallet-authority shortcut",
+      "Strongest future official SDK",
+      "Reversible pinned proposal-adapter experiment"
+    ],
+    "rejected_alternatives": [
+      {
+        "name": "Activate PumpStation in the Kernel registry immediately",
+        "description": "Add the identity and issue a capability grant in the same change.",
+        "tradeoffs": "Would accelerate integration but bypass manifest hash binding, security review, legal-principal confirmation, and founder approval.",
+        "revival_evidence": "Only after all registration-proposal approvals are independently satisfied."
+      },
+      {
+        "name": "Permit internal simulation writes from a local allow",
+        "description": "Treat low consequence as sufficient for local execution authority.",
+        "tradeoffs": "Convenient but establishes a second consequence path and weakens the one-Kernel invariant.",
+        "revival_evidence": "No revival; internal durable writes should still be attributable and governed."
+      }
+    ]
+  },
+  "pass_2": {
+    "new_weaknesses": [
+      "The adapter contract mirrors Kernel concepts but is not generated from an official SDK.",
+      "The lock verifies declared SHAs but does not fetch and cryptographically verify remote blobs at runtime.",
+      "The companion PR is inactive and therefore does not prove service-to-service interoperability.",
+      "Proposal denial alone does not test commit-time revalidation or receipt reconciliation."
+    ],
+    "disadvantage_dispositions": [
+      {
+        "disadvantage_id": "PS-KERNEL-D1",
+        "status": "experiment",
+        "action": "Retain the lock until an official SDK or automated source-verification job replaces it."
+      },
+      {
+        "disadvantage_id": "PS-KERNEL-D2",
+        "status": "resolved",
+        "action": "Status and API responses explicitly report disconnected, unregistered, and no execution authority."
+      },
+      {
+        "disadvantage_id": "PS-KERNEL-D3",
+        "status": "resolved",
+        "action": "A malicious allow fixture is converted to denial and covered by tests."
+      },
+      {
+        "disadvantage_id": "PS-KERNEL-D4",
+        "status": "resolved",
+        "action": "The Kernel proposal remains outside the active registry and includes tests proving inactivity."
+      },
+      {
+        "disadvantage_id": "PS-KERNEL-D5",
+        "status": "deferred",
+        "action": "Keep both PRs draft and establish merge order only after exact manifest hash approval."
+      }
+    ],
+    "strengthened_design": "Retain a pinned, proposal-only, deny-all adapter as the Phase 3 sandbox boundary. Keep PumpStation unregistered, preserve a separate inactive Kernel registration proposal, and require exact manifest approval before any shadow transport or grant issuance.",
+    "residual_risks": [
+      "No live authenticated Kernel transport exists.",
+      "No official generated TypeScript SDK exists.",
+      "No active service identity or grant exists.",
+      "No commit witness, effect receipt, or reconciliation has been exercised."
+    ]
+  },
+  "dissent": [
+    {
+      "position": "Wait for the official TypeScript SDK instead of maintaining a handwritten adapter.",
+      "rationale": "Mirrored types can drift and increase maintenance burden.",
+      "evidence_threshold": "Replace the adapter when the official SDK covers proposals, grants, decisions, receipts, and source-version negotiation with equal tests.",
+      "owner": "Operator and Maintainer",
+      "review_trigger": "Any official SDK release or Kernel contract-version change."
+    },
+    {
+      "position": "Do not register PumpStation until an independent security review and legal-principal confirmation are complete.",
+      "rationale": "Identity registration can create organizational legitimacy even before a grant is issued.",
+      "evidence_threshold": "Approved manifest hash, security report, legal-principal record, and explicit founder registration decision.",
+      "owner": "Evidence and Welfare Guardian",
+      "review_trigger": "Any proposal to modify the active Kernel service identity registry."
+    }
+  ],
+  "authority_impact": "None. PumpStation remains unregistered, zero-budget, Level 0, proposal-only, disconnected, and unable to execute external effects.",
+  "migration_plan": "Keep this stacked draft behind Phase 2. Review the companion inactive Kernel registration proposal separately. Replace handwritten contracts with the official Kernel SDK when available.",
+  "rollback_plan": "Close PR #15 or revert its commits. Phase 2 remains independently reviewable and the canonical Kernel registry remains unchanged.",
+  "kill_criteria": [
+    "Any local adapter result creates execution authority.",
+    "Wallet authentication is treated as workload identity or legal mandate.",
+    "PumpStation enters the active Kernel registry without the required approvals.",
+    "A changed proposal, source revision, or contract lock remains valid.",
+    "A simulate grant authorizes a financial, external, or irreversible consequence."
+  ],
+  "decision": "EXPERIMENT",
+  "decision_owner": "Founder and Systems Architect",
+  "review_trigger": "Official Kernel SDK, contract revision, companion registration review, or any proposal to enable shadow transport."
+}

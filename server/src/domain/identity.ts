@@ -125,6 +125,7 @@ export class IdentityService {
       "simulation:compile",
       "stage:request",
       "firewall:screen",
+      "kernel:propose",
     ];
     if (this.#founderAddress && address === this.#founderAddress) {
       capabilities.push("stage:decide", "firewall:review");
