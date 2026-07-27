@@ -1,0 +1,206 @@
+{
+  "matrix_version": "1.0.0",
+  "organ": "pumpstation",
+  "features": [
+    {
+      "feature_id": "wallet-connect",
+      "name": "Wallet connection and address attribution",
+      "status": "DEPLOYED",
+      "purpose": "Bind a session to a wallet the user provably controls, so that no institutional command is anonymous and every later action is attributable.",
+      "implementation_refs": [
+        "server/auth/siwe.js",
+        "server/middleware/rate-limit.js",
+        "server/index.js",
+        "client/app.js"
+      ],
+      "authority_delta": {
+        "expands_authority": true,
+        "grants": [
+          "authenticated session bound to one wallet address",
+          "write own email address to own user record"
+        ],
+        "principals": ["wallet holder"]
+      },
+      "financial_exposure": {
+        "expands_exposure": false,
+        "max_at_risk_usd": 0
+      },
+      "threats_mitigated": [
+        {
+          "threat_id": "T-001",
+          "threat": "Signature replay: a captured signature authenticates as that wallet forever.",
+          "control": "Server-issued single-use nonce, consumed on first verification attempt whatever the outcome.",
+          "evidence_ref": "server/test/siwe.test.js: 'a valid signature cannot be replayed'"
+        },
+        {
+          "threat_id": "T-002",
+          "threat": "Static-message authentication bypass: any signature over a fixed string grants access.",
+          "control": "The server rebuilds the signed message from its own stored challenge and never verifies a client-supplied message string.",
+          "evidence_ref": "server/test/siwe.test.js: 'REGRESSION: rejects a signature over the old static connect message'"
+        },
+        {
+          "threat_id": "T-003",
+          "threat": "Cross-domain replay: a signature harvested by another site authenticates here.",
+          "control": "EIP-4361 domain binding inside the signed bytes; the verifier is constructed for one origin.",
+          "evidence_ref": "server/test/siwe.test.js: 'a signature harvested for another domain does not authenticate here'"
+        },
+        {
+          "threat_id": "T-004",
+          "threat": "Indefinite credential lifetime: a captured signature stays valid indefinitely.",
+          "control": "Five-minute challenge TTL, with expiry bound inside the signed message.",
+          "evidence_ref": "server/test/siwe.test.js: 'an expired challenge is rejected'"
+        },
+        {
+          "threat_id": "T-005",
+          "threat": "Account takeover by claiming another wallet's challenge.",
+          "control": "Each nonce is issued to exactly one address and verifies for no other.",
+          "evidence_ref": "server/test/siwe.test.js: 'a challenge issued to one address does not verify for another'"
+        },
+        {
+          "threat_id": "T-006",
+          "threat": "Wallet-draining signature: an injected or third-party script swaps the signing prompt for a token approval.",
+          "control": "All third-party scripts removed from the client; CSP restricted to script-src 'self' with no inline scripts; the exact message and its plain-English limits are displayed before the wallet prompt.",
+          "evidence_ref": "client/index.html, client/app.js, Content-Security-Policy in server/index.js"
+        },
+        {
+          "threat_id": "T-007",
+          "threat": "Any-origin API access: a hostile site drives this API with a user's credentials.",
+          "control": "CORS origin allowlist from ALLOWED_ORIGINS; an empty allowlist denies rather than permits.",
+          "evidence_ref": "server/index.js cors() origin callback"
+        },
+        {
+          "threat_id": "T-008",
+          "threat": "Resource exhaustion via challenge flooding or signature grinding.",
+          "control": "Per-IP fixed-window rate limits, a capacity-bounded nonce store, a capacity-bounded limiter map, and a 16kb JSON body cap.",
+          "evidence_ref": "server/test/rate-limit.test.js and server/test/siwe.test.js: 'the nonce store is bounded'"
+        }
+      ],
+      "threats_introduced": [
+        {
+          "threat_id": "T-009",
+          "threat": "Challenge state is in-process, so a multi-process or restarted deployment loses pending challenges and a user must re-request one.",
+          "residual_risk": "low",
+          "mitigation": "Accepted at this stage: challenges are short-lived and re-issuing is one request. A shared challenge store is registered separately as 'shared-challenge-store' and must pass this gate on its own terms."
+        },
+        {
+          "threat_id": "T-010",
+          "threat": "Optional email is personal data attached to a wallet address.",
+          "residual_risk": "low",
+          "mitigation": "Written only after the signature verifies, only for the authenticated address, only when it matches a conservative format, and never returned for any other address."
+        }
+      ],
+      "blast_radius": {
+        "bounded": true,
+        "max_loss_usd": 0,
+        "scope": "One wallet's session and its own email field. The feature holds no keys, signs no transactions and moves no value, so full compromise of this endpoint yields an attacker a session for an address they already control.",
+        "containment": "No treasury path exists from this feature. Revocation is by challenge expiry; there is no long-lived token to revoke."
+      },
+      "recovery": {
+        "procedure_ref": "docs/RECOVERY.md#wallet-connect",
+        "tested": true,
+        "test_ref": "server/test/siwe.test.js (16 cases, including replay, expiry, cross-domain and address-mismatch attacks)",
+        "last_exercised": "2026-07-27"
+      },
+      "agent_permissions": []
+    },
+
+    {
+      "feature_id": "shared-challenge-store",
+      "name": "Shared challenge store for multi-process deployment",
+      "status": "PROPOSED",
+      "purpose": "Let challenges survive a process restart and be valid across replicas, so horizontal scaling does not force a weaker challenge lifetime.",
+      "authority_delta": {
+        "expands_authority": false,
+        "grants": [],
+        "principals": []
+      },
+      "financial_exposure": {
+        "expands_exposure": false,
+        "max_at_risk_usd": 0
+      },
+      "threats_mitigated": [
+        {
+          "threat_id": "T-011",
+          "threat": "Operators weaken challenge TTL or reuse nonces to work around per-process state during scale-out.",
+          "control": "One shared, atomically-consuming store so single-use remains single-use across replicas."
+        }
+      ],
+      "threats_introduced": [
+        {
+          "threat_id": "T-012",
+          "threat": "A shared store is a new network dependency and a new target; compromise of it forges challenges for every replica at once.",
+          "residual_risk": "medium",
+          "mitigation": "Not yet designed. Requires authenticated transport, per-key TTL enforced by the store, and an atomic consume primitive rather than read-then-delete."
+        }
+      ],
+      "blast_radius": {
+        "bounded": true,
+        "max_loss_usd": 0,
+        "scope": "All pending challenges across all replicas.",
+        "containment": "Not yet designed."
+      },
+      "recovery": {
+        "procedure_ref": "",
+        "tested": false
+      },
+      "agent_permissions": [],
+      "notes": "Registered before it is built, so the gate states what is missing rather than discovering it at review time. It passes today only because it expands neither authority nor financial exposure, so the termination trigger does not bite; the gate still warns that its control has no evidence yet. If the design later touches authority or value, R2 and R3 apply and its empty recovery block will reject it."
+    },
+
+    {
+      "feature_id": "treasury-multisig",
+      "name": "Multisig treasury with per-transfer envelopes",
+      "status": "PROPOSED",
+      "purpose": "Hold protocol funds such that no single key, person or agent can move them, and every movement carries an identity, purpose, recipient, ceiling and expiry.",
+      "authority_delta": {
+        "expands_authority": true,
+        "grants": ["propose treasury transfer", "co-sign treasury transfer"],
+        "principals": ["founder", "named signers", "treasury agent"]
+      },
+      "financial_exposure": {
+        "expands_exposure": true,
+        "max_at_risk_usd": null
+      },
+      "threats_mitigated": [
+        {
+          "threat_id": "T-013",
+          "threat": "Single compromised key drains the treasury.",
+          "control": "M-of-N signing with signers on separate hardware and custody."
+        },
+        {
+          "threat_id": "T-014",
+          "threat": "Silent treasury movement with no notice to participants.",
+          "control": "Timelock between approval and execution, with a public queue."
+        }
+      ],
+      "threats_introduced": [
+        {
+          "threat_id": "T-015",
+          "threat": "Signer collusion or simultaneous compromise of M signers.",
+          "residual_risk": "high",
+          "mitigation": "Not yet designed. Needs per-transfer ceilings so that reaching M does not imply unlimited authority."
+        }
+      ],
+      "blast_radius": {
+        "bounded": false,
+        "max_loss_usd": null,
+        "scope": "Entire treasury.",
+        "containment": "Not yet designed."
+      },
+      "recovery": {
+        "procedure_ref": "",
+        "tested": false
+      },
+      "agent_permissions": [
+        {
+          "role": "treasury-agent",
+          "actions": ["treasury.propose_transfer"],
+          "spending_ceiling_usd": null,
+          "expires": null,
+          "can_approve_own_proposals": false
+        }
+      ],
+      "notes": "Deliberately recorded with its real gaps rather than aspirational values. The gate refuses it on unbounded exposure, unbounded blast radius, untested recovery and an unrestricted, non-expiring agent permission. Every one of those must become a number before this feature may be built."
+    }
+  ]
+}
