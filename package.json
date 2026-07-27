@@ -1,0 +1,16 @@
+{
+  "name": "pumpstation",
+  "version": "1.0.0",
+  "private": true,
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "gate": "node governance/check.js",
+    "test:gate": "node --test governance/test/*.test.js",
+    "test:server": "cd server && npm test",
+    "test": "npm run gate && npm run test:gate && npm run test:server",
+    "postinstall": "cd server && npm install --no-audit --no-fund"
+  }
+}
