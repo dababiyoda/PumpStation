@@ -1,0 +1,1 @@
+Read the repository-root `AGENTS.md` before any new or resumed coding task. It pins the canonical UNIIMENTE collaboration guide, evidence requirements and handoff rules. Never treat wallet connectivity, implementation code, model output, or a passing metadata check as permission to sign, move money, deploy, or create a financial consequence.
