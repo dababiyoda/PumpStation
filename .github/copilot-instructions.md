@@ -1,0 +1,1 @@
+Read `AGENTS.md` before material work. Canonical rule: **Preserve the intended effect. Do not literalize the metaphor.** Use Web3, zero-trust, morphogenesis and other mechanisms only when they causally improve the named effect; prefer real existing technology before new architecture; preserve UNIIMENTE authority.
