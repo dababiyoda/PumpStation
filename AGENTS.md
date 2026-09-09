@@ -6,7 +6,7 @@ Before material work, read:
 
 - `dababiyoda/uniimente-kernel/AGENTS.md`
 - `dababiyoda/uniimente-kernel/docs/FOUNDER_EFFECT_COMPILER.md`
-- `dababiyoda/uniimente-kernel/docs/intent/INTENT-0029-effect-not-metaphor.md`
+- `dababiyoda/uniimente-kernel/docs/intent/INTENT-0030-effect-not-metaphor.md`
 
 ## Mandatory founder rule
 
