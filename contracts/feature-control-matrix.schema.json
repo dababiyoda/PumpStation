@@ -1,0 +1,181 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://uniimente.internal/contracts/feature-control-matrix.schema.json",
+  "title": "FeatureControlMatrix",
+  "description": "PumpStation's threat-to-control matrix. Every feature declares what authority and financial exposure it creates, which named threats it mitigates, which it introduces, how large its worst case is, and how it is recovered. This contract defines SHAPE only. The admission RULES — which combinations are permitted — live in governance/admission.js, because they are cross-field conditions that JSON Schema cannot express. Passing this schema means a feature is well-formed, never that it is admitted.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["matrix_version", "organ", "features"],
+  "properties": {
+    "matrix_version": {"type": "string"},
+    "organ": {
+      "type": "string",
+      "const": "pumpstation",
+      "description": "The organ this matrix governs. One matrix per organ; no organ writes another's."
+    },
+    "features": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/feature"}
+    }
+  },
+  "$defs": {
+    "feature": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "feature_id", "name", "status", "purpose", "authority_delta",
+        "financial_exposure", "threats_mitigated", "threats_introduced",
+        "blast_radius", "recovery", "agent_permissions"
+      ],
+      "properties": {
+        "feature_id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+        },
+        "name": {"type": "string", "minLength": 1},
+        "status": {
+          "type": "string",
+          "enum": ["PROPOSED", "ADMITTED", "DEPLOYED", "REJECTED", "WITHDRAWN"],
+          "description": "PROPOSED is the only state a feature may enter in. ADMITTED means the gate passed it. DEPLOYED means it is running. REJECTED and WITHDRAWN are retained, never deleted: a rejected feature is institutional memory about what was considered and why it was refused."
+        },
+        "purpose": {"type": "string", "minLength": 1},
+        "implementation_refs": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Paths that implement this feature. Required by the gate for DEPLOYED status."
+        },
+        "authority_delta": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["expands_authority"],
+          "properties": {
+            "expands_authority": {
+              "type": "boolean",
+              "description": "Whether this feature lets any principal do something it previously could not."
+            },
+            "grants": {"type": "array", "items": {"type": "string"}},
+            "principals": {"type": "array", "items": {"type": "string"}}
+          }
+        },
+        "financial_exposure": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["expands_exposure", "max_at_risk_usd"],
+          "properties": {
+            "expands_exposure": {"type": "boolean"},
+            "max_at_risk_usd": {
+              "type": ["number", "null"],
+              "minimum": 0,
+              "description": "Null means unbounded. A feature that expands exposure with a null ceiling is rejected by the gate."
+            }
+          }
+        },
+        "threats_mitigated": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["threat_id", "threat", "control"],
+            "properties": {
+              "threat_id": {"type": "string", "pattern": "^T-[0-9]{3}$"},
+              "threat": {"type": "string", "minLength": 1},
+              "control": {
+                "type": "string",
+                "minLength": 1,
+                "description": "The specific mechanism that reduces this threat. 'Best practices' and 'audited' are not controls."
+              },
+              "evidence_ref": {
+                "type": "string",
+                "description": "Test, audit or exercise demonstrating the control works. Absent means the control is claimed, not shown."
+              }
+            }
+          }
+        },
+        "threats_introduced": {
+          "type": "array",
+          "description": "Threats this feature creates. An empty array is a claim that the feature adds no attack surface, and the gate treats that claim as suspicious for anything that expands authority.",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["threat_id", "threat", "residual_risk"],
+            "properties": {
+              "threat_id": {"type": "string", "pattern": "^T-[0-9]{3}$"},
+              "threat": {"type": "string", "minLength": 1},
+              "residual_risk": {
+                "type": "string",
+                "enum": ["none", "low", "medium", "high", "critical"]
+              },
+              "mitigation": {"type": "string"}
+            }
+          }
+        },
+        "blast_radius": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["bounded", "max_loss_usd", "scope"],
+          "properties": {
+            "bounded": {"type": "boolean"},
+            "max_loss_usd": {
+              "type": ["number", "null"],
+              "minimum": 0,
+              "description": "Worst-case loss if this feature is fully compromised. Null means unbounded."
+            },
+            "scope": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Who and what is affected at the worst case."
+            },
+            "containment": {"type": "string"}
+          }
+        },
+        "recovery": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["procedure_ref", "tested"],
+          "properties": {
+            "procedure_ref": {"type": "string"},
+            "tested": {
+              "type": "boolean",
+              "description": "Whether the recovery procedure has actually been exercised. A written procedure that has never been run is not a tested recovery path."
+            },
+            "test_ref": {"type": "string"},
+            "last_exercised": {"type": "string"}
+          }
+        },
+        "agent_permissions": {
+          "type": "array",
+          "description": "Every permission this feature grants to an agent or role. An empty array asserts the feature grants none.",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["role", "actions", "spending_ceiling_usd", "expires"],
+            "properties": {
+              "role": {"type": "string", "minLength": 1},
+              "actions": {
+                "type": "array",
+                "items": {"type": "string"},
+                "description": "Explicit action list. The wildcard '*' is rejected by the gate."
+              },
+              "spending_ceiling_usd": {
+                "type": ["number", "null"],
+                "minimum": 0,
+                "description": "Null means unrestricted, which the gate rejects without exception."
+              },
+              "expires": {
+                "type": ["string", "null"],
+                "description": "Null means never expires, which the gate rejects."
+              },
+              "can_approve_own_proposals": {"type": "boolean"}
+            }
+          }
+        },
+        "rejection_reasons": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Populated when status is REJECTED. Retained as institutional memory."
+        },
+        "notes": {"type": "string"}
+      }
+    }
+  }
+}
