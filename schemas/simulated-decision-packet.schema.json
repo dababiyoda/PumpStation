@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pumpstation.local/schemas/simulated-decision-packet.schema.json",
+  "title": "PumpStation Simulated Decision Packet",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "decision_id",
+    "opportunity_id",
+    "opportunity_version",
+    "compiled_at",
+    "source_hash",
+    "review_hashes",
+    "manipulation_screen",
+    "evidence_assessment",
+    "dissent",
+    "recommendation",
+    "authority_status",
+    "external_effect_permitted",
+    "kernel_permit_status",
+    "reproducibility",
+    "packet_hash"
+  ],
+  "properties": {
+    "decision_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "opportunity_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "opportunity_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "compiled_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source_hash": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "review_hashes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^sha256:[a-f0-9]{64}$"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "manipulation_screen": {
+      "type": "object"
+    },
+    "evidence_assessment": {
+      "type": "object"
+    },
+    "dissent": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "recommendation": {
+      "enum": ["reject", "needs_evidence", "simulate"]
+    },
+    "authority_status": {
+      "const": "proposal_only"
+    },
+    "external_effect_permitted": {
+      "const": false
+    },
+    "kernel_permit_status": {
+      "const": "not_requested"
+    },
+    "reproducibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["method", "seed", "code_version"],
+      "properties": {
+        "method": {
+          "type": "string",
+          "minLength": 1
+        },
+        "seed": {
+          "type": "integer"
+        },
+        "code_version": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "packet_hash": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    }
+  }
+}

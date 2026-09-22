@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pumpstation.local/schemas/institutional-event.schema.json",
+  "title": "PumpStation Institutional Event",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "event_id",
+    "sequence",
+    "event_type",
+    "actor",
+    "occurred_at",
+    "correlation_id",
+    "payload",
+    "payload_hash",
+    "previous_event_hash",
+    "event_hash"
+  ],
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sequence": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "event_type": {
+      "enum": [
+        "opportunity_submitted",
+        "opportunity_rejected",
+        "deliberation_added",
+        "evidence_added",
+        "evidence_challenged",
+        "conflict_disclosed",
+        "agent_recommendation",
+        "human_dissent",
+        "simulation_started",
+        "simulation_completed",
+        "decision_proposed",
+        "decision_approved",
+        "decision_refused",
+        "stage_promotion_requested",
+        "stage_promotion_approved",
+        "stage_promotion_refused",
+        "incident",
+        "correction",
+        "reconciliation",
+        "retirement"
+      ]
+    },
+    "actor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["actor_id", "actor_class"],
+      "properties": {
+        "actor_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "actor_class": {
+          "enum": ["human", "agent", "policy", "system"]
+        }
+      }
+    },
+    "occurred_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "correlation_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "payload": {
+      "type": "object"
+    },
+    "payload_hash": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "previous_event_hash": {
+      "type": ["string", "null"],
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "event_hash": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    }
+  }
+}

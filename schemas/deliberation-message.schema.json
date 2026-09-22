@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pumpstation.local/schemas/deliberation-message.schema.json",
+  "title": "PumpStation Deliberation Message",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "message_id",
+    "linked_opportunity_id",
+    "channel_type",
+    "author",
+    "timestamp",
+    "content",
+    "source_references",
+    "evidence_status",
+    "conflict_disclosure",
+    "supersedes_message_id",
+    "moderation_state"
+  ],
+  "properties": {
+    "message_id": {
+      "type": "string",
+      "pattern": "^msg_[A-Za-z0-9_-]+$"
+    },
+    "linked_opportunity_id": {
+      "type": "string",
+      "pattern": "^opp_[A-Za-z0-9_-]+$"
+    },
+    "channel_type": {
+      "enum": [
+        "opportunity_submission",
+        "evidence",
+        "bull_thesis",
+        "bear_thesis",
+        "conflicts",
+        "legal_questions",
+        "security",
+        "community_impact",
+        "decision_review",
+        "simulation_results",
+        "outcome_reconciliation",
+        "complaints_appeals",
+        "education"
+      ]
+    },
+    "author": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["actor_id", "actor_class", "role"],
+      "properties": {
+        "actor_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "actor_class": {
+          "enum": ["human", "agent"]
+        },
+        "role": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "content": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_references": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "evidence_status": {
+      "enum": [
+        "claim",
+        "model_output",
+        "test_fixture",
+        "simulation",
+        "external_evidence",
+        "independently_verified_outcome",
+        "commercial_result"
+      ]
+    },
+    "conflict_disclosure": {
+      "type": "string",
+      "minLength": 1
+    },
+    "supersedes_message_id": {
+      "type": ["string", "null"]
+    },
+    "moderation_state": {
+      "enum": ["visible", "challenged", "corrected", "quarantined"]
+    }
+  }
+}

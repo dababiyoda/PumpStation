@@ -1,69 +1,235 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Wallet Connect</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.production.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.production.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/ethers@6.7.0/dist/ethers.umd.min.js"></script>
-</head>
-<body>
-  <div id="root"></div>
-  <script type="text/babel">
-    const { useState } = React;
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="PumpStation Labs simulation-only community capital research institution"
+    />
+    <title>PumpStation Labs · Founder Control Surface</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <header class="status-rail" aria-label="Permanent operating restrictions">
+      <span>SIMULATION ONLY</span>
+      <span>NO REAL MONEY</span>
+      <span>NO INVESTMENT OFFER</span>
+      <span>NO COORDINATED MARKET ACTION</span>
+      <span>NO PUBLIC ASSET PROMOTION</span>
+    </header>
 
-    function WalletConnect() {
-      const [address, setAddress] = useState('');
-      const [email, setEmail] = useState('');
-      const [status, setStatus] = useState('');
-
-      const connectWallet = async () => {
-        if (!window.ethereum) {
-          setStatus('MetaMask not found');
-          return;
-        }
-        try {
-          const provider = new ethers.BrowserProvider(window.ethereum);
-          await provider.send('eth_requestAccounts', []);
-          const signer = await provider.getSigner();
-          const addr = await signer.getAddress();
-          const signature = await signer.signMessage('Connect PumpStation');
-          setAddress(addr);
-          const res = await fetch('/api/connect-wallet', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ address: addr, email, signature })
-          });
-          const data = await res.json();
-          if (data.success) {
-            setStatus('Wallet connected');
-          } else {
-            setStatus('Error connecting wallet');
-          }
-        } catch (err) {
-          setStatus('Connection failed');
-        }
-      };
-
-      return (
-        <div>
-          <h1>Wallet Connection</h1>
-          <input
-            type="email"
-            placeholder="Optional email"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-          />
-          <button onClick={connectWallet}>Connect Wallet</button>
-          {address && <p>Address: {address}</p>}
-          {status && <p>{status}</p>}
+    <main>
+      <nav class="topbar">
+        <div class="brand">
+          <div class="mark" aria-hidden="true">PS</div>
+          <div>
+            <p class="eyebrow">Bounded UNIIMENTE Venture Cell</p>
+            <h1>PumpStation Labs</h1>
+          </div>
         </div>
-      );
-    }
+        <div class="identity">
+          <div>
+            <span class="label">Identity boundary</span>
+            <strong id="identity-state">Not authenticated</strong>
+          </div>
+          <button id="wallet-button" type="button">Authenticate wallet</button>
+        </div>
+      </nav>
 
-    ReactDOM.render(<WalletConnect />, document.getElementById('root'));
-  </script>
-</body>
+      <section class="hero">
+        <div>
+          <p class="eyebrow">Community capital institution · Stage 0</p>
+          <h2>Institutional-grade research before capital.</h2>
+          <p class="lede">
+            Productive opportunities enter as evidence-bound packets. Independent
+            roles build the case and the counter-case. Policies screen the result.
+            Humans decide. Only the UNIIMENTE Kernel may later permit a real
+            consequence.
+          </p>
+        </div>
+        <div class="authority-card">
+          <span class="signal signal-safe">EXTERNAL EFFECTS DISABLED</span>
+          <p>
+            Models reason. Agents propose. Policies and authorized humans decide.
+            The Kernel determines what may become real. Reality determines what
+            was correct.
+          </p>
+          <dl>
+            <div>
+              <dt>Active stage</dt>
+              <dd id="active-stage">0 · Research sandbox</dd>
+            </div>
+            <div>
+              <dt>Unauthorized effects</dt>
+              <dd id="unauthorized-effects">0</dd>
+            </div>
+            <div>
+              <dt>Kernel connection</dt>
+              <dd>Not implemented</dd>
+            </div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="metric-grid" aria-label="Institution metrics">
+        <article>
+          <span class="label">Single Bottleneck Metric</span>
+          <strong class="metric" id="sbm">0%</strong>
+          <p>
+            Complete simulated decisions with evidence, preserved dissent,
+            reproducibility, and zero prohibited coordination.
+          </p>
+        </article>
+        <article>
+          <span class="label">Accepted opportunities</span>
+          <strong class="metric" id="accepted">0</strong>
+          <p>Packets that passed structural intake controls.</p>
+        </article>
+        <article>
+          <span class="label">Constitutional refusals</span>
+          <strong class="metric" id="refused">0</strong>
+          <p>Rejected manipulation, authority, evidence, or disclosure attempts.</p>
+        </article>
+        <article>
+          <span class="label">Audit integrity</span>
+          <strong class="metric small" id="chain-state">Checking</strong>
+          <p id="event-count">0 append-only institutional events.</p>
+        </article>
+      </section>
+
+      <section class="workspace-grid">
+        <article class="panel opportunities">
+          <header>
+            <div>
+              <p class="eyebrow">Decision workbench</p>
+              <h3>Opportunity pipeline</h3>
+            </div>
+            <span class="signal">FIXTURES LABELED</span>
+          </header>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Opportunity</th>
+                  <th>Type</th>
+                  <th>Evidence</th>
+                  <th>Decision state</th>
+                </tr>
+              </thead>
+              <tbody id="opportunity-rows">
+                <tr>
+                  <td colspan="4" class="empty">No accepted opportunities yet.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="footnote">
+            Conversation volume, enthusiasm, reactions, and popularity are never
+            evidence. Chat cannot become a tool call or capital instruction.
+          </p>
+        </article>
+
+        <article class="panel gate">
+          <header>
+            <div>
+              <p class="eyebrow">Canonical authority path</p>
+              <h3>Consequence gate</h3>
+            </div>
+          </header>
+          <ol class="gate-flow">
+            <li class="complete"><span>1</span>Opportunity packet</li>
+            <li class="complete"><span>2</span>Independent role review</li>
+            <li><span>3</span>Adversarial simulation</li>
+            <li><span>4</span>Authorized human decision</li>
+            <li class="locked"><span>5</span>UNIIMENTE Kernel permit</li>
+            <li class="locked"><span>6</span>External consequence</li>
+          </ol>
+          <div class="lock-note">
+            <strong>Standalone ceiling</strong>
+            <p>
+              PumpStation ends at proposal and founder decision packets. There is
+              no implementation for steps 5 or 6.
+            </p>
+          </div>
+        </article>
+      </section>
+
+      <section class="panel stage-panel">
+        <header>
+          <div>
+            <p class="eyebrow">Evidence-gated maturity</p>
+            <h3>Public launch ladder</h3>
+          </div>
+          <span class="signal signal-safe">STAGE 0 ACTIVE</span>
+        </header>
+        <div class="stages">
+          <article class="active">
+            <span>00</span>
+            <h4>Research sandbox</h4>
+            <p>Synthetic opportunities, replay, paper portfolios, deliberation.</p>
+          </article>
+          <article>
+            <span>01</span>
+            <h4>Closed pilot</h4>
+            <p>Invited users and paper portfolios. No pooled capital.</p>
+          </article>
+          <article>
+            <span>02</span>
+            <h4>Public research</h4>
+            <p>Education and methodology. No offering or coordinated buying.</p>
+          </article>
+          <article>
+            <span>03</span>
+            <h4>Proprietary pilot</h4>
+            <p>Founder-owned capital only after counsel and explicit authority.</p>
+          </article>
+          <article>
+            <span>04</span>
+            <h4>Productive assets</h4>
+            <p>Cash flow, customer value, operating businesses, infrastructure.</p>
+          </article>
+          <article>
+            <span>05</span>
+            <h4>Regulated vehicle</h4>
+            <p>External capital only under a selected, reviewed legal structure.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="panel role-panel">
+        <header>
+          <div>
+            <p class="eyebrow">Proposal capacity without sovereign authority</p>
+            <h3>Ten bounded institutional roles</h3>
+          </div>
+          <span class="signal">AGREEMENT ≠ AUTHORITY</span>
+        </header>
+        <div class="roles">
+          <span>Opportunity Scout</span>
+          <span>Evidence Researcher</span>
+          <span>Fundamental Underwriter</span>
+          <span>Adversarial Reviewer</span>
+          <span>Community Benefit Reviewer</span>
+          <span>Legal &amp; Compliance Screener</span>
+          <span>Security Reviewer</span>
+          <span>Portfolio &amp; Resource Allocator</span>
+          <span>Reconciliation Agent</span>
+          <span>Institutional Memory Agent</span>
+        </div>
+      </section>
+
+      <footer>
+        <strong>MODEL OUTPUT IS NOT FINANCIAL EVIDENCE</strong>
+        <p>
+          Passing tests and synthetic results prove code behavior only. They do
+          not prove legal clearance, market performance, investment quality, or
+          community benefit.
+        </p>
+      </footer>
+    </main>
+
+    <div id="toast" role="status" aria-live="polite"></div>
+  </body>
 </html>

@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pumpstation.local/schemas/stage-promotion.schema.json",
+  "title": "PumpStation Stage Promotion Packet",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "promotion_id",
+    "version",
+    "current_stage",
+    "requested_next_stage",
+    "exact_source_version",
+    "passed_evidence",
+    "failed_evidence",
+    "unresolved_risks",
+    "legal_review_status",
+    "security_review_status",
+    "founder_decision",
+    "kernel_permit_status",
+    "timestamp",
+    "rollback_plan",
+    "kill_criteria",
+    "packet_hash"
+  ],
+  "properties": {
+    "promotion_id": {
+      "type": "string",
+      "pattern": "^promotion_[A-Za-z0-9_-]+$"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "current_stage": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 5
+    },
+    "requested_next_stage": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "exact_source_version": {
+      "type": "string",
+      "minLength": 7
+    },
+    "passed_evidence": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "failed_evidence": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "unresolved_risks": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "legal_review_status": {
+      "enum": ["not_started", "pending", "passed", "failed"]
+    },
+    "security_review_status": {
+      "enum": ["not_started", "pending", "passed", "failed"]
+    },
+    "founder_decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "actor_id", "reason", "decided_at"],
+      "properties": {
+        "status": {
+          "enum": ["pending", "approved", "refused"]
+        },
+        "actor_id": {
+          "type": ["string", "null"]
+        },
+        "reason": {
+          "type": ["string", "null"]
+        },
+        "decided_at": {
+          "type": ["string", "null"],
+          "format": "date-time"
+        }
+      }
+    },
+    "kernel_permit_status": {
+      "enum": ["not_requested", "awaiting_kernel_permit", "refused"]
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "rollback_plan": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "kill_criteria": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "packet_hash": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    }
+  }
+}

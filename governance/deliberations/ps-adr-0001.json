@@ -1,0 +1,477 @@
+{
+  "decision_id": "PS-ADR-0001",
+  "title": "Build PumpStation as a simulation-only community capital institution",
+  "problem": "The baseline repository described coordinated memecoin buying, promotion, and automated exits, while the founder now requires an evidence-bound institution in which models reason, agents propose, authorized humans decide, and only the UNIIMENTE Kernel may permit external consequences.",
+  "founder_intent_refs": [
+    "PS-INTENT-001",
+    "PS-INTENT-002",
+    "PS-INTENT-003",
+    "PS-INTENT-004",
+    "PS-INTENT-005",
+    "PS-INTENT-006",
+    "PS-INTENT-007",
+    "PS-INTENT-008",
+    "PS-INTENT-009",
+    "PS-INTENT-010",
+    "PS-INTENT-011",
+    "PS-INTENT-012",
+    "PS-INTENT-013",
+    "PS-INTENT-014",
+    "PS-INTENT-015",
+    "PS-INTENT-016"
+  ],
+  "baseline": "At commit df6a732, PumpStation's README proposed real-time memecoin coordination, community-driven price movements, voting on buys, and automated exits. The executable code provided a replayable fixed-message wallet login and a small client/server shell.",
+  "alternatives": [
+    {
+      "name": "Documentation-only research project",
+      "description": "Replace the README and publish educational material without an executable institutional control plane.",
+      "advantages": [
+        "Lowest implementation and maintenance cost",
+        "Avoids implying that the prototype is ready for capital"
+      ],
+      "disadvantages": [
+        "Cannot test evidence completeness, dissent preservation, authority boundaries, or replay",
+        "Leaves safety claims as prose rather than executable refusals"
+      ],
+      "revival_evidence": "Revive if the executable Stage 0 system adds maintenance burden without producing measurable evidence-quality or safety gains."
+    },
+    {
+      "name": "Centralized analyst service",
+      "description": "Use one AI analyst, a conventional database, and direct human review without a multi-role deliberation model.",
+      "advantages": [
+        "Simpler operation and lower model cost",
+        "Clearer accountability and faster decisions"
+      ],
+      "disadvantages": [
+        "May omit adversarial, legal, security, or community-impact perspectives",
+        "Creates one analytical failure mode"
+      ],
+      "revival_evidence": "Prefer this design if held-out comparisons match the multi-role design on decision quality, evidence, fraud detection, and participant protection at materially lower cost."
+    },
+    {
+      "name": "Full distributed agent platform",
+      "description": "Build autonomous agent orchestration, distributed storage, on-chain governance, and execution-ready integrations now.",
+      "advantages": [
+        "Could support later scale and specialist autonomy",
+        "Could provide independent proof anchoring"
+      ],
+      "disadvantages": [
+        "Prematurely expands the authority and attack surface",
+        "Adds expense and complexity before the product wedge is proven"
+      ],
+      "revival_evidence": "Revive components only when a named verifier, measured bottleneck, approved stage, and constitutional review justify each dependency."
+    }
+  ],
+  "do_nothing_option": {
+    "expected_outcome": "The tiny baseline remains inexpensive but keeps an unsafe and strategically weak public product definition with no institutional learning system.",
+    "advantages": [
+      "No migration cost",
+      "No new operational surface"
+    ],
+    "disadvantages": [
+      "Preserves coordinated-market language",
+      "Does not test the founder's productive-capital thesis"
+    ]
+  },
+  "roles": [
+    {
+      "role": "Founder-Intent Steward",
+      "position": "Preserve the community ownership mission while replacing price engineering with productive-asset capability.",
+      "material_concerns": [
+        "The redesign could overcorrect into a generic compliance application",
+        "Future contributors could treat agent agreement as authority"
+      ],
+      "evidence_refs": [
+        "Master Implementation Prompt",
+        "DOCTRINE.txt",
+        "UNIIMENTE Reality Compiler Blueprint.pdf"
+      ],
+      "recommendation": "RETAIN"
+    },
+    {
+      "role": "Systems Architect",
+      "position": "Use one local event spine and typed contracts as the Stage 0 source of institutional truth.",
+      "material_concerns": [
+        "Duplicated sources of authority",
+        "Premature distributed infrastructure"
+      ],
+      "evidence_refs": [
+        "Repository inventory at df6a732",
+        "Proof to Settlement Egregore.pdf",
+        "docs/ARCHITECTURE_OWNERSHIP.md"
+      ],
+      "recommendation": "RETAIN"
+    },
+    {
+      "role": "Adversarial Reviewer",
+      "position": "Assume coordinated narratives, classifier evasion, key compromise, and evidence laundering.",
+      "material_concerns": [
+        "Keyword rules can be evaded",
+        "Hashes can be mistaken for truth",
+        "A founder signature can be mistaken for a Kernel permit"
+      ],
+      "evidence_refs": [
+        "CFTC pump-and-dump advisory",
+        "SEC affinity-fraud investor alert",
+        "W3C Verifiable Credentials Data Model 2.0",
+        "docs/THREAT_MODEL.md"
+      ],
+      "recommendation": "EXPERIMENT"
+    },
+    {
+      "role": "Operator and Maintainer",
+      "position": "Keep one Node process, one static client, and a reversible append-only store for Stage 0.",
+      "material_concerns": [
+        "Governance artifacts can overwhelm the codebase",
+        "Local JSONL is not a production durability boundary"
+      ],
+      "evidence_refs": [
+        "Baseline repository inventory",
+        "docs/REPOSITORY_RATIONALIZATION_PLAN.md"
+      ],
+      "recommendation": "RETAIN"
+    },
+    {
+      "role": "Evidence and Welfare Guardian",
+      "position": "Protect immigrant participants from affinity pressure and preserve counterevidence and dissent.",
+      "material_concerns": [
+        "Synthetic fixtures could be marketed as performance",
+        "Multi-agent advantage is unproven",
+        "Polished interfaces can overstate maturity"
+      ],
+      "evidence_refs": [
+        "SEC affinity-fraud investor alert",
+        "fixtures/synthetic-opportunities.json",
+        "server/src/experiment.ts"
+      ],
+      "recommendation": "EXPERIMENT"
+    }
+  ],
+  "evidence": [
+    {
+      "claim": "The baseline actively described coordinated buying, promotion, and exits.",
+      "tier": "historical_artifact",
+      "reference": "README.md at df6a732",
+      "finding": "The public product definition explicitly relied on community-driven memecoin price activity."
+    },
+    {
+      "claim": "The canonical UNIIMENTE design reserves external consequences to one Kernel path.",
+      "tier": "historical_artifact",
+      "reference": "UNIIMENTE Reality Compiler Blueprint.pdf and Proof to Settlement Egregore.pdf",
+      "finding": "The supplied architecture separates reasoning, proposals, authorized decisions, consequence gating, receipts, and reality reconciliation."
+    },
+    {
+      "claim": "Countdown buying and organizer-first exits are recognized pump-and-dump patterns.",
+      "tier": "primary_source",
+      "reference": "https://www.cftc.gov/LearnAndProtect/AdvisoriesAndArticles/beware_virtual_currency_pump_dump.html",
+      "finding": "The advisory supports hard refusal of coordinated price-movement instructions and exits."
+    },
+    {
+      "claim": "Affinity fraud can exploit trust within immigrant and ethnic communities.",
+      "tier": "primary_source",
+      "reference": "https://www.investor.gov/sites/default/files/ia_affinityfraud.pdf",
+      "finding": "Community identity cannot substitute for independent diligence, disclosures, and non-coercive consent."
+    },
+    {
+      "claim": "Stage 0 can expose typed research and simulation without a financial execution adapter.",
+      "tier": "sandbox_execution",
+      "reference": "server/src/app.ts and server/src/domain/institution.ts",
+      "finding": "The local architecture contains intake, deliberation, simulation, and refusal surfaces but no order, transfer, deposit, custody, or promotion adapter."
+    }
+  ],
+  "counterevidence": [
+    {
+      "claim": "A multi-agent design materially outperforms simpler systems.",
+      "tier": "deterministic_fixture",
+      "reference": "fixtures/synthetic-opportunities.json",
+      "finding": "Synthetic fixtures cannot establish real decision advantage, so complexity remains unearned."
+    },
+    {
+      "claim": "A local hash chain proves the underlying claims are true.",
+      "tier": "other",
+      "reference": "server/src/domain/eventStore.ts",
+      "finding": "The chain can reveal in-file alteration but cannot prove semantic truth or prevent wholesale replacement."
+    },
+    {
+      "claim": "Wallet authentication establishes a participant's legal identity or suitability.",
+      "tier": "primary_source",
+      "reference": "https://www.w3.org/TR/vc-data-model-2.0/",
+      "finding": "Cryptographic verification and credential validity do not by themselves establish truth or authorization."
+    }
+  ],
+  "pass_1": {
+    "intended_outcome": "Give ordinary people institutional-grade research, fraud protection, productive-ownership analysis, and preserved learning without creating capital, promotion, custody, or trading authority.",
+    "advantages": [
+      {
+        "id": "A1",
+        "statement": "Replace later-buyer dependence with productive value, underwriting, and institutional memory.",
+        "amplified_value": "Each reviewed opportunity can improve reusable evidence standards, risk models, and community capability."
+      },
+      {
+        "id": "A2",
+        "statement": "Create one explicit authority path from proposal to authorized human decision to future Kernel permit.",
+        "amplified_value": "Agents can collaborate broadly without consensus silently becoming authority."
+      },
+      {
+        "id": "A3",
+        "statement": "Preserve evidence, counterevidence, dissent, corrections, and negative outcomes additively.",
+        "amplified_value": "The institution can learn from mistakes instead of optimizing its narrative."
+      },
+      {
+        "id": "A4",
+        "statement": "Use visible conflicts and affinity-pressure prohibitions to protect community participants.",
+        "amplified_value": "Trust becomes an input to collaboration, not a substitute for diligence."
+      },
+      {
+        "id": "A5",
+        "statement": "Test the architecture with one small executable system before distributed infrastructure.",
+        "amplified_value": "Capital and engineering remain focused on the evidence bottleneck."
+      }
+    ],
+    "disadvantages": [
+      {
+        "id": "D1",
+        "statement": "Deterministic manipulation rules can create false confidence.",
+        "severity": "critical",
+        "response_type": "evidence",
+        "redesigned_response": "Classifier failure refuses by default, rules are documented as incomplete, and measured false positives and false negatives gate Stage 1."
+      },
+      {
+        "id": "D2",
+        "statement": "Governance bureaucracy can overwhelm a tiny codebase.",
+        "severity": "high",
+        "response_type": "modularity",
+        "redesigned_response": "Use one ledger, one deliberation, one ADR, and machine-readable contracts without building a committee workflow engine."
+      },
+      {
+        "id": "D3",
+        "statement": "A local JSONL history can be deleted, truncated, or rolled back.",
+        "severity": "high",
+        "response_type": "protective",
+        "redesigned_response": "Hash the event chain, disarm on integrity failure, preserve recovery steps, and defer external anchoring until a named verifier exists."
+      },
+      {
+        "id": "D4",
+        "statement": "Wallet identity excludes non-crypto participants and does not prove legal identity.",
+        "severity": "medium",
+        "response_type": "learning",
+        "redesigned_response": "Keep wallet identity optional and identity-only in Stage 0; leave Stage 1 identity and recovery as explicit unresolved decisions."
+      },
+      {
+        "id": "D5",
+        "statement": "Multi-agent review may cost more without producing better decisions.",
+        "severity": "high",
+        "response_type": "evidence",
+        "redesigned_response": "Compare it with a centralized analyst, deterministic rules, and a passive benchmark while leaving the complexity gate NOT_EARNED."
+      },
+      {
+        "id": "D6",
+        "statement": "A founder-only decision can centralize failure and create key risk.",
+        "severity": "high",
+        "response_type": "governance",
+        "redesigned_response": "A founder approval can only produce an awaiting-Kernel packet and cannot activate a stage or external effect."
+      },
+      {
+        "id": "D7",
+        "statement": "A public fork can remove the safeguards.",
+        "severity": "medium",
+        "response_type": "protective",
+        "redesigned_response": "Do not claim the license prevents misuse; make future canonical operation, approvals, and receipts independently inspectable."
+      }
+    ],
+    "comparisons": {
+      "baseline": "Fastest path to visible activity but constitutionally incompatible because it depends on coordinated market behavior.",
+      "do_nothing": "Lowest immediate cost and risk but preserves an unsafe product definition and produces no institutional evidence.",
+      "simplest_viable_alternative": "Education-only documentation avoids execution risk but cannot test preservation, replay, refusal, or authority behavior.",
+      "strongest_competing_architecture": "One centralized analyst is cheaper and easier to maintain and remains the benchmark the multi-role design must beat.",
+      "reversible_experiment": "Implement Stage 0 on a dedicated branch using only synthetic fixtures, with no external-effect adapter and a one-commit rollback."
+    },
+    "rejected_alternatives": [
+      {
+        "name": "Blockchain-first implementation",
+        "rejection_reason": "No Stage 0 private research, event, or simulation need requires a chain.",
+        "revival_evidence": "A named verifier must require a public proof anchor, ownership record, or settlement receipt."
+      },
+      {
+        "name": "Live-capital pilot",
+        "rejection_reason": "It violates the authorized operating stage and creates unresolved legal, custody, accounting, and consequence risks.",
+        "revival_evidence": "Only a new constitutional decision with counsel, explicit founder authorization, complete stage evidence, and a canonical Kernel permit can reconsider it."
+      },
+      {
+        "name": "Autonomous agent swarm",
+        "rejection_reason": "The repository has no evidence that distributed autonomy improves outcomes and it would expand authority and attack surfaces.",
+        "revival_evidence": "Held-out comparisons must show that simpler systems fail materially and that each added component has a bounded owner and authority."
+      }
+    ]
+  },
+  "pass_2": {
+    "attack_summary": "Pass 1 reduced financial danger but created a miniature constitutional system around a tiny prototype. Hashes could be mistaken for truth, a founder boundary could be theatrical without a real Kernel, keyword rules could be gamed, and a polished dashboard could overstate maturity.",
+    "new_weaknesses": [
+      {
+        "id": "N1",
+        "category": "bureaucracy",
+        "statement": "Contributors may update prose instead of executable truth.",
+        "strengthening_response": "Link documents to canonical schemas and control files and validate required behavior in tests."
+      },
+      {
+        "id": "N2",
+        "category": "centralization",
+        "statement": "One process and one local event file create a single failure domain.",
+        "strengthening_response": "Accept that boundary only for Stage 0 and name production persistence and independent anchoring as unresolved."
+      },
+      {
+        "id": "N3",
+        "category": "comprehensibility",
+        "statement": "Abstract institutional terms can obscure the current simple product.",
+        "strengthening_response": "Lead every relevant screen and README section with current executable capabilities and explicit non-capabilities."
+      },
+      {
+        "id": "N4",
+        "category": "gaming",
+        "statement": "Keyword rules can be evaded or can misclassify critical discussion as instruction.",
+        "strengthening_response": "Combine structured disclosures with fail-closed text screening and keep bear, legal, security, complaint, and education discussion from becoming action instructions."
+      },
+      {
+        "id": "N5",
+        "category": "dependency",
+        "statement": "A future Kernel boundary could become a fictional placeholder.",
+        "strengthening_response": "Report the Kernel connection as not implemented and expose no permit endpoint, activation route, or execution adapter."
+      },
+      {
+        "id": "N6",
+        "category": "overfit",
+        "statement": "Synthetic fixtures can be shaped to favor the multi-agent design.",
+        "strengthening_response": "Keep the complexity decision NOT_EARNED regardless of fixture score and require held-out independently reviewed work."
+      }
+    ],
+    "pass_1_disadvantage_dispositions": [
+      {
+        "disadvantage_id": "D1",
+        "outcome": "accepted",
+        "rationale": "Rules are a Stage 0 refusal layer, not proof of safety, and advancement requires measured error rates.",
+        "owner": "Security Reviewer",
+        "review_trigger": "First 25 independently labeled manipulation cases"
+      },
+      {
+        "disadvantage_id": "D2",
+        "outcome": "resolved",
+        "rationale": "The minimum artifact set is bounded to one ledger, one deliberation, one ADR, schemas, and executable checks.",
+        "owner": "Operator and Maintainer",
+        "review_trigger": "Contributor onboarding exceeds 30 minutes"
+      },
+      {
+        "disadvantage_id": "D3",
+        "outcome": "accepted",
+        "rationale": "The local store is explicitly non-production and fails closed on detected chain corruption.",
+        "owner": "Operator and Maintainer",
+        "review_trigger": "Any multi-user or production deployment"
+      },
+      {
+        "disadvantage_id": "D4",
+        "outcome": "deferred",
+        "rationale": "Stage 0 does not require wallet use; inclusive identity and recovery must be designed with actual pilot participants.",
+        "owner": "Community Benefit Reviewer",
+        "review_trigger": "Stage 1 participant and consent design"
+      },
+      {
+        "disadvantage_id": "D5",
+        "outcome": "experiment",
+        "rationale": "The four-system comparison is implemented but fixture output cannot earn production complexity.",
+        "owner": "Evidence and Welfare Guardian",
+        "review_trigger": "Held-out comparison with independent labels"
+      },
+      {
+        "disadvantage_id": "D6",
+        "outcome": "prohibited",
+        "rationale": "Founder approval is prevented from activating stages or external consequences and no local actor can substitute for the Kernel.",
+        "owner": "Founder and Kernel Maintainer",
+        "review_trigger": "Any requested stage activation or external-effect integration"
+      },
+      {
+        "disadvantage_id": "D7",
+        "outcome": "accepted",
+        "rationale": "Open-source safeguards cannot prevent unsafe forks; canonical receipts and transparent operation are the appropriate future control.",
+        "owner": "Founder",
+        "review_trigger": "First independent verifier or deployment"
+      }
+    ],
+    "final_design": "Use one Node service, one static dashboard, strict opportunity and deliberation schemas, one hash-chained event store, nonce-bound identity, deterministic fail-closed manipulation screening, a proposal-only decision compiler, and hash-bound stage packets. Implement no execution adapter, stage activator, exchange dependency, private-key setting, deposit route, custody path, or public promotion system. Treat the experiment as fixture evidence only and keep multi-agent complexity unearned.",
+    "residual_risks": [
+      {
+        "risk": "Novel or multilingual manipulation may evade deterministic patterns.",
+        "mitigation": "Require adversarial human review and measured classifier errors before Stage 1.",
+        "owner": "Security Reviewer",
+        "review_trigger": "Every rejected, appealed, or escaped case"
+      },
+      {
+        "risk": "Founder wallet compromise could create a false founder approval.",
+        "mitigation": "Founder approval cannot activate a stage and future production approval needs stronger recovery and Kernel verification.",
+        "owner": "Founder",
+        "review_trigger": "Before deployment outside a local sandbox"
+      },
+      {
+        "risk": "The local event history can be replaced wholesale.",
+        "mitigation": "Keep Stage 0 non-production and add independent anchoring only when a verifier and privacy model are named.",
+        "owner": "Operator and Maintainer",
+        "review_trigger": "Closed private pilot design"
+      },
+      {
+        "risk": "Legal classification remains unresolved.",
+        "mitigation": "Keep money, execution, offers, custody, outside capital, and public owned-asset promotion absent.",
+        "owner": "Qualified counsel",
+        "review_trigger": "Before Stage 2 or any Stage 3 authorization"
+      },
+      {
+        "risk": "The interface could imply operational maturity.",
+        "mitigation": "Keep permanent simulation warnings and explicit evidence tiers on every relevant screen and result.",
+        "owner": "Product Maintainer",
+        "review_trigger": "Every public release"
+      }
+    ],
+    "recommendation": "RETAIN"
+  },
+  "dissent": {
+    "present": true,
+    "handling": "The dissent is preserved in the ADR and experiment contract. Stage 0 may run because no external consequence is possible, but the multi-agent complexity gate remains NOT_EARNED.",
+    "entries": [
+      {
+        "role": "Evidence and Welfare Guardian",
+        "position": "Do not treat the ten-role design as justified by repository size or synthetic results.",
+        "rationale": "There is no real outcome evidence that multi-agent deliberation outperforms a centralized analyst or deterministic rules.",
+        "evidence_threshold": "Material outperformance on held-out, independently reviewed opportunities with zero policy violations and measured participant-harm outcomes.",
+        "owner": "Evidence and Welfare Guardian",
+        "review_trigger": "Sufficient held-out Stage 0 cases"
+      }
+    ]
+  },
+  "authority_impact": {
+    "level": "constitutional",
+    "changes_authority": true,
+    "requires_authorized_human": true,
+    "approval_status": "approved",
+    "approver": "Alfonso Lopez"
+  },
+  "migration_plan": "Implement on agent/community-capital-institution, preserve Git history and useful wallet authentication structure, remove active coordinated-market behavior, publish a draft PR, and leave stale PR branches untouched.",
+  "rollback_plan": {
+    "possible": true,
+    "steps": [
+      "Close the draft pull request without merging",
+      "Revert the migration commit if it has been merged later",
+      "Preserve generated event logs and experiment results as evidence",
+      "Restore operation only after the constitutional defect is corrected and re-reviewed"
+    ],
+    "reason_impossible": null
+  },
+  "kill_criteria": [
+    "Any unauthorized external effect",
+    "Any agent self-approval or authority expansion",
+    "Any stage activation without a canonical Kernel permit",
+    "Any silent history deletion or alteration",
+    "Replayable production identity authentication",
+    "Classifier failure that defaults toward execution",
+    "Any claim that fixture output is real performance"
+  ],
+  "decision": "RETAIN",
+  "decision_owner": "Alfonso Lopez",
+  "review_trigger": "First held-out experiment, any Stage 1 request, any proposed external-effect integration, or availability of canonical UNIIMENTE Kernel contracts"
+}

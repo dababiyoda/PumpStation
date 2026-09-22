@@ -1,0 +1,18 @@
+{
+  "name": "pumpstation-labs",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Simulation-only community capital research institution",
+  "license": "GPL-3.0-only",
+  "scripts": {
+    "install:server": "npm --prefix server install",
+    "dev": "npm --prefix server run dev",
+    "build": "npm --prefix server run build",
+    "test": "npm --prefix server test",
+    "typecheck": "npm --prefix server run typecheck",
+    "format:check": "npm --prefix server run format:check",
+    "experiment": "npm --prefix server run experiment",
+    "security": "npm --prefix server run security:surfaces && npm --prefix server run security:audit",
+    "check": "npm --prefix server run check"
+  }
+}

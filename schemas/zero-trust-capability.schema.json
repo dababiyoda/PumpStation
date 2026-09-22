@@ -1,0 +1,161 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pumpstation.local/schemas/zero-trust-capability.schema.json",
+  "title": "PumpStation Future Execution Grant",
+  "description": "A future-only contract. Stage 0 contains no grant issuer or execution adapter.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "grant_id",
+    "agent_identity",
+    "actor_class",
+    "approved_strategy_hash",
+    "asset_allowlist",
+    "counterparty_allowlist",
+    "capabilities",
+    "purpose",
+    "data_scope",
+    "position_ceiling",
+    "transaction_ceiling",
+    "cumulative_capital_ceiling",
+    "maximum_loss",
+    "slippage_ceiling",
+    "resource_ceiling",
+    "issued_at",
+    "expiration",
+    "required_approvals",
+    "evidence_requirement",
+    "reconciliation_obligation",
+    "revocation_status",
+    "non_transferable"
+  ],
+  "properties": {
+    "grant_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "agent_identity": {
+      "type": "string",
+      "minLength": 1
+    },
+    "actor_class": {
+      "const": "agent"
+    },
+    "approved_strategy_hash": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "asset_allowlist": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "counterparty_allowlist": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "capabilities": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "purpose": {
+      "type": "string",
+      "minLength": 1
+    },
+    "data_scope": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "position_ceiling": {
+      "type": "number",
+      "minimum": 0
+    },
+    "transaction_ceiling": {
+      "type": "number",
+      "minimum": 0
+    },
+    "cumulative_capital_ceiling": {
+      "type": "number",
+      "minimum": 0
+    },
+    "maximum_loss": {
+      "type": "number",
+      "minimum": 0
+    },
+    "slippage_ceiling": {
+      "type": "number",
+      "minimum": 0
+    },
+    "resource_ceiling": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["cpu_millis", "memory_mib", "network_requests"],
+      "properties": {
+        "cpu_millis": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "memory_mib": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "network_requests": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "issued_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expiration": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "required_approvals": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "evidence_requirement": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "reconciliation_obligation": {
+      "type": "string",
+      "minLength": 1
+    },
+    "revocation_status": {
+      "enum": ["active", "revoked", "expired"]
+    },
+    "non_transferable": {
+      "const": true
+    }
+  }
+}

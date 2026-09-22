@@ -1,0 +1,421 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pumpstation.local/schemas/opportunity-packet.schema.json",
+  "title": "PumpStation Opportunity Packet",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "opportunity_id",
+    "version",
+    "title",
+    "asset_or_business_type",
+    "proposer",
+    "proposer_holdings",
+    "proposer_compensation",
+    "beneficiary",
+    "affected_participants",
+    "problem_solved",
+    "productive_value_created",
+    "buyer_or_customer",
+    "revenue_source",
+    "underlying_cash_flow",
+    "valuation_method",
+    "liquidity",
+    "holding_period",
+    "capital_required",
+    "maximum_loss",
+    "expected_return_range",
+    "critical_assumptions",
+    "evidence",
+    "counterevidence",
+    "conflicts",
+    "legal_questions",
+    "security_risks",
+    "community_benefit",
+    "community_harm_risks",
+    "exit_conditions",
+    "kill_conditions",
+    "simulation_plan",
+    "screening_answers",
+    "decision_status"
+  ],
+  "$defs": {
+    "nonEmpty": {
+      "type": "string",
+      "minLength": 1
+    },
+    "actor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["actor_id", "actor_class"],
+      "properties": {
+        "actor_id": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "actor_class": {
+          "enum": ["human", "agent"]
+        }
+      }
+    },
+    "disclosure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["disclosed", "description"],
+      "properties": {
+        "disclosed": {
+          "type": "boolean"
+        },
+        "description": {
+          "$ref": "#/$defs/nonEmpty"
+        }
+      }
+    },
+    "money": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["amount", "currency", "mode"],
+      "properties": {
+        "amount": {
+          "type": "number",
+          "minimum": 0
+        },
+        "currency": {
+          "type": "string",
+          "pattern": "^[A-Z]{3}$"
+        },
+        "mode": {
+          "const": "simulated"
+        }
+      }
+    },
+    "range": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["minimum", "maximum", "unit", "status"],
+      "properties": {
+        "minimum": {
+          "type": "number"
+        },
+        "maximum": {
+          "type": "number"
+        },
+        "unit": {
+          "enum": ["percent", "multiple", "currency"]
+        },
+        "status": {
+          "const": "simulation"
+        }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "evidence_id",
+        "claim",
+        "source_uri",
+        "source_type",
+        "evidence_status",
+        "captured_at",
+        "content_hash"
+      ],
+      "properties": {
+        "evidence_id": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "claim": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "source_uri": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "source_type": {
+          "enum": [
+            "primary_source",
+            "independent_analysis",
+            "test_fixture",
+            "model_output"
+          ]
+        },
+        "evidence_status": {
+          "enum": [
+            "unverified",
+            "corroborated",
+            "challenged",
+            "invalidated",
+            "fixture_only"
+          ]
+        },
+        "captured_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "content_hash": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        }
+      }
+    },
+    "conflict": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["conflict_id", "category", "description", "disclosed"],
+      "properties": {
+        "conflict_id": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "category": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "description": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "disclosed": {
+          "type": "boolean"
+        }
+      }
+    }
+  },
+  "properties": {
+    "opportunity_id": {
+      "type": "string",
+      "pattern": "^opp_[A-Za-z0-9_-]+$"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "title": {
+      "$ref": "#/$defs/nonEmpty"
+    },
+    "asset_or_business_type": {
+      "$ref": "#/$defs/nonEmpty"
+    },
+    "proposer": {
+      "$ref": "#/$defs/actor"
+    },
+    "proposer_holdings": {
+      "$ref": "#/$defs/disclosure"
+    },
+    "proposer_compensation": {
+      "$ref": "#/$defs/disclosure"
+    },
+    "beneficiary": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/nonEmpty"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "affected_participants": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/nonEmpty"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "problem_solved": {
+      "$ref": "#/$defs/nonEmpty"
+    },
+    "productive_value_created": {
+      "$ref": "#/$defs/nonEmpty"
+    },
+    "buyer_or_customer": {
+      "$ref": "#/$defs/nonEmpty"
+    },
+    "revenue_source": {
+      "$ref": "#/$defs/nonEmpty"
+    },
+    "underlying_cash_flow": {
+      "$ref": "#/$defs/nonEmpty"
+    },
+    "valuation_method": {
+      "$ref": "#/$defs/nonEmpty"
+    },
+    "liquidity": {
+      "$ref": "#/$defs/nonEmpty"
+    },
+    "holding_period": {
+      "$ref": "#/$defs/nonEmpty"
+    },
+    "capital_required": {
+      "$ref": "#/$defs/money"
+    },
+    "maximum_loss": {
+      "$ref": "#/$defs/money"
+    },
+    "expected_return_range": {
+      "$ref": "#/$defs/range"
+    },
+    "critical_assumptions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/nonEmpty"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/evidence"
+      },
+      "minItems": 1
+    },
+    "counterevidence": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/evidence"
+      },
+      "minItems": 1
+    },
+    "conflicts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/conflict"
+      },
+      "minItems": 1
+    },
+    "legal_questions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/nonEmpty"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "security_risks": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/nonEmpty"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "community_benefit": {
+      "$ref": "#/$defs/nonEmpty"
+    },
+    "community_harm_risks": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/nonEmpty"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "exit_conditions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/nonEmpty"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "kill_conditions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/nonEmpty"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "simulation_plan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["fixture_set", "method", "seed", "benchmark"],
+      "properties": {
+        "fixture_set": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "method": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "seed": {
+          "type": "integer"
+        },
+        "benchmark": {
+          "$ref": "#/$defs/nonEmpty"
+        }
+      }
+    },
+    "screening_answers": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "coordinated_buying",
+        "price_movement_intent",
+        "wash_trading",
+        "fake_volume",
+        "spoofing",
+        "deceptive_promotion",
+        "guaranteed_returns",
+        "fabricated_partnerships",
+        "fake_accounts",
+        "coordinated_exit",
+        "suppressed_negative_evidence",
+        "affinity_pressure",
+        "organizer_custody",
+        "outside_capital_intake",
+        "public_promotion_owned_asset"
+      ],
+      "properties": {
+        "coordinated_buying": {
+          "type": "boolean"
+        },
+        "price_movement_intent": {
+          "type": "boolean"
+        },
+        "wash_trading": {
+          "type": "boolean"
+        },
+        "fake_volume": {
+          "type": "boolean"
+        },
+        "spoofing": {
+          "type": "boolean"
+        },
+        "deceptive_promotion": {
+          "type": "boolean"
+        },
+        "guaranteed_returns": {
+          "type": "boolean"
+        },
+        "fabricated_partnerships": {
+          "type": "boolean"
+        },
+        "fake_accounts": {
+          "type": "boolean"
+        },
+        "coordinated_exit": {
+          "type": "boolean"
+        },
+        "suppressed_negative_evidence": {
+          "type": "boolean"
+        },
+        "affinity_pressure": {
+          "type": "boolean"
+        },
+        "organizer_custody": {
+          "type": "boolean"
+        },
+        "outside_capital_intake": {
+          "type": "boolean"
+        },
+        "public_promotion_owned_asset": {
+          "type": "boolean"
+        }
+      }
+    },
+    "decision_status": {
+      "enum": [
+        "submitted",
+        "rejected",
+        "needs_evidence",
+        "simulation_eligible",
+        "retired"
+      ]
+    }
+  }
+}
