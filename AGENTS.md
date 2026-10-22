@@ -1,13 +1,65 @@
-# AGENTS.md — PumpStation work-start order
+> **UNIIMENTE work in this fork:** Before new or resumed work, read [the founder Discussion](https://github.com/dababiyoda/uniimente-kernel/discussions/89), [the pinned collaboration SOP](https://github.com/dababiyoda/uniimente-kernel/blob/2ccbbe2bf553df45df3dac777dc45f825760dd45/docs/collaboration/START_HERE.md), and [live work claims/handoffs](https://github.com/dababiyoda/uniimente-kernel/issues/96). Inspect relevant open PRs and exact heads, identify your actual session and bounded files/interfaces, and acknowledge overlaps before editing. Preserve the local instructions below. This addition governs Alfonso's UNIIMENTE work in this fork; do not send this fork-specific rollout upstream. The source package is draft #193 pending adoption; metadata checks are not locks or authority.
 
-Before any new or resumed AI task in this repository, read the canonical collaboration guide pinned at:
+# PumpStation Agent Entry Contract
 
-`https://github.com/dababiyoda/uniimente-kernel/blob/fa6c4b9f83f08574d67102d27425728b90e6dc81/docs/collaboration/START_HERE.md`
+PumpStation is a specialist economic/community/Web3 Venture Cell lineage under UNIIMENTE governance. It does not own UNIIMENTE's constitutional interpretation.
 
-Then inspect this repository's current branch/base/head, relevant open PRs/issues, last handoff, and applicable local instructions (`README.md`, client/server guidance, tests, and tool-specific files) before editing.
+Before material work, read:
 
-Repository boundary: PumpStation is an application/experiment surface, not a silent founder cockpit, constitutional owner, treasury authority, or settlement mandate merely because it contains wallet or economic mechanisms. Any money movement, wallet signing, transaction submission, user-facing financial consequence, external contact, credential use, or live deployment requires its own evidence and authorization path.
+- `dababiyoda/uniimente-kernel/AGENTS.md`
+- `dababiyoda/uniimente-kernel/docs/FOUNDER_EFFECT_COMPILER.md`
+- `dababiyoda/uniimente-kernel/docs/intent/INTENT-0030-effect-not-metaphor.md`
 
-For governed PRs, use the version-1 collaboration receipt from the pinned guide. Record exact source/base/head revisions, scoped intent, validation including failures or `not_run`, rollback, handoff owner, next action and stop condition. A passing metadata check does not prove reading, truth, authority, review independence or safe execution.
+## Mandatory founder rule
 
-Preserve existing implementation history, rejected experiments and user-impact evidence. Do not promote an experiment into institutional ownership without a reviewed founder decision, and do not treat a connected wallet UI as permission to transact.
+> **Preserve the intended effect. Do not literalize the metaphor. Search reality before inventing architecture.**
+
+Do not force blockchain, DAO, DeFi, tokens, zero trust, morphogenesis, swarms, organs, or any other favored vocabulary into a design because Alfonso used an analogy. Extract the useful mechanism and keep it only when it improves the named effect.
+
+For every proposed mechanism ask:
+
+- what real outcome is required?
+- can existing PumpStation/UNIIMENTE capability solve it?
+- can mature open source, commodity software, an API/service/plugin, or computer use solve it?
+- what causal mechanism from Web3 or another domain is actually valuable?
+- what residual CapabilityDeficit remains?
+- what evidence shows the proposed mechanism beats the simpler alternative?
+
+Canonical morphogenesis means functional capability formation/reconfiguration in response to verified need. It does not require digital biological structures or dynamic organizations.
+
+## Web3 interpretation
+
+Use Web3 mechanisms only for precise jobs such as attribution, shared ownership, programmable commitments, settlement, bounded governance, portable credentials, or verifiable public state. Do not put a process on-chain merely because PumpStation is Web3-native.
+
+## Authority and evidence
+
+PumpStation may become highly capable; it does not become constitutionally sovereign. New agents, smart contracts, tools, wallets, code, or capabilities never self-authorize or inherit founder authority.
+
+Building != installation != activation != spending/trading/contact/consequence authority.
+
+Judge success by truthful participant/economic outcomes and verified system behavior—not by how futuristic, decentralized, organism-like, or crypto-native the architecture appears.
+
+## Historical project-position snapshot — 2026-09-30
+
+The branch, node, metric and handoff destinations below are preserved historical observations. Refresh current claims and acknowledged integration destinations through kernel issue #96 before acting. The full-machine correction remains binding.
+
+This repository participates in UNIIMENTE as the regenerative social-economic rail (funded activity, community capital). It owns domain capability, not sovereignty.
+
+- **One GREG.** The converged product is `dababiyoda/uniimente-kernel` branch `claude/uniimente-greg-reconciliation-39syff` (draft PR #137; `main` once merged). Do not build a second GREG, Kernel, authority plane, memory or goal system here.
+- **Where the project stands.** One primary node at a time, computed from evidence: `greg path` / [`greg/path.json`](https://github.com/dababiyoda/uniimente-kernel/blob/claude/uniimente-greg-reconciliation-39syff/greg/path.json). Active node **N1**: the first verified embodied persistent mission closure on the founder's Chromebook. Single bottleneck metric: **VEPMC** (0 today, [`greg/metrics.py`](https://github.com/dababiyoda/uniimente-kernel/blob/claude/uniimente-greg-reconciliation-39syff/greg/metrics.py)). This is an operational evidence milestone; it does not stop unrelated reversible implementation of the currently achievable Body + Organs + Mind. Sequence organ work by the complete machine's highest-priority unfinished dependency, then verify, integrate and continue.
+- **This repository's node.** N7 — FUTURE_NODE_CAPABILITY (horizon `pumpstation_rail`, BUILDABLE_AFTER_PREREQUISITE).
+- **New founder intents** (kernel `docs/intent/`): [`INTENT-2026-09-30-OPUS-MAXIMUS-CONVERGENCE`](https://github.com/dababiyoda/uniimente-kernel/blob/claude/uniimente-greg-reconciliation-39syff/docs/intent/INTENT-2026-09-30-OPUS-MAXIMUS-CONVERGENCE.json) (one GREG; truthful persistence; growth only from measured bottlenecks), [`INTENT-2026-09-30-DEVELOPMENTAL-INHERITANCE`](https://github.com/dababiyoda/uniimente-kernel/blob/claude/uniimente-greg-reconciliation-39syff/docs/intent/INTENT-2026-09-30-DEVELOPMENTAL-INHERITANCE.json) (a correction reroutes, it does not delete; name the axis that changed; never "outdated" as a terminal label), [`INTENT-2026-09-30-MASTER-BUILD-DIRECTIVE`](https://github.com/dababiyoda/uniimente-kernel/blob/claude/uniimente-greg-reconciliation-39syff/docs/intent/INTENT-2026-09-30-MASTER-BUILD-DIRECTIVE.json) (resource requests carry evidence, costed options with a no-cost choice, uncertainty and authority, never pressure; one business loop before a portfolio; external reality is the judge; kill or archive obsolete implementations, keep the intended capability on the horizon), and `INTENT-20260930-open-source-first` (a stored API key never selects a paid route).
+- **Authority ceiling.** Consequential effects cross the Kernel Consequence Gate. No deployment, spending, publishing, outside contact or credential change without founder authority. No wallet, token, trading or payment activity without founder authority; simulation-only work stays labeled as simulation.
+- **Coordination and handoff.** Kernel issue #117 and PR #137; the kernel [`PROJECT_COGNITION_SOP.md`](https://github.com/dababiyoda/uniimente-kernel/blob/claude/uniimente-greg-reconciliation-39syff/docs/PROJECT_COGNITION_SOP.md) §11 handoff; source census [`PROJECT_SOURCE_CENSUS_2026-09-26.md`](https://github.com/dababiyoda/uniimente-kernel/blob/claude/uniimente-greg-reconciliation-39syff/docs/PROJECT_SOURCE_CENSUS_2026-09-26.md); founder ledger [`FOUNDER_INTENT_LEDGER.md`](https://github.com/dababiyoda/uniimente-kernel/blob/claude/uniimente-greg-reconciliation-39syff/docs/FOUNDER_INTENT_LEDGER.md).
+
+<!-- UNIIMENTE_FULL_MACHINE_COMPLETION_20261001 -->
+## Controlling founder correction — complete machine, 2026-10-01
+
+**BODY + ORGANS + MIND = GREG / UNIIMENTE is the fixed completion boundary.** Read the [canonical intent record](https://github.com/dababiyoda/uniimente-kernel/blob/a5b121f9a8cc86c3385445427dd625a3b48eea85/docs/intent/INTENT-20261001-FULL-MACHINE-COMPLETION.json), its [verbatim founder source](https://github.com/dababiyoda/uniimente-kernel/blob/a5b121f9a8cc86c3385445427dd625a3b48eea85/docs/intent/sources/FULL-MACHINE-COMPLETION-CORRECTION-20261001.md), and the [canonical agent entry contract](https://github.com/dababiyoda/uniimente-kernel/blob/a5b121f9a8cc86c3385445427dd625a3b48eea85/AGENTS.md).
+
+Reconstruct the whole machine; select the highest-priority unfinished dependency; build the smallest rigorous increment; prove and integrate it; then **automatically resume the parent objective and the next unblocked requirement**. Continue until every currently achievable requirement is implemented and integrated. A seed, experiment, sandbox, benchmark, narrow PR, smallest falsifiable build, or VEPMC milestone is a sequencing/evidence unit, never the project stopping condition. Registered is not implemented; tested component is not complete machine; not yet implemented is not retired intent.
+
+Founder-use and live-activation evidence remain distinct from building the machinery. A precise founder-only action, genuine external dependency, or demonstrated technology limit blocks the affected requirement; finish unrelated achievable work and preserve the strongest defensible approximation/backcast for a technology limit. Do not replace feasible executable machinery with placeholders or prose. Preserve this organ's lineage and role in the one canonical GREG; create no second Kernel, memory, goal or authority plane.
+
+This correction authorizes continued reversible implementation and review. Alfonso remains root human authority; authenticated Kernel gates, lawful refusal, consent, welfare, resource ceilings, pause/revocation and shutdown remain effective. No new merge, deployment, activation, spending, publishing, outside contact or live authority follows from this instruction.
+<!-- /UNIIMENTE_FULL_MACHINE_COMPLETION_20261001 -->

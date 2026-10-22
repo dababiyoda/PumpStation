@@ -5,4 +5,4 @@ on:
 permissions: {}
 jobs:
   collaboration-receipt:
-    uses: dababiyoda/uniimente-kernel/.github/workflows/collaboration-receipt.yml@fa6c4b9f83f08574d67102d27425728b90e6dc81
+    uses: dababiyoda/uniimente-kernel/.github/workflows/collaboration-receipt.yml@2ccbbe2bf553df45df3dac777dc45f825760dd45
