@@ -1,3 +1,8 @@
+> **UNIIMENTE entry (refreshed 2026-11-13).** PumpStation is a capability candidate, not an operational organ — role: "Economic/community application lineage; no implicit treasury authority" — a specialist economic/community/Web3 Venture Cell lineage under UNIIMENTE governance (a routing description, not ownership or runtime proof). The Kernel's organ map (`docs/opus-maximus/ORGAN_MAP.md`) records its connection to GREG as "None. Any value movement is founder-only and testnet-first" (tier: identity stub, not an organ).
+> Before new or resumed UNIIMENTE work, read the Kernel's one entry guide, [AGENTS.md § Canonical reading order](https://github.com/dababiyoda/uniimente-kernel/blob/claude/greg-full-machine-completion-whgiee/AGENTS.md#canonical-reading-order), on the integration branch `claude/greg-full-machine-completion-whgiee` (at `91aaeca0` when this note was written). That is the branch [the Kernel's work board, dababiyoda/uniimente-kernel#96](https://github.com/dababiyoda/uniimente-kernel/issues/96), acknowledges; read the board's newest comments first, and if they name a different branch, follow the board. The guide routes to [founder Discussion #89](https://github.com/dababiyoda/uniimente-kernel/discussions/89), the complete route to the destination (Body + Organs + Mind) and the collaboration procedure.
+> Before editing, post a bounded claim on that board in the form the guide's collaboration procedure gives, and say in it who you are, what you were asked and how you plan to do it (the founder's direction of 2026-11-13 UTC, recorded in Kernel draft #316). A claim is a notice, not a lock and not authority. Record the revision you read in your PR receipt.
+> The local rules below still apply. This note adds no authority.
+
 # PumpStation Claude Entry
 
 Read `AGENTS.md` before substantive work.
@@ -5,3 +10,7 @@ Read `AGENTS.md` before substantive work.
 Canonical founder interpretation lives in `dababiyoda/uniimente-kernel/docs/FOUNDER_EFFECT_COMPILER.md`.
 
 **Preserve the effect. Do not literalize the metaphor.** Use Web3, zero-trust, morphogenetic, and institutional mechanisms only when they causally improve the target outcome. Search/adapt real technology first; build only the residual CapabilityDeficit; preserve UNIIMENTE authority boundaries.
+
+## Full-machine execution correction (2026-10-01)
+
+Read the controlling correction in `AGENTS.md` and [canonical Kernel intent](https://github.com/dababiyoda/uniimente-kernel/blob/a5b121f9a8cc86c3385445427dd625a3b48eea85/docs/intent/INTENT-20261001-FULL-MACHINE-COMPLETION.json) before choosing work. **BODY + ORGANS + MIND = GREG / UNIIMENTE** is the fixed completion boundary. Implement, prove and integrate each increment; automatically resume the parent objective and the next unblocked requirement. Seed, experiment, sandbox, benchmark, PR, future-family classification and VEPMC never retire intended machinery or stop unrelated achievable work. Only integrated completion, a precise founder-only action, a genuine external dependency or a demonstrated technology limit can stop the affected requirement; preserve the destination and build its strongest defensible approximation. Registries and prose cannot substitute for feasible executable work. Existing Kernel authority, consent, budgets, refusal and shutdown gates remain effective.
