@@ -1,0 +1,8 @@
+name: Collaboration receipt
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, edited, ready_for_review, converted_to_draft]
+permissions: {}
+jobs:
+  collaboration-receipt:
+    uses: dababiyoda/uniimente-kernel/.github/workflows/collaboration-receipt.yml@2ccbbe2bf553df45df3dac777dc45f825760dd45
